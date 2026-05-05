@@ -107,6 +107,11 @@ body:not([data-transparent="true"]) .nav {
   flex-shrink: 0;
 }
 .nav__logo:hover { color: var(--color-rust-dark); }
+.nav__logo img {
+  height: 40px;
+  width: auto;
+  display: block;
+}
 
 .nav__links {
   display: flex;
