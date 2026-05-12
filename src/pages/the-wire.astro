@@ -1,0 +1,105 @@
+---
+import SubpageLayout from '../layouts/SubpageLayout.astro';
+---
+
+<SubpageLayout title="The Phuckin' Wire" description="Advocacy journalism written by and for incarcerated people. Unfiltered. Uncensored. Unapologetic." breadcrumbs={[{ label: "The Phuckin' Wire" }]}>
+
+  <section class="hero hero--full section--dark">
+    <div class="container">
+      <span class="hero__eyebrow">THE PUBLICATION</span>
+      <h1 class="hero__headline wire-headline">The Phuckin' Wire</h1>
+      <p class="hero__subhead">Advocacy journalism written by and for incarcerated people. Unfiltered. Uncensored. Unapologetic.</p>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container container--narrow">
+      <span class="label">About the Wire</span>
+      <h2 style="margin-top: var(--space-md);">Journalism from the Inside</h2>
+      <p class="text-lg" style="margin-top: var(--space-lg);">The Phuckin' Wire is a newsletter covering criminal justice, creative work, and policy &mdash; written entirely by incarcerated people. Published by Zo Media Productions as a Substack, the Wire gives voice to those the system was designed to silence.</p>
+      <p style="margin-top: var(--space-md); color: var(--color-fog);">Each issue features investigative reporting, personal essays, poetry, and commentary on the criminal justice system. No editorial filters. No outside gatekeepers. Just the truth, told by the people living it.</p>
+    </div>
+  </section>
+
+  <div class="divider"><span class="divider__label">Subscribe</span></div>
+
+  <section class="section section--alt">
+    <div class="container container--narrow" style="text-align: center;">
+      <span class="label" style="color: var(--color-signal);">Get Every Issue</span>
+      <h2 style="margin-top: var(--space-md);">Never miss a story from inside.</h2>
+      <p class="text-lg" style="margin-top: var(--space-lg);">The Wire is available free &mdash; with a paid tier for those who want to directly fund incarcerated journalists.</p>
+      <form data-netlify="true" name="wire-subscribe" method="POST" class="wire-form">
+        <input type="hidden" name="form-name" value="wire-subscribe" />
+        <div class="wire-form__row">
+          <input type="email" name="email" placeholder="your@email.com" required class="form-control" aria-label="Email address" />
+          <button type="submit" class="btn btn--primary btn--lg">Subscribe</button>
+        </div>
+        <p class="wire-form__note">Free to read. Paid subscriptions fund the writers.</p>
+      </form>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container container--narrow">
+      <span class="label">Institutional Partners</span>
+      <h2 style="margin-top: var(--space-md);">Sponsorships</h2>
+      <p class="text-lg" style="margin-top: var(--space-lg);">The Wire is supported by institutional sponsors committed to amplifying incarcerated voices. Johns Hopkins University is a confirmed sponsor.</p>
+      <p style="margin-top: var(--space-md); color: var(--color-fog);">Interested in sponsoring The Wire? Institutional and organizational sponsorships are available. Reach out to discuss how your institution can support independent journalism from inside the system.</p>
+      <a href="/contact/" class="btn btn--outline" style="margin-top: var(--space-xl);">Inquire About Sponsorship</a>
+    </div>
+  </section>
+
+  <div class="divider"><span class="divider__label">Latest</span></div>
+
+  <section class="section section--alt">
+    <div class="container">
+      <span class="label">Recent Issues</span>
+      <h2 style="margin-top: var(--space-md);">Latest from The Wire</h2>
+      <div class="grid grid--3" style="margin-top: var(--space-2xl);">
+        <div class="card" style="text-align: center; padding: var(--space-2xl);">
+          <span class="label" style="color: var(--color-wire);">Coming Soon</span>
+          <p class="card__text" style="margin-top: var(--space-sm);">Issues will appear here as they are published.</p>
+        </div>
+        <div class="card" style="text-align: center; padding: var(--space-2xl);">
+          <span class="label" style="color: var(--color-wire);">Coming Soon</span>
+          <p class="card__text" style="margin-top: var(--space-sm);">Subscribe above to get notified when new issues drop.</p>
+        </div>
+        <div class="card" style="text-align: center; padding: var(--space-2xl);">
+          <span class="label" style="color: var(--color-wire);">Coming Soon</span>
+          <p class="card__text" style="margin-top: var(--space-sm);">The Wire publishes on a rolling basis.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</SubpageLayout>
+
+<style>
+  .wire-headline {
+    font-size: clamp(3rem, 8vw, 6rem);
+  }
+  .wire-form {
+    margin-top: var(--space-2xl);
+  }
+  .wire-form__row {
+    display: flex;
+    gap: var(--space-sm);
+    max-width: 500px;
+    margin-inline: auto;
+  }
+  .wire-form__row .form-control {
+    flex: 1;
+  }
+  .wire-form__note {
+    font-family: var(--font-mono);
+    font-size: var(--text-sm);
+    color: var(--color-fog);
+    margin-top: var(--space-md);
+  }
+
+  @media (max-width: 600px) {
+    .wire-form__row {
+      flex-direction: column;
+    }
+  }
+</style>

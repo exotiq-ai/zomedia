@@ -1,0 +1,62 @@
+---
+import SubpageLayout from '../../layouts/SubpageLayout.astro';
+
+const projects = [
+  { title: "Screenplays", href: "/film-projects/screenplays/", description: "Original screenplays written from inside — narratives shaped by lived experience within the system." },
+  { title: "Theatrical Works", href: "/film-projects/theatrical-works/", description: "Stage plays and performances created by incarcerated artists exploring identity, justice, and transformation." },
+  { title: "Documentaries & Film Shorts", href: "/film-projects/documentaries/", description: "Documentary films and short works capturing untold stories from behind the wall." },
+];
+---
+
+<SubpageLayout title="Film Projects" description="Screenplays, theatrical works, and documentaries produced by incarcerated filmmakers." breadcrumbs={[{ label: "Film Projects" }]}>
+
+  <section class="hero hero--full">
+    <div class="container">
+      <span class="hero__eyebrow">Film & Documentary</span>
+      <h1 class="hero__headline">Film Projects</h1>
+      <p class="hero__subhead">Screenplays, theatrical works, and documentaries produced by incarcerated filmmakers.</p>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <div class="grid grid--3">
+        {projects.map((project) => (
+          <a href={project.href} class="card film-card">
+            <h3 class="card__title">{project.title}</h3>
+            <p class="card__text">{project.description}</p>
+            <span class="film-card__link">Explore &rarr;</span>
+          </a>
+        ))}
+      </div>
+    </div>
+  </section>
+
+</SubpageLayout>
+
+<style>
+  .film-card {
+    border-top: 3px solid var(--color-signal);
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-md);
+    text-decoration: none;
+    transition: transform var(--duration-fast), box-shadow var(--duration-fast);
+  }
+  .film-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+  }
+  .film-card__link {
+    font-family: var(--font-mono);
+    font-size: var(--text-sm);
+    letter-spacing: var(--tracking-wide);
+    text-transform: uppercase;
+    color: var(--color-signal);
+    margin-top: auto;
+    transition: color var(--duration-fast);
+  }
+  .film-card:hover .film-card__link {
+    color: var(--color-bone);
+  }
+</style>

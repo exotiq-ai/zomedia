@@ -1,0 +1,164 @@
+---
+import SubpageLayout from '../layouts/SubpageLayout.astro';
+
+const books = [
+  { title: "Domestic Genocide", author: "Ivan Kilgore", category: "memoir", print: "$14.95", ebook: "$4.99", image: "domestic_genocide.jpg", description: "A searing memoir exposing the systemic destruction of Black communities through mass incarceration." },
+  { title: "King: The Early Years", author: "Ivan Kilgore", category: "memoir", print: "$12.95", ebook: "$3.99", image: "king.jpg", description: "An intimate look at the formative years that shaped a voice for justice behind bars." },
+  { title: "Mayhem, Murder & Magnificence", author: "Ivan Kilgore", category: "essays", print: "$16.95", ebook: "$5.99", image: "mayhem_murder_magnificence.jpg", description: "Essays confronting violence, beauty, and transformation within the prison system." },
+  { title: "My Comrades' Thoughts", author: "Ivan Kilgore (editor)", category: "anthology", print: "$13.95", ebook: "$4.99", image: "blm.jpg", description: "An anthology of writings from incarcerated voices on justice, identity, and resistance." },
+  { title: "Kill the Bastard", author: "TBD", category: "memoir", print: "$14.95", ebook: "$4.99", image: "kill_the_bastard.jpg", description: "A raw, unflinching memoir from behind the wall." },
+  { title: "Social Justice Autobiographies", author: "Various", category: "anthology", print: "$15.95", ebook: "$5.99", image: "social_justice.jpg", description: "Personal narratives from incarcerated individuals fighting for systemic change." },
+  { title: "No Rhyme or Reason", author: "TBD", category: "poetry", print: "$11.95", ebook: "$3.99", image: "no_rhyme.jpg", description: "Poetry born from confinement — verse that refuses to be silenced." },
+];
+---
+
+<SubpageLayout title="Books" description="Literature by incarcerated voices — memoir, essays, poetry, and anthologies." breadcrumbs={[{ label: "Books" }]}>
+
+  <section class="hero hero--minimal">
+    <div class="container">
+      <h1 class="hero__headline">Books</h1>
+      <p class="hero__subhead">Literature by incarcerated voices &mdash; memoir, essays, poetry, and anthologies.</p>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <div class="filter-bar" role="group" aria-label="Filter books by category">
+        <button class="filter-pill active" data-filter="all">All</button>
+        <button class="filter-pill" data-filter="memoir">Memoir</button>
+        <button class="filter-pill" data-filter="essays">Essays</button>
+        <button class="filter-pill" data-filter="poetry">Poetry</button>
+        <button class="filter-pill" data-filter="anthology">Anthology</button>
+      </div>
+
+      <div class="grid grid--3 book-grid">
+        {books.map((book) => (
+          <article class="card book-card" data-category={book.category}>
+            <div class="book-card__cover img-editorial">
+              <img src={`/assets/images/zo-media/${book.image}`} alt={`${book.title} cover`} loading="lazy" />
+            </div>
+            <div class="book-card__body">
+              <span class="label">{book.category}</span>
+              <h3 class="card__title">{book.title}</h3>
+              <p class="book-card__author">{book.author}</p>
+              <p class="card__text">{book.description}</p>
+              <div class="book-card__prices">
+                <span class="book-card__price">Print: {book.print}</span>
+                <span class="book-card__price">eBook: {book.ebook}</span>
+              </div>
+              <button class="btn btn--primary btn--sm">Add to Cart</button>
+            </div>
+          </article>
+        ))}
+      </div>
+    </div>
+  </section>
+
+</SubpageLayout>
+
+<style>
+  .filter-bar {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-sm);
+    margin-bottom: var(--space-2xl);
+  }
+  .filter-pill {
+    font-family: var(--font-mono);
+    font-size: var(--text-micro);
+    letter-spacing: var(--tracking-wide);
+    text-transform: uppercase;
+    padding: var(--space-xs) var(--space-md);
+    border: 1px solid var(--color-ash);
+    border-radius: 2px;
+    background: transparent;
+    color: var(--color-fog);
+    cursor: pointer;
+    transition: all var(--duration-fast);
+  }
+  .filter-pill:hover {
+    border-color: var(--color-wire);
+    color: var(--color-wire);
+  }
+  .filter-pill.active {
+    background: var(--color-wire);
+    border-color: var(--color-wire);
+    color: var(--color-void);
+  }
+  .book-grid {
+    row-gap: var(--space-3xl);
+  }
+  .book-card {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-md);
+  }
+  .book-card__cover {
+    aspect-ratio: 2 / 3;
+    overflow: hidden;
+    border-radius: 2px;
+  }
+  .book-card__cover img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  .book-card__body {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-xs);
+  }
+  .book-card__author {
+    font-family: var(--font-mono);
+    font-size: var(--text-sm);
+    color: var(--color-fog);
+  }
+  .book-card__prices {
+    display: flex;
+    gap: var(--space-md);
+    font-family: var(--font-mono);
+    font-size: var(--text-sm);
+    color: var(--color-chalk);
+    margin-top: var(--space-xs);
+  }
+  .book-card__price {
+    white-space: nowrap;
+  }
+  .book-card .btn {
+    margin-top: var(--space-sm);
+    align-self: flex-start;
+  }
+  .book-card.hidden {
+    display: none;
+  }
+
+  @media (max-width: 768px) {
+    .grid--3 { grid-template-columns: repeat(2, 1fr); }
+  }
+  @media (max-width: 480px) {
+    .grid--3 { grid-template-columns: 1fr; }
+  }
+</style>
+
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const pills = document.querySelectorAll('.filter-pill');
+    const cards = document.querySelectorAll('.book-card');
+
+    pills.forEach(pill => {
+      pill.addEventListener('click', () => {
+        pills.forEach(p => p.classList.remove('active'));
+        pill.classList.add('active');
+
+        const filter = pill.dataset.filter;
+        cards.forEach(card => {
+          if (filter === 'all' || card.dataset.category === filter) {
+            card.classList.remove('hidden');
+          } else {
+            card.classList.add('hidden');
+          }
+        });
+      });
+    });
+  });
+</script>

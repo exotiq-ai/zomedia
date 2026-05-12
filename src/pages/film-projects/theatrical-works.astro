@@ -1,0 +1,23 @@
+---
+import SubpageLayout from '../../layouts/SubpageLayout.astro';
+---
+
+<SubpageLayout title="Theatrical Works" description="Stage plays and performances by incarcerated artists." breadcrumbs={[{ label: "Film Projects", href: "/film-projects/" }, { label: "Theatrical Works" }]}>
+
+  <section class="hero hero--minimal">
+    <div class="container">
+      <h1 class="hero__headline">Theatrical Works</h1>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container container--narrow">
+      <div class="card" style="text-align: center; padding: var(--space-3xl);">
+        <span class="label" style="color: var(--color-wire);">Coming Soon</span>
+        <p class="text-lg" style="margin-top: var(--space-md);">Theatrical works coming soon. Zo Media is producing original stage plays and performances created by incarcerated artists.</p>
+        <a href="/film-projects/" class="btn btn--outline" style="margin-top: var(--space-xl);">&larr; Back to Film Projects</a>
+      </div>
+    </div>
+  </section>
+
+</SubpageLayout>
