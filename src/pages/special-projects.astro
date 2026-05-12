@@ -1,0 +1,79 @@
+---
+import SubpageLayout from '../layouts/SubpageLayout.astro';
+
+const title = "Special Projects";
+const description = "Independent projects exploring the intersection of incarceration, art, and justice.";
+const breadcrumbs = [{ label: "Special Projects" }];
+
+const projects = [
+  {
+    title: "The Global Impact of Mass Incarceration",
+    tagline: "Examining how American incarceration policy echoes worldwide",
+    gradient: "linear-gradient(135deg, var(--color-graphite), var(--color-signal-dim))",
+    href: "#",
+  },
+  {
+    title: "Voices On Death Row",
+    tagline: "First-person accounts from America's death rows",
+    gradient: "linear-gradient(135deg, var(--color-graphite), #1a3a4a)",
+    href: "#",
+  },
+  {
+    title: "Tales From the Zo",
+    tagline: "Stories from inside Zo Media's creative community",
+    gradient: "linear-gradient(135deg, var(--color-graphite), #9A7E35)",
+    href: "#",
+  },
+  {
+    title: "Writing Beyond the Prison: Reimagining the Carceral Ecosystem",
+    tagline: "Challenging the boundaries of prison literature",
+    gradient: "linear-gradient(135deg, var(--color-graphite), #2a1a3a)",
+    href: "#",
+  },
+];
+---
+
+<SubpageLayout title={title} description={description} breadcrumbs={breadcrumbs}>
+  <section class="hero hero--full">
+    <div class="container container--narrow">
+      <span class="hero__eyebrow">INITIATIVES</span>
+      <h1 class="hero__headline">Special Projects</h1>
+      <p class="hero__subhead">Independent projects exploring the intersection of incarceration, art, and justice. Each is a standalone initiative with its own website.</p>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <div class="grid grid--2">
+        {projects.map((project) => (
+          <a href={project.href} class="project-card halftone" style={`background: ${project.gradient}; min-height: 300px; display: flex; flex-direction: column; justify-content: flex-end; padding: var(--space-xl); border-radius: var(--radius-lg); text-decoration: none; position: relative; overflow: hidden; transition: transform var(--duration-base), box-shadow var(--duration-base);`}>
+            <h2 style="font-family: var(--font-headline); font-size: var(--text-2xl); color: var(--color-bone); margin-bottom: var(--space-sm); line-height: 1.2;">
+              {project.title}
+            </h2>
+            <p style="font-family: var(--font-body); font-size: var(--text-base); color: var(--color-fog); margin-bottom: var(--space-lg);">
+              {project.tagline}
+            </p>
+            <span class="btn btn--outline btn--sm" style="align-self: flex-start;">
+              Visit Project &rarr;
+            </span>
+          </a>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container container--narrow" style="text-align: center;">
+      <p style="font-family: var(--font-mono); font-size: var(--text-sm); color: var(--color-ash); letter-spacing: var(--tracking-wide); max-width: 48ch; margin-inline: auto;">
+        These are independent projects with their own dedicated websites. External links will be added as each project site launches.
+      </p>
+    </div>
+  </section>
+</SubpageLayout>
+
+<style>
+  .project-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.4);
+  }
+</style>

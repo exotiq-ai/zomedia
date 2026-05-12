@@ -1,0 +1,59 @@
+---
+import SubpageLayout from '../layouts/SubpageLayout.astro';
+
+const title = "Board of Directors";
+const description = "The governing body overseeing Zo Media Productions cooperative and its mission.";
+const breadcrumbs = [{ label: "Board of Directors" }];
+
+const board = [
+  { name: "Name TBD", role: "Board Chair", bio: "Bio coming soon." },
+  { name: "Name TBD", role: "Board Member", bio: "Bio coming soon." },
+  { name: "Name TBD", role: "Board Member", bio: "Bio coming soon." },
+];
+---
+
+<SubpageLayout title={title} description={description} breadcrumbs={breadcrumbs}>
+  <section class="hero hero--minimal">
+    <div class="container container--narrow">
+      <span class="hero__eyebrow">GOVERNANCE</span>
+      <h1 class="hero__headline">Board of Directors</h1>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container container--narrow">
+      <p class="text-lg">
+        The Board of Directors provides fiduciary oversight and strategic direction for Zo Media Productions. As a cooperative, our board ensures that the organization remains accountable to its members and faithful to its mission of amplifying incarcerated voices through publishing, film, and media.
+      </p>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <div class="divider">
+        <span class="divider__label">Board Members</span>
+      </div>
+      <div class="grid grid--3" style="margin-top: var(--space-xl);">
+        {board.map((member) => (
+          <div class="card" style="text-align: center;">
+            <div style="width: 120px; height: 120px; border-radius: 50%; background: var(--color-graphite); margin: 0 auto var(--space-md); display: flex; align-items: center; justify-content: center;">
+              <span style="font-family: var(--font-mono); color: var(--color-ash); font-size: var(--text-tiny); text-transform: uppercase; letter-spacing: var(--tracking-wide);">Photo TBD</span>
+            </div>
+            <h3 class="card__title">{member.name}</h3>
+            <p class="card__meta">{member.role}</p>
+            <p class="card__text">{member.bio}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container container--narrow" style="text-align: center;">
+      <p class="text-lg" style="margin-bottom: var(--space-lg);">
+        Learn more about our cooperative structure and the people who make Zo Media possible.
+      </p>
+      <a href="/about/" class="btn btn--outline btn--lg">About Zo Media</a>
+    </div>
+  </section>
+</SubpageLayout>
