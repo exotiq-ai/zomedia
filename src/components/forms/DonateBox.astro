@@ -48,9 +48,11 @@ const tiers = [
   .donate-box__tiers {
     display: flex;
     gap: var(--space-sm);
+    flex-wrap: wrap;
   }
   .donate-box__tier {
-    flex: 1;
+    flex: 1 1 auto;
+    min-width: 80px;
     text-align: center;
   }
   .donate-box__input-wrap {

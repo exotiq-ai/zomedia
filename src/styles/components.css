@@ -295,6 +295,24 @@ select.form-control {
   .hero { min-height: auto; }
 }
 
+@media (max-width: 768px) {
+  .hero__headline { font-size: var(--text-h1); }
+  .hero__subhead { font-size: var(--text-body); }
+  .hero__inner { padding: var(--space-3xl) var(--grid-margin); }
+  .hero--full { min-height: 40vh; }
+  .hero__ctas { flex-direction: column; align-items: stretch; }
+  .stats { gap: var(--space-xl); }
+  .stat__number { font-size: var(--text-h2); }
+  .pullquote {
+    padding: var(--space-md) var(--space-lg);
+    font-size: var(--text-h3);
+  }
+}
+
+@media (max-width: 480px) {
+  .btn--lg { padding: 0.875rem 1.5rem; font-size: var(--text-small); width: 100%; justify-content: center; }
+}
+
 /* ——— Hero: Full variant ——— */
 .hero--full {
   min-height: 60vh;

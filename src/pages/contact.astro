@@ -18,8 +18,9 @@ import SubpageLayout from '../layouts/SubpageLayout.astro';
         <!-- Contact Form -->
         <div>
           <h2>Send a Message</h2>
-          <form data-netlify="true" name="contact" method="POST" style="margin-top: var(--space-xl);">
+          <form data-netlify="true" netlify-honeypot="bot-field" name="contact" method="POST" style="margin-top: var(--space-xl);">
             <input type="hidden" name="form-name" value="contact" />
+            <p class="sr-only"><label>Don't fill this out: <input name="bot-field" /></label></p>
             <div class="form-group">
               <label for="name" class="form-label">Name</label>
               <input type="text" id="name" name="name" required class="form-control" placeholder="Your name" />

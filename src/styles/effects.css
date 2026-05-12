@@ -13,52 +13,8 @@ body::after {
   mix-blend-mode: overlay;
 }
 
-/* ——— Clip-path reveal animations ——— */
-.reveal {
-  clip-path: inset(0 0 100% 0);
-  opacity: 0;
-  transition:
-    clip-path var(--duration-slow) var(--ease-snap),
-    opacity var(--duration-slow) var(--ease-snap);
-}
-.reveal.is-visible {
-  clip-path: inset(0 0 0 0);
-  opacity: 1;
-}
-
-.reveal--left {
-  clip-path: inset(0 100% 0 0);
-}
-.reveal--left.is-visible {
-  clip-path: inset(0 0 0 0);
-}
-
-.reveal--right {
-  clip-path: inset(0 0 0 100%);
-}
-.reveal--right.is-visible {
-  clip-path: inset(0 0 0 0);
-}
-
-.reveal--fade {
-  clip-path: none;
-  opacity: 0;
-  transform: translateY(12px);
-  transition:
-    opacity var(--duration-slow) var(--ease-snap),
-    transform var(--duration-slow) var(--ease-snap);
-}
-.reveal--fade.is-visible {
-  opacity: 1;
-  transform: translateY(0);
-}
-
-/* Stagger delays for sequential reveals */
-.reveal-delay-1 { transition-delay: 100ms; }
-.reveal-delay-2 { transition-delay: 200ms; }
-.reveal-delay-3 { transition-delay: 300ms; }
-.reveal-delay-4 { transition-delay: 400ms; }
-.reveal-delay-5 { transition-delay: 500ms; }
+/* ——— Reveal animations (disabled — content visible by default) ——— */
+/* TODO: Re-enable scroll reveals once observer timing is debugged */
 
 /* ——— Image treatments ——— */
 .img-editorial {

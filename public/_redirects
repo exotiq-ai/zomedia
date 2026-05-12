@@ -1,0 +1,11 @@
+# Netlify redirects — map old site URLs to new structure
+/bookstore              /books          301
+/bookstore/             /books          301
+/our-story              /about          301
+/our-story/             /about          301
+/gallery                /               301
+/gallery/               /               301
+/get-involved           /support        301
+/get-involved/          /support        301
+/blog.html              /               301
+/hundred-stories.html   /               301
