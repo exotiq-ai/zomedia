@@ -15,8 +15,8 @@ import BaseLayout from '../layouts/BaseLayout.astro';
           <a href="/support/" class="btn btn--outline btn--lg">Support the Mission</a>
         </div>
       </div>
-      <div class="hero__media img-editorial">
-        <img src="/assets/images/zo-media/storefront.jpg" alt="Zo Media Productions storefront" loading="eager" />
+      <div class="hero__media">
+        <img src="/assets/images/zo-media/hero-ivan.jpg" alt="An incarcerated writer at work — pen to paper, creating from inside" loading="eager" />
       </div>
     </div>
   </section>
@@ -86,31 +86,23 @@ import BaseLayout from '../layouts/BaseLayout.astro';
     <div class="container reveal">
       <span class="label">From Our Catalog</span>
       <h2 class="text-center">Featured Books</h2>
-      <div class="grid grid--2" style="margin-top: var(--space-2xl); gap: var(--space-xl);">
-        <div class="card">
-          <div class="signal-line"></div>
-          <h3 class="card__title">Domestic Genocide: The Institutionalization of Society</h3>
-          <p class="card__text">A searing examination of systemic oppression and the institutional structures that perpetuate cycles of incarceration and disenfranchisement in America.</p>
-          <a href="/books/" class="btn btn--outline" style="margin-top: var(--space-md);">Learn More</a>
-        </div>
-        <div class="card">
-          <div class="signal-line"></div>
-          <h3 class="card__title">King: The Early Years</h3>
-          <p class="card__text">An intimate portrait of youth, identity, and the making of a man before the world decided who he should be. Raw, reflective, and unapologetically honest.</p>
-          <a href="/books/" class="btn btn--outline" style="margin-top: var(--space-md);">Learn More</a>
-        </div>
-        <div class="card">
-          <div class="signal-line"></div>
-          <h3 class="card__title">Mayhem, Murder & Magnificence</h3>
-          <p class="card__text">Stories from the edge of survival — where violence, beauty, and resilience collide in the everyday reality of life behind bars.</p>
-          <a href="/books/" class="btn btn--outline" style="margin-top: var(--space-md);">Learn More</a>
-        </div>
-        <div class="card">
-          <div class="signal-line"></div>
-          <h3 class="card__title">My Comrades' Thoughts</h3>
-          <p class="card__text">A collective anthology of poetry, essays, and reflections from incarcerated writers — a chorus of voices demanding to be heard.</p>
-          <a href="/books/" class="btn btn--outline" style="margin-top: var(--space-md);">Learn More</a>
-        </div>
+      <div class="grid grid--4" style="margin-top: var(--space-2xl); gap: var(--space-xl);">
+        <a href="/books/" class="book-feature img-editorial">
+          <img src="/assets/images/zo-media/domestic-genocide-book-cover-adobe.png" alt="Domestic Genocide book cover" loading="lazy" />
+          <h3 class="book-feature__title">Domestic Genocide</h3>
+        </a>
+        <a href="/books/" class="book-feature img-editorial">
+          <img src="/assets/images/zo-media/King_frontcover-scaled.jpg" alt="King: The Early Years book cover" loading="lazy" />
+          <h3 class="book-feature__title">King: The Early Years</h3>
+        </a>
+        <a href="/books/" class="book-feature img-editorial">
+          <img src="/assets/images/zo-media/mayhem_murder_and_magnificence.jpg" alt="Mayhem, Murder & Magnificence book cover" loading="lazy" />
+          <h3 class="book-feature__title">Mayhem, Murder & Magnificence</h3>
+        </a>
+        <a href="/books/" class="book-feature img-editorial">
+          <img src="/assets/images/zo-media/socialjusticeautobiographies_cover-scaled.jpg" alt="Social Justice Autobiographies book cover" loading="lazy" />
+          <h3 class="book-feature__title">Social Justice Autobiographies</h3>
+        </a>
       </div>
     </div>
   </section>
@@ -130,3 +122,30 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 </BaseLayout>
 
 <script src="../scripts/counter.ts"></script>
+
+<style>
+  .book-feature {
+    position: relative;
+    overflow: hidden;
+    display: block;
+    text-decoration: none;
+    aspect-ratio: 2 / 3;
+  }
+  .book-feature img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  .book-feature__title {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    padding: var(--space-lg) var(--space-md);
+    background: linear-gradient(to top, rgba(10,10,11,0.9) 0%, transparent 100%);
+    font-family: var(--font-headline);
+    font-size: var(--text-h3);
+    color: var(--color-bone);
+    line-height: var(--leading-tight);
+  }
+</style>

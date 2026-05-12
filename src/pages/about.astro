@@ -3,13 +3,11 @@ import SubpageLayout from '../layouts/SubpageLayout.astro';
 ---
 
 <SubpageLayout title="About" breadcrumbs={[{ label: "About" }]}>
-  <!-- Hero: Minimal -->
-  <section class="hero hero--minimal">
-    <div class="hero__inner">
-      <div>
-        <h1 class="hero__headline">About Zo Media<br />Productions</h1>
-        <p class="hero__subhead">A cooperative publishing house amplifying incarcerated voices through literature, film, and art.</p>
-      </div>
+  <!-- Hero: Background Image -->
+  <section class="about-hero">
+    <div class="about-hero__inner">
+      <h1 class="hero__headline">About Zo Media<br />Productions</h1>
+      <p class="hero__subhead">A cooperative publishing house amplifying incarcerated voices through literature, film, and art.</p>
     </div>
   </section>
 
@@ -86,3 +84,31 @@ import SubpageLayout from '../layouts/SubpageLayout.astro';
     </div>
   </section>
 </SubpageLayout>
+
+<style>
+  .about-hero {
+    position: relative;
+    min-height: 50vh;
+    display: flex;
+    align-items: flex-end;
+    background: url('/assets/images/zo-media/folsom-tower.jpeg') center/cover no-repeat;
+  }
+  .about-hero::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+      to bottom,
+      rgba(10, 10, 11, 0.5) 0%,
+      rgba(10, 10, 11, 0.85) 100%
+    );
+  }
+  .about-hero__inner {
+    position: relative;
+    z-index: 1;
+    max-width: var(--container-max);
+    margin-inline: auto;
+    padding: var(--space-3xl) var(--grid-margin) var(--space-2xl);
+    width: 100%;
+  }
+</style>

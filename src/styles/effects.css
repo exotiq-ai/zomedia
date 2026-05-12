@@ -13,8 +13,17 @@ body::after {
   mix-blend-mode: overlay;
 }
 
-/* ——— Reveal animations (disabled — content visible by default) ——— */
-/* TODO: Re-enable scroll reveals once observer timing is debugged */
+/* ——— Reveal animations ——— */
+html.js .reveal {
+  opacity: 0;
+  transform: translateY(24px);
+  transition: opacity var(--duration-slow) var(--ease-snap),
+              transform var(--duration-slow) var(--ease-snap);
+}
+html.js .reveal.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
 
 /* ——— Image treatments ——— */
 .img-editorial {
@@ -22,25 +31,11 @@ body::after {
   overflow: hidden;
 }
 .img-editorial img {
-  filter: grayscale(100%) contrast(1.2);
-  mix-blend-mode: luminosity;
+  filter: grayscale(60%) contrast(1.1);
   transition: filter var(--duration-normal) var(--ease-snap);
 }
-.img-editorial::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background: var(--color-signal);
-  mix-blend-mode: color;
-  opacity: 0;
-  transition: opacity var(--duration-normal) var(--ease-snap);
-  z-index: 1;
-}
 .img-editorial:hover img {
-  filter: grayscale(50%) contrast(1.1);
-}
-.img-editorial:hover::before {
-  opacity: 0.6;
+  filter: grayscale(0%) contrast(1.05);
 }
 
 .img-raw img {

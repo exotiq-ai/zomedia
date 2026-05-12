@@ -11,48 +11,5 @@ const { title, description, breadcrumbs = [] } = Astro.props;
 ---
 
 <BaseLayout title={title} description={description}>
-  {breadcrumbs.length > 0 && (
-    <nav class="breadcrumb" aria-label="Breadcrumb">
-      <ol class="breadcrumb__list" role="list">
-        <li class="breadcrumb__item">
-          <a href="/" class="breadcrumb__link">Home</a>
-        </li>
-        {breadcrumbs.map((crumb, i) => (
-          <li class="breadcrumb__item">
-            <span class="breadcrumb__sep" aria-hidden="true">/</span>
-            {crumb.href && i < breadcrumbs.length - 1 ? (
-              <a href={crumb.href} class="breadcrumb__link">{crumb.label}</a>
-            ) : (
-              <span class="breadcrumb__current" aria-current="page">{crumb.label}</span>
-            )}
-          </li>
-        ))}
-      </ol>
-    </nav>
-  )}
   <slot />
 </BaseLayout>
-
-<style>
-  .breadcrumb {
-    max-width: var(--container-max);
-    margin-inline: auto;
-    padding: var(--space-lg) var(--grid-margin) 0;
-  }
-  .breadcrumb__list {
-    display: flex;
-    align-items: center;
-    gap: var(--space-xs);
-    font-family: var(--font-mono);
-    font-size: var(--text-micro);
-    letter-spacing: var(--tracking-wide);
-    text-transform: uppercase;
-  }
-  .breadcrumb__link {
-    color: var(--color-fog);
-    transition: color var(--duration-fast);
-  }
-  .breadcrumb__link:hover { color: var(--color-bone); }
-  .breadcrumb__sep { color: var(--color-slate); margin-inline: var(--space-xs); }
-  .breadcrumb__current { color: var(--color-wire); }
-</style>

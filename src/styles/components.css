@@ -63,9 +63,9 @@
 /* ——— Eyebrow label ——— */
 .label {
   display: inline-block;
-  font-family: var(--font-mono);
-  font-size: var(--text-micro);
-  letter-spacing: var(--tracking-mega);
+  font-family: var(--font-body);
+  font-size: 0.9375rem;
+  letter-spacing: var(--tracking-wide);
   text-transform: uppercase;
   color: var(--color-wire);
   font-weight: 700;
@@ -286,7 +286,7 @@ select.form-control {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  filter: grayscale(80%) contrast(1.1);
+  filter: contrast(1.05);
 }
 
 @media (max-width: 1024px) {
@@ -329,7 +329,7 @@ select.form-control {
 /* ——— Hero: Minimal variant ——— */
 .hero--minimal {
   min-height: auto;
-  padding-block: var(--space-4xl);
+  padding-block: var(--space-2xl);
 }
 .hero--minimal .hero__headline {
   font-size: var(--text-h1);
