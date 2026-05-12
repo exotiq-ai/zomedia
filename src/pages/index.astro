@@ -3,6 +3,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 ---
 
 <BaseLayout title="Amplifying Incarcerated Voices Through Literature, Film & Art">
+  <!-- Hero: Split Layout -->
   <section class="hero hero--split">
     <div class="hero__inner">
       <div>
@@ -15,11 +16,12 @@ import BaseLayout from '../layouts/BaseLayout.astro';
         </div>
       </div>
       <div class="hero__media img-editorial">
-        <img src="/assets/images/zo-media/storefront.jpg" alt="" loading="eager" />
+        <img src="/assets/images/zo-media/storefront.jpg" alt="Zo Media Productions storefront" loading="eager" />
       </div>
     </div>
   </section>
 
+  <!-- Mission Pullquote -->
   <section class="section section--alt">
     <div class="container container--narrow text-center reveal">
       <span class="label">Our Mission</span>
@@ -29,6 +31,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
     </div>
   </section>
 
+  <!-- Stats / Impact Counter -->
   <section class="section">
     <div class="container text-center reveal">
       <span class="label">Impact</span>
@@ -54,10 +57,11 @@ import BaseLayout from '../layouts/BaseLayout.astro';
     </div>
   </section>
 
+  <!-- The Wire Promo -->
   <section class="section section--alt">
     <div class="container reveal">
       <span class="label">The Publication</span>
-      <div style="display: grid; grid-template-columns: 7fr 5fr; gap: var(--space-3xl); align-items: center;">
+      <div class="grid grid--asymmetric">
         <div>
           <h2>The Phuckin' Wire</h2>
           <p class="text-lg" style="margin-top: var(--space-lg);">Our flagship newsletter — advocacy journalism written by and for incarcerated people. Unfiltered. Uncensored. Unapologetic.</p>
@@ -77,12 +81,47 @@ import BaseLayout from '../layouts/BaseLayout.astro';
     </div>
   </section>
 
+  <!-- Featured Books -->
   <section class="section">
+    <div class="container reveal">
+      <span class="label">From Our Catalog</span>
+      <h2 class="text-center">Featured Books</h2>
+      <div class="grid grid--2" style="margin-top: var(--space-2xl); gap: var(--space-xl);">
+        <div class="card">
+          <div class="signal-line"></div>
+          <h3 class="card__title">Domestic Genocide: The Institutionalization of Society</h3>
+          <p class="card__text">A searing examination of systemic oppression and the institutional structures that perpetuate cycles of incarceration and disenfranchisement in America.</p>
+          <a href="/books/" class="btn btn--outline" style="margin-top: var(--space-md);">Learn More</a>
+        </div>
+        <div class="card">
+          <div class="signal-line"></div>
+          <h3 class="card__title">King: The Early Years</h3>
+          <p class="card__text">An intimate portrait of youth, identity, and the making of a man before the world decided who he should be. Raw, reflective, and unapologetically honest.</p>
+          <a href="/books/" class="btn btn--outline" style="margin-top: var(--space-md);">Learn More</a>
+        </div>
+        <div class="card">
+          <div class="signal-line"></div>
+          <h3 class="card__title">Mayhem, Murder & Magnificence</h3>
+          <p class="card__text">Stories from the edge of survival — where violence, beauty, and resilience collide in the everyday reality of life behind bars.</p>
+          <a href="/books/" class="btn btn--outline" style="margin-top: var(--space-md);">Learn More</a>
+        </div>
+        <div class="card">
+          <div class="signal-line"></div>
+          <h3 class="card__title">My Comrades' Thoughts</h3>
+          <p class="card__text">A collective anthology of poetry, essays, and reflections from incarcerated writers — a chorus of voices demanding to be heard.</p>
+          <a href="/books/" class="btn btn--outline" style="margin-top: var(--space-md);">Learn More</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Final CTA -->
+  <section class="section section--alt">
     <div class="container text-center reveal">
       <span class="label">Get Involved</span>
       <h2>Support the movement.</h2>
       <p class="text-lg" style="margin-top: var(--space-md); margin-inline: auto;">Every donation fuels creative work by incarcerated artists and funds the UBFSF Community Grant Fund.</p>
-      <div style="margin-top: var(--space-xl); display: flex; gap: var(--space-md); justify-content: center;">
+      <div style="margin-top: var(--space-xl); display: flex; gap: var(--space-md); justify-content: center; flex-wrap: wrap;">
         <a href="/support/" class="btn btn--primary btn--lg">Donate Now</a>
         <a href="/contact/" class="btn btn--outline btn--lg">Get In Touch</a>
       </div>
