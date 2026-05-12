@@ -1,0 +1,39 @@
+---
+---
+
+<form name="contact" method="POST" data-netlify="true" netlify-honeypot="bot-field">
+  <input type="hidden" name="form-name" value="contact" />
+  <p class="sr-only">
+    <label>Don't fill this out: <input name="bot-field" /></label>
+  </p>
+
+  <div class="form-group">
+    <label for="contact-name" class="form-label">Name</label>
+    <input type="text" id="contact-name" name="name" class="form-control" required />
+  </div>
+
+  <div class="form-group">
+    <label for="contact-email" class="form-label">Email</label>
+    <input type="email" id="contact-email" name="email" class="form-control" required />
+  </div>
+
+  <div class="form-group">
+    <label for="contact-subject" class="form-label">Subject</label>
+    <select id="contact-subject" name="subject" class="form-control" required>
+      <option value="" disabled selected>Select a subject</option>
+      <option value="general">General Inquiry</option>
+      <option value="books">Books &amp; Orders</option>
+      <option value="volunteer">Volunteering</option>
+      <option value="media">Media &amp; Press</option>
+      <option value="donation">Donations</option>
+      <option value="other">Other</option>
+    </select>
+  </div>
+
+  <div class="form-group">
+    <label for="contact-message" class="form-label">Message</label>
+    <textarea id="contact-message" name="message" class="form-control" rows="6" required></textarea>
+  </div>
+
+  <button type="submit" class="btn btn--primary">Send Message</button>
+</form>

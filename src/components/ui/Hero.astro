@@ -1,0 +1,28 @@
+---
+interface Props {
+  variant?: 'split' | 'full' | 'minimal';
+  eyebrow?: string;
+  headline: string;
+  subhead?: string;
+}
+
+const { variant = 'split', eyebrow, headline, subhead } = Astro.props;
+
+const variantClass = variant !== 'split' ? `hero--${variant}` : 'hero--split';
+---
+
+<section class={`hero ${variantClass}`}>
+  <div class="hero__inner">
+    <div>
+      {eyebrow && <span class="hero__eyebrow">{eyebrow}</span>}
+      <h1 class="hero__headline">{headline}</h1>
+      {subhead && <p class="hero__subhead">{subhead}</p>}
+      <div class="hero__ctas">
+        <slot />
+      </div>
+    </div>
+    <div class="hero__media">
+      <slot name="media" />
+    </div>
+  </div>
+</section>

@@ -1,0 +1,70 @@
+---
+interface Props {
+  donateUrl?: string;
+}
+
+const { donateUrl = '/support' } = Astro.props;
+
+const tiers = [
+  { amount: 25, label: '$25' },
+  { amount: 50, label: '$50' },
+  { amount: 100, label: '$100' },
+];
+---
+
+<div class="donate-box">
+  <h3 class="card__title">Support Our Mission</h3>
+  <p class="card__text">Your contribution funds publishing, education, and creative programs for incarcerated writers.</p>
+
+  <div class="donate-box__tiers">
+    {tiers.map((tier) => (
+      <a href={`${donateUrl}?amount=${tier.amount}`} class="btn btn--outline donate-box__tier">
+        {tier.label}
+      </a>
+    ))}
+  </div>
+
+  <div class="donate-box__custom">
+    <label for="custom-amount" class="form-label">Custom Amount</label>
+    <div class="donate-box__input-wrap">
+      <span class="donate-box__currency">$</span>
+      <input type="number" id="custom-amount" class="form-control" min="1" placeholder="Other" />
+    </div>
+  </div>
+
+  <a href={donateUrl} class="btn btn--primary btn--lg donate-box__submit">Donate Now</a>
+</div>
+
+<style>
+  .donate-box {
+    background: var(--color-soot);
+    border: 1px solid var(--color-border);
+    border-top: 3px solid var(--color-signal);
+    padding: var(--space-2xl);
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-lg);
+  }
+  .donate-box__tiers {
+    display: flex;
+    gap: var(--space-sm);
+  }
+  .donate-box__tier {
+    flex: 1;
+    text-align: center;
+  }
+  .donate-box__input-wrap {
+    display: flex;
+    align-items: center;
+    gap: var(--space-sm);
+  }
+  .donate-box__currency {
+    font-family: var(--font-mono);
+    font-size: var(--text-h3);
+    color: var(--color-fog);
+  }
+  .donate-box__submit {
+    width: 100%;
+    text-align: center;
+  }
+</style>

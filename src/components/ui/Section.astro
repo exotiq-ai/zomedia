@@ -1,0 +1,26 @@
+---
+interface Props {
+  variant?: 'default' | 'alt' | 'dark' | 'signal';
+  compact?: boolean;
+  narrow?: boolean;
+}
+
+const { variant = 'default', compact = false, narrow = false } = Astro.props;
+
+const sectionClasses = [
+  'section',
+  variant !== 'default' && `section--${variant}`,
+  compact && 'section--compact',
+].filter(Boolean).join(' ');
+
+const containerClasses = [
+  'container',
+  narrow && 'container--narrow',
+].filter(Boolean).join(' ');
+---
+
+<section class={sectionClasses}>
+  <div class={containerClasses}>
+    <slot />
+  </div>
+</section>
