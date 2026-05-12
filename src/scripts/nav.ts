@@ -2,6 +2,14 @@ const nav = document.querySelector('.nav');
 const toggle = document.querySelector('.nav__toggle');
 const menu = document.querySelector('.nav__menu');
 
+function closeMenu() {
+  if (toggle && menu) {
+    toggle.setAttribute('aria-expanded', 'false');
+    menu.classList.remove('is-open');
+    document.body.style.overflow = '';
+  }
+}
+
 if (toggle && menu) {
   toggle.addEventListener('click', () => {
     const expanded = toggle.getAttribute('aria-expanded') === 'true';
@@ -10,11 +18,13 @@ if (toggle && menu) {
     document.body.style.overflow = expanded ? '' : 'hidden';
   });
 
+  menu.querySelectorAll('a').forEach((link) => {
+    link.addEventListener('click', closeMenu);
+  });
+
   document.addEventListener('keydown', (e) => {
     if (e.key === 'Escape' && menu.classList.contains('is-open')) {
-      toggle.setAttribute('aria-expanded', 'false');
-      menu.classList.remove('is-open');
-      document.body.style.overflow = '';
+      closeMenu();
       toggle.focus();
     }
   });
