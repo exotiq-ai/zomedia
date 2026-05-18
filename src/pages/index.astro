@@ -61,16 +61,16 @@ import BaseLayout from '../layouts/BaseLayout.astro';
   <section class="section section--alt">
     <div class="container reveal">
       <span class="label">The Publication</span>
-      <div class="grid grid--asymmetric">
+      <div class="grid grid--asymmetric" style="align-items: center; margin-top: var(--space-lg);">
         <div>
           <h2>The Phuckin' Wire</h2>
           <p class="text-lg" style="margin-top: var(--space-lg);">Our flagship newsletter — advocacy journalism written by and for incarcerated people. Unfiltered. Uncensored. Unapologetic.</p>
           <a href="/the-wire/" class="btn btn--outline" style="margin-top: var(--space-xl);">Read The Wire</a>
         </div>
-        <div class="card halftone" style="text-align: center; padding: var(--space-3xl);">
+        <div class="card halftone" style="text-align: center; padding: var(--space-2xl) var(--space-xl);">
           <span class="label" style="color: var(--color-signal);">Subscribe</span>
-          <p class="card__title">Get every issue delivered.</p>
-          <p class="card__text">Stories, investigations, and creative work from inside the system.</p>
+          <p class="card__title" style="margin-top: var(--space-sm);">Get every issue delivered.</p>
+          <p class="card__text" style="margin-top: var(--space-sm);">Stories, investigations, and creative work from inside the system.</p>
           <form data-netlify="true" name="wire-subscribe" method="POST" style="display: flex; gap: var(--space-sm); margin-top: var(--space-lg);">
             <input type="hidden" name="form-name" value="wire-subscribe" />
             <input type="email" name="email" placeholder="your@email.com" required class="form-control" aria-label="Email for The Wire" />

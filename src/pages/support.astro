@@ -94,27 +94,64 @@ import SubpageLayout from '../layouts/SubpageLayout.astro';
 <style>
   .support-hero {
     position: relative;
-    min-height: 50vh;
+    min-height: 70vh;
     display: flex;
-    align-items: flex-end;
-    background: url('/assets/images/zo-media/hero-tall.jpg') center 30%/cover no-repeat;
+    align-items: center;
+    background: url('/assets/images/at-desk-flipped.png') right center/cover no-repeat;
+    background-color: var(--color-graphite);
+    overflow: hidden;
   }
+  /* Left-side darkening so headline stays legible; person at desk visible on the right */
+  .support-hero::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+      to right,
+      rgba(10, 10, 11, 0.92) 0%,
+      rgba(10, 10, 11, 0.85) 35%,
+      rgba(10, 10, 11, 0.45) 60%,
+      rgba(10, 10, 11, 0.15) 85%,
+      rgba(10, 10, 11, 0) 100%
+    );
+    z-index: 1;
+  }
+  /* Subtle bottom fade to settle into next section */
   .support-hero::after {
     content: '';
     position: absolute;
     inset: 0;
     background: linear-gradient(
       to bottom,
-      rgba(10, 10, 11, 0.4) 0%,
-      rgba(10, 10, 11, 0.85) 100%
+      rgba(10, 10, 11, 0) 70%,
+      rgba(10, 10, 11, 0.6) 100%
     );
+    z-index: 1;
   }
   .support-hero__inner {
     position: relative;
-    z-index: 1;
+    z-index: 2;
     max-width: var(--container-max);
     margin-inline: auto;
     padding: var(--space-3xl) var(--grid-margin) var(--space-2xl);
     width: 100%;
+  }
+  .support-hero__inner > * {
+    max-width: 56ch;
+  }
+
+  /* On mobile, image moves behind text with darker overlay (no room for split) */
+  @media (max-width: 768px) {
+    .support-hero {
+      min-height: 60vh;
+      background-position: 65% center;
+    }
+    .support-hero::before {
+      background: linear-gradient(
+        to bottom,
+        rgba(10, 10, 11, 0.6) 0%,
+        rgba(10, 10, 11, 0.88) 100%
+      );
+    }
   }
 </style>

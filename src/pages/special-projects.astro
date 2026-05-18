@@ -34,8 +34,8 @@ const projects = [
 ---
 
 <SubpageLayout title={title} description={description} breadcrumbs={breadcrumbs}>
-  <section class="hero hero--full">
-    <div class="container container--narrow">
+  <section class="hero hero--full sp-hero">
+    <div class="container container--narrow sp-hero__inner">
       <span class="hero__eyebrow">INITIATIVES</span>
       <h1 class="hero__headline">Special Projects</h1>
       <p class="hero__subhead">Independent projects exploring the intersection of incarceration, art, and justice. Each is a standalone initiative with its own website.</p>
@@ -75,5 +75,44 @@ const projects = [
   .project-card:hover {
     transform: translateY(-4px);
     box-shadow: 0 12px 40px rgba(0, 0, 0, 0.4);
+  }
+
+  /* Hero with subtle background — Folsom tower as institutional/carceral context */
+  .sp-hero {
+    position: relative;
+    background: url('/assets/images/zo-media/folsom-tower.jpeg') center 30%/cover no-repeat;
+    background-color: var(--color-graphite);
+    overflow: hidden;
+  }
+  /* Heavy dark overlay keeps page text-forward, image reads as texture */
+  .sp-hero::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background:
+      linear-gradient(
+        to bottom,
+        rgba(10, 10, 11, 0.85) 0%,
+        rgba(10, 10, 11, 0.78) 60%,
+        rgba(10, 10, 11, 0.95) 100%
+      );
+    z-index: 1;
+  }
+  /* Subtle vignette */
+  .sp-hero::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(
+      ellipse at center,
+      transparent 30%,
+      rgba(10, 10, 11, 0.6) 100%
+    );
+    z-index: 1;
+    pointer-events: none;
+  }
+  .sp-hero__inner {
+    position: relative;
+    z-index: 2;
   }
 </style>
