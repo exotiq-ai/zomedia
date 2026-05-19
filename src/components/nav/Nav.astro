@@ -209,33 +209,119 @@ function isActive(href: string): boolean {
     transform: translateY(-7px) rotate(-45deg);
   }
 
+  /* ───────────────────────────────────────────────────────────
+   * MOBILE NAV — editorial "Index" treatment.
+   *
+   * Big serif items, mono index numerals (CSS counter), hairline
+   * dividers, signal-red active state, full-width Donate CTA pinned
+   * to the bottom. Items stagger-fade in when the menu opens.
+   * ─────────────────────────────────────────────────────────── */
   @media (max-width: 1024px) {
     .nav {
       background: rgba(10, 10, 11, 0.95);
       backdrop-filter: blur(12px) saturate(1.2);
     }
     .nav__toggle { display: flex; }
+
+    /* The full-screen overlay */
     .nav__menu {
       position: fixed;
       inset: 0;
       background: var(--color-void);
       flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      gap: var(--space-md);
+      justify-content: flex-start;
+      align-items: stretch;
+      gap: 0;
       transform: translateY(-100%);
-      transition: transform var(--duration-normal) var(--ease-snap);
+      transition: transform 0.5s cubic-bezier(0.22, 1, 0.36, 1);
       z-index: 99;
       overflow-y: auto;
-      padding: var(--space-4xl) var(--space-lg);
+      overscroll-behavior: contain;
+      padding: calc(var(--space-3xl) + var(--space-2xl)) var(--grid-margin) var(--space-2xl);
+      counter-reset: nav-counter;
     }
-    .nav__menu.is-open {
-      transform: translateY(0);
+    .nav__menu.is-open { transform: translateY(0); }
+
+    /* Subtle paper-fiber texture on the menu surface */
+    .nav__menu::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      opacity: 0.04;
+      background-image:
+        repeating-linear-gradient(45deg, var(--color-bone) 0 1px, transparent 1px 3px),
+        repeating-linear-gradient(-45deg, var(--color-bone) 0 1px, transparent 1px 5px);
+      mix-blend-mode: overlay;
     }
+
+    /* Index label at the very top of the menu */
+    .nav__menu::after {
+      content: 'Index';
+      position: absolute;
+      top: var(--space-2xl);
+      left: var(--grid-margin);
+      right: var(--grid-margin);
+      font-family: var(--font-mono);
+      font-size: 0.8125rem;
+      letter-spacing: var(--tracking-mega);
+      text-transform: uppercase;
+      color: var(--color-wire);
+      padding-bottom: var(--space-sm);
+      border-bottom: 1px solid var(--color-border-emphasis);
+    }
+
+    /* Item rows */
+    .nav__item {
+      counter-increment: nav-counter;
+      border-bottom: 1px solid var(--color-border);
+      position: relative;
+    }
+
+    /* Editorial serif links — big, bone, left-aligned */
     .nav__link {
-      font-size: 1.125rem;
-      padding: var(--space-sm) var(--space-md);
+      display: flex;
+      align-items: baseline;
+      gap: var(--space-md);
+      font-family: var(--font-headline);
+      font-size: clamp(1.75rem, 6vw, 2.25rem);
+      letter-spacing: var(--tracking-tight);
+      text-transform: none;
+      color: var(--color-bone);
+      line-height: 1.1;
+      padding: var(--space-lg) 0;
+      transition: color var(--duration-fast) var(--ease-snap),
+                  padding-left var(--duration-fast) var(--ease-snap);
+      white-space: normal;
     }
+    .nav__link::before {
+      content: counter(nav-counter, decimal-leading-zero);
+      font-family: var(--font-mono);
+      font-size: 0.8125rem;
+      font-weight: 400;
+      color: var(--color-fog);
+      letter-spacing: var(--tracking-mega);
+      flex-shrink: 0;
+      min-width: 2.5em;
+      align-self: flex-start;
+      padding-top: 0.85em;
+    }
+    .nav__link:active,
+    .nav__link:hover {
+      color: var(--color-signal);
+      padding-left: var(--space-sm);
+    }
+    .nav__link[aria-current="page"] {
+      color: var(--color-signal);
+    }
+    .nav__link[aria-current="page"]::before {
+      color: var(--color-signal);
+    }
+    .nav__link[aria-current="page"]::after {
+      display: none; /* desktop underline doesn't apply on mobile */
+    }
+
+    /* Dropdown nested under its parent */
     .nav__dropdown {
       position: static;
       background: transparent;
@@ -243,13 +329,65 @@ function isActive(href: string): boolean {
       opacity: 1;
       visibility: visible;
       transform: none;
-      min-width: auto;
-      padding: 0;
-      padding-left: var(--space-lg);
+      min-width: 0;
+      display: flex;
+      flex-direction: column;
+      padding: 0 0 var(--space-md) calc(2.5em + var(--space-md));
     }
     .nav__dropdown-link {
-      font-size: var(--text-body);
-      padding: var(--space-xs) var(--space-md);
+      font-family: var(--font-headline);
+      font-size: 1.125rem;
+      text-transform: none;
+      letter-spacing: 0;
+      color: var(--color-fog);
+      padding: var(--space-xs) 0;
+      transition: color var(--duration-fast), padding-left var(--duration-fast);
+    }
+    .nav__dropdown-link:hover,
+    .nav__dropdown-link:focus,
+    .nav__dropdown-link[aria-current="page"] {
+      color: var(--color-bone);
+      background: transparent;
+      padding-left: var(--space-xs);
+    }
+
+    /* Donate CTA — promoted to a full-width primary anchor at the bottom */
+    .nav__item--cta {
+      counter-increment: none;
+      border-bottom: none;
+      margin-top: var(--space-xl);
+    }
+    .nav__item--cta .btn {
+      width: 100%;
+      justify-content: center;
+      padding: var(--space-md) var(--space-lg);
+      font-size: var(--text-small);
+    }
+
+    /* Stagger items in as the menu opens */
+    @media (prefers-reduced-motion: no-preference) {
+      .nav__menu .nav__item {
+        opacity: 0;
+        transform: translateY(12px);
+      }
+      .nav__menu.is-open .nav__item {
+        animation: nav-item-in 0.5s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+      }
+      .nav__menu.is-open .nav__item:nth-child(1) { animation-delay: 200ms; }
+      .nav__menu.is-open .nav__item:nth-child(2) { animation-delay: 260ms; }
+      .nav__menu.is-open .nav__item:nth-child(3) { animation-delay: 320ms; }
+      .nav__menu.is-open .nav__item:nth-child(4) { animation-delay: 380ms; }
+      .nav__menu.is-open .nav__item:nth-child(5) { animation-delay: 440ms; }
+      .nav__menu.is-open .nav__item:nth-child(6) { animation-delay: 500ms; }
+      .nav__menu.is-open .nav__item:nth-child(7) { animation-delay: 560ms; }
+      .nav__menu.is-open .nav__item:nth-child(8) { animation-delay: 600ms; }
+      .nav__menu.is-open .nav__item:nth-child(9) { animation-delay: 640ms; }
+      .nav__menu.is-open .nav__item:nth-child(10) { animation-delay: 680ms; }
+      .nav__menu.is-open .nav__item:nth-child(n+11) { animation-delay: 720ms; }
+
+      @keyframes nav-item-in {
+        to { opacity: 1; transform: translateY(0); }
+      }
     }
   }
 </style>
