@@ -14,54 +14,67 @@ body::after {
 }
 
 /* ───────────────────────────────────────────────────────────
- * SIGNATURE HERO — home page choreographed reveal
- * Sequence (under no-preference motion):
- *   100ms   eyebrow fades up
- *   280ms   line 1 wipes left→right (like a print head)
- *   560ms   line 2 wipes left→right
- *   820ms   "told from " of line 3 wipes in
- *   1000ms  vertical signal-red slit appears beside "inside"
- *   1080ms  "inside" reveals from behind the slit
- *   1480ms  signal-red underline draws beneath "inside"
- *   1500ms  subhead fades up
- *   1700ms  CTAs slide up (60ms stagger)
- *   1900ms  hero media wipes in top-down
+ * SIGNATURE HERO — home page choreographed reveal (refined)
+ *
+ * Softer pass: longer durations, gentler easing (expo-out feel),
+ * subtle slide-up paired with each wipe so lines arrive rather than
+ * snap. Total sequence ~2.6s.
+ *
+ *   200ms   eyebrow fades up
+ *   420ms   line 1 settles in (wipe + slight upward drift)
+ *   780ms   line 2 settles in
+ *   1140ms  "told from " of line 3 settles in
+ *   1380ms  vertical signal-red slit appears beside "inside"
+ *   1500ms  "inside" reveals from behind the slit
+ *   1900ms  signal-red underline draws beneath "inside"
+ *   1950ms  subhead fades up
+ *   2200ms  CTAs slide up (100ms stagger)
+ *   2400ms  hero media wipes in top-down
  * ─────────────────────────────────────────────────────────── */
 
 @media (prefers-reduced-motion: no-preference) {
+  /* Softer easing — expo-out feel, decelerates gently */
+  .signature-hero { --sig-ease: cubic-bezier(0.16, 1, 0.3, 1); }
+
   /* Eyebrow */
   .signature-hero__eyebrow {
     opacity: 0;
     transform: translateY(8px);
-    animation: sigh-fade-up 0.6s var(--ease-snap) 100ms forwards;
+    animation: sigh-fade-up 0.8s var(--sig-ease) 200ms forwards;
   }
 
-  /* Each headline line: a horizontal clip-path wipe like a print head */
+  /* Each headline line: a horizontal wipe paired with a slight rise */
   .signature-hero__line {
     display: block;
     overflow: hidden;
   }
   .signature-hero__line-inner {
     display: inline-block;
-    will-change: clip-path;
+    will-change: clip-path, transform, opacity;
   }
   .signature-hero__line:nth-of-type(1) .signature-hero__line-inner {
     clip-path: inset(0 100% 0 0);
-    animation: sigh-line-wipe 0.5s var(--ease-snap) 280ms forwards;
+    transform: translateY(6px);
+    opacity: 0.7;
+    animation: sigh-line-settle 0.9s var(--sig-ease) 420ms forwards;
   }
   .signature-hero__line:nth-of-type(2) .signature-hero__line-inner {
     clip-path: inset(0 100% 0 0);
-    animation: sigh-line-wipe 0.5s var(--ease-snap) 560ms forwards;
+    transform: translateY(6px);
+    opacity: 0.7;
+    animation: sigh-line-settle 0.9s var(--sig-ease) 780ms forwards;
   }
   /* Final line — only the prefix wipes; "inside" gets its own reveal */
   .signature-hero__prefix {
     display: inline-block;
     clip-path: inset(0 100% 0 0);
-    animation: sigh-line-wipe 0.45s var(--ease-snap) 820ms forwards;
+    transform: translateY(6px);
+    opacity: 0.7;
+    animation: sigh-line-settle 0.85s var(--sig-ease) 1140ms forwards;
   }
   .signature-hero__period {
     opacity: 0;
-    animation: sigh-fade 0.3s var(--ease-snap) 1380ms forwards;
+    animation: sigh-fade 0.4s var(--sig-ease) 1800ms forwards;
   }
 
   /* "inside" — emerges from behind a vertical signal-red slit */
@@ -69,11 +82,11 @@ body::after {
     display: inline-block;
     position: relative;
     opacity: 0;
-    transform: translateX(-12px);
-    animation: sigh-inside-reveal 0.55s var(--ease-snap) 1080ms forwards;
+    transform: translateX(-10px);
+    animation: sigh-inside-reveal 0.7s var(--sig-ease) 1500ms forwards;
   }
   .signature-hero__inside::before {
-    /* The signal-red "slit" — appears, opens to let word through, then fades */
+    /* Signal-red "slit" — appears, opens to let word through, then fades */
     content: '';
     position: absolute;
     left: -4px;
@@ -82,10 +95,10 @@ body::after {
     width: 3px;
     background: var(--color-signal);
     opacity: 0;
-    animation: sigh-slit 0.45s var(--ease-snap) 1000ms forwards;
+    animation: sigh-slit 0.6s var(--sig-ease) 1380ms forwards;
   }
   .signature-hero__inside::after {
-    /* The deliberate signal-red underline that follows */
+    /* Signal-red underline draws after "inside" lands */
     content: '';
     position: absolute;
     left: 0;
@@ -95,44 +108,44 @@ body::after {
     background: var(--color-signal);
     transform: scaleX(0);
     transform-origin: left;
-    animation: sigh-underline 0.5s var(--ease-snap) 1480ms forwards;
+    animation: sigh-underline 0.55s var(--sig-ease) 1900ms forwards;
   }
 
   /* Subhead */
   .signature-hero__subhead {
     opacity: 0;
     transform: translateY(8px);
-    animation: sigh-fade-up 0.6s var(--ease-snap) 1500ms forwards;
+    animation: sigh-fade-up 0.8s var(--sig-ease) 1950ms forwards;
   }
 
-  /* CTAs — staggered */
+  /* CTAs — staggered, gentler */
   .signature-hero__cta {
     opacity: 0;
-    transform: translateY(12px);
+    transform: translateY(10px);
   }
   .signature-hero__cta:nth-of-type(1) {
-    animation: sigh-fade-up 0.55s var(--ease-snap) 1700ms forwards;
+    animation: sigh-fade-up 0.7s var(--sig-ease) 2200ms forwards;
   }
   .signature-hero__cta:nth-of-type(2) {
-    animation: sigh-fade-up 0.55s var(--ease-snap) 1780ms forwards;
+    animation: sigh-fade-up 0.7s var(--sig-ease) 2300ms forwards;
   }
 
-  /* Hero media — top-down wipe */
+  /* Hero media — slower top-down wipe */
   .signature-hero__media {
     clip-path: inset(0 0 100% 0);
     will-change: clip-path;
-    animation: sigh-media-wipe 0.8s var(--ease-snap) 1900ms forwards;
+    animation: sigh-media-wipe 1s var(--sig-ease) 2400ms forwards;
   }
 
-  @keyframes sigh-line-wipe {
-    to { clip-path: inset(0 0 0 0); }
+  @keyframes sigh-line-settle {
+    to {
+      clip-path: inset(0 0 0 0);
+      transform: translateY(0);
+      opacity: 1;
+    }
   }
-  @keyframes sigh-fade-up {
-    to { opacity: 1; transform: translateY(0); }
-  }
-  @keyframes sigh-fade {
-    to { opacity: 1; }
-  }
+  @keyframes sigh-fade-up { to { opacity: 1; transform: translateY(0); } }
+  @keyframes sigh-fade    { to { opacity: 1; } }
   @keyframes sigh-inside-reveal {
     to { opacity: 1; transform: translateX(0); }
   }
@@ -141,12 +154,8 @@ body::after {
     50%  { opacity: 1; transform: scaleY(1); transform-origin: top; }
     100% { opacity: 0; transform: scaleY(1); transform-origin: bottom; }
   }
-  @keyframes sigh-underline {
-    to { transform: scaleX(1); }
-  }
-  @keyframes sigh-media-wipe {
-    to { clip-path: inset(0 0 0 0); }
-  }
+  @keyframes sigh-underline { to { transform: scaleX(1); } }
+  @keyframes sigh-media-wipe { to { clip-path: inset(0 0 0 0); } }
 }
 
 /* ───────────────────────────────────────────────────────────
@@ -203,28 +212,11 @@ body::after {
   html.js .reveal--stagger.is-visible > *:nth-child(n+7) { transition-delay: 480ms; }
 }
 
-/* ───────────────────────────────────────────────────────────
- * Page-load hero reveal — for every subpage (.hero--editorial)
- * Differs from the home signature hero — softer, no special "inside" treatment.
- * ─────────────────────────────────────────────────────────── */
-@media (prefers-reduced-motion: no-preference) {
-  .hero--editorial .hero__eyebrow,
-  .hero--editorial .hero__headline,
-  .hero--editorial .hero__subhead,
-  .hero--editorial .hero__ctas {
-    opacity: 0;
-    transform: translateY(12px);
-    animation: hero-enter 0.65s var(--ease-snap) forwards;
-  }
-  .hero--editorial .hero__eyebrow { animation-delay: 80ms; }
-  .hero--editorial .hero__headline { animation-delay: 220ms; }
-  .hero--editorial .hero__subhead { animation-delay: 380ms; }
-  .hero--editorial .hero__ctas { animation-delay: 540ms; }
-
-  @keyframes hero-enter {
-    to { opacity: 1; transform: translateY(0); }
-  }
-}
+/* Subpage hero entrance removed — the View Transitions API crossfade is the
+ * page-to-page transition. Adding a separate per-hero entrance animation on
+ * top conflicted with View Transitions and left headlines stuck at opacity:0
+ * after navigation. The home signature hero keeps its choreographed reveal
+ * (different mechanism — applied only on the home page). */
 
 /* ——— Image treatments ——— */
 .img-editorial {

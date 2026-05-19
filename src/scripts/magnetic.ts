@@ -1,13 +1,6 @@
 /**
  * Magnetic CTA (Phase 6)
- *
- * Buttons opted-in via `data-magnetic` attribute subtly attract the cursor
- * within a ~120px radius. Max offset clamped to 6px so it stays elegant,
- * never gimmicky.
- *
- * Skipped under:
- *   - prefers-reduced-motion: reduce
- *   - touch-only devices (no hover capability)
+ * Re-binds on every Astro page-load so it survives View Transitions.
  *
  * Apply: <a class="btn btn--primary" data-magnetic>...</a>
  */
@@ -17,16 +10,21 @@ export {};
 const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 const hasHover = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
 
-if (!reduceMotion && hasHover) {
-  const RADIUS = 120;     // px — proximity range
-  const MAX_OFFSET = 6;   // px — maximum cursor pull
-  const SMOOTHING = 0.18; // 0–1 — higher = snappier
+const RADIUS = 120;
+const MAX_OFFSET = 6;
+const SMOOTHING = 0.18;
 
-  const magnets = Array.from(
-    document.querySelectorAll<HTMLElement>('[data-magnetic]')
+function initMagnetic() {
+  if (reduceMotion || !hasHover) return;
+
+  const magnets = document.querySelectorAll<HTMLElement>(
+    '[data-magnetic]:not([data-magnetic-init])'
   );
+  if (magnets.length === 0) return;
 
   magnets.forEach((el) => {
+    el.dataset.magneticInit = 'true';
+
     let rafId: number | null = null;
     let targetX = 0;
     let targetY = 0;
@@ -62,9 +60,7 @@ if (!reduceMotion && hasHover) {
       if (Math.abs(targetX - currentX) > 0.1 || Math.abs(targetY - currentY) > 0.1) {
         rafId = requestAnimationFrame(animate);
       } else {
-        if (targetX === 0 && targetY === 0) {
-          el.style.transform = '';
-        }
+        if (targetX === 0 && targetY === 0) el.style.transform = '';
         rafId = null;
       }
     }
@@ -79,3 +75,6 @@ if (!reduceMotion && hasHover) {
     el.addEventListener('pointerleave', reset);
   });
 }
+
+initMagnetic();
+document.addEventListener('astro:page-load', initMagnetic);
