@@ -378,6 +378,14 @@ select.form-control {
 .hero--split .hero__media img {
   object-position: center 65%; /* crop the top — focus the person, not the ceiling */
 }
+/* Lift the text column ~24px above true center so the second CTA
+ * ("Support the Mission") has comfortable breathing room above the fold.
+ * Desktop-only — mobile already stacks single-column without the issue. */
+@media (min-width: 1025px) {
+  .signature-hero__copy {
+    margin-top: calc(-1 * var(--space-lg));
+  }
+}
 
 @media (max-width: 1024px) {
   .hero--split .hero__inner { grid-template-columns: 1fr; }
