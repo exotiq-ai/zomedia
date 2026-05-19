@@ -31,16 +31,46 @@
 }
 
 :root {
+  /* ───────────────────────────────────────────────────────────
+   * COLOR SEMANTICS CONTRACT
+   * ───────────────────────────────────────────────────────────
+   *
+   * Text colors — pick exactly ONE for each role:
+   *   --color-bone   → primary text  (headings, strong, key UI labels)
+   *   --color-chalk  → body text     (paragraphs, default <body>)
+   *   --color-fog    → dim text      (captions, meta, dimmed labels)
+   *   No other off-white shades. ash/slate/graphite are surfaces.
+   *
+   * Accent colors:
+   *   --color-signal  (red)    → Primary action. Urgent state. "This matters."
+   *                              CTAs, alerts, active states, primary stat
+   *                              numbers, card top accents (feature cards).
+   *
+   *   --color-wire    (gold)   → Editorial accent. "This is meta."
+   *                              Eyebrows, secondary highlights, hero overlays,
+   *                              section markers, non-action emphasis.
+   *
+   *   --color-phosphor (green) → Success / positive growth. "This is good."
+   *                              Currently reserved. Use for stats with positive
+   *                              connotation, success states, growth deltas.
+   *
+   * Surfaces:
+   *   --color-void     → page background (#0A0A0B, near-black)
+   *   --color-soot     → section--alt background
+   *   --color-graphite → form-control background
+   *   --color-slate    → border on form-controls
+   */
+
   /* ——— Colors: Core ——— */
   --color-void: #0A0A0B;
   --color-bone: #E8E2D9;
 
-  /* ——— Colors: Signal (primary action) ——— */
+  /* ——— Colors: Signal (primary action — red) ——— */
   --color-signal: #D64045;
   --color-signal-dim: #A33035;
   --color-signal-hot: #E85558;
 
-  /* ——— Colors: Accent ——— */
+  /* ——— Colors: Accent (editorial — gold/green) ——— */
   --color-wire: #C8A84E;
   --color-wire-dim: #9A7E35;
   --color-phosphor: #4EEBC2;

@@ -60,17 +60,28 @@
   font-size: var(--text-body);
 }
 
-/* ——— Eyebrow label ——— */
-.label {
+/* ───────────────────────────────────────────────────────────
+ * EYEBROW — the canonical section-marker label.
+ * One pattern site-wide. Mono, mobile-safe 13px, wire-gold.
+ * Modifier --signal flips to red for action contexts.
+ * Legacy .label and .hero__eyebrow alias to this.
+ * ─────────────────────────────────────────────────────────── */
+.eyebrow,
+.label,
+.hero__eyebrow {
   display: inline-block;
-  font-family: var(--font-body);
-  font-size: 0.9375rem;
-  letter-spacing: var(--tracking-wide);
+  font-family: var(--font-mono);
+  font-size: var(--text-micro); /* 13px — mobile-safe minimum */
+  letter-spacing: var(--tracking-mega);
   text-transform: uppercase;
   color: var(--color-wire);
-  font-weight: 700;
+  font-weight: 600;
   margin-bottom: var(--space-md);
+  line-height: 1.4;
 }
+.eyebrow--signal { color: var(--color-signal); }
+.eyebrow--bone   { color: var(--color-bone); }
+.eyebrow--fog    { color: var(--color-fog); }
 
 /* ——— Cards ——— */
 .card {

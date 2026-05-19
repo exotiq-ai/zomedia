@@ -338,9 +338,9 @@ import SubpageLayout from '../layouts/SubpageLayout.astro';
   }
   .pillar__cat {
     font-family: var(--font-mono);
-    font-size: 0.75rem;
+    font-size: var(--text-micro); /* 13px — mobile-safe */
     text-transform: uppercase;
-    letter-spacing: 0.15em;
+    letter-spacing: var(--tracking-mega);
     color: var(--color-fog);
   }
   .pillar__title {
@@ -401,10 +401,10 @@ import SubpageLayout from '../layouts/SubpageLayout.astro';
   }
   .cochair__desc {
     font-family: var(--font-mono);
-    font-size: 0.7rem;
+    font-size: var(--text-micro); /* 13px — was 0.7rem (~11px), below a11y floor */
     line-height: 1.4;
     text-transform: uppercase;
-    letter-spacing: 0.08em;
+    letter-spacing: var(--tracking-wide);
     color: var(--color-fog);
   }
   .cochair__pivot {
@@ -421,9 +421,9 @@ import SubpageLayout from '../layouts/SubpageLayout.astro';
   }
   .cochair__pivot-label {
     font-family: var(--font-mono);
-    font-size: 0.7rem;
+    font-size: var(--text-micro); /* 13px — was 0.7rem */
     text-transform: uppercase;
-    letter-spacing: 0.15em;
+    letter-spacing: var(--tracking-mega);
     color: var(--color-wire);
     white-space: nowrap;
   }
@@ -474,9 +474,9 @@ import SubpageLayout from '../layouts/SubpageLayout.astro';
     align-items: center;
     gap: var(--space-sm);
     font-family: var(--font-mono);
-    font-size: 0.7rem;
+    font-size: var(--text-micro); /* 13px — was 0.7rem */
     text-transform: uppercase;
-    letter-spacing: 0.1em;
+    letter-spacing: var(--tracking-wide);
     color: var(--color-fog);
     line-height: 1.3;
   }
