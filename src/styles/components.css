@@ -366,6 +366,19 @@ select.form-control {
   filter: contrast(1.05);
 }
 
+/* Split-hero specifically: constrain the image so it aligns vertically with
+ * the text column (not floor-to-ceiling), and crop the top so the person at
+ * the desk reads as the subject. */
+.hero--split .hero__media {
+  align-self: center;
+  aspect-ratio: 4 / 5;
+  max-height: calc(100vh - 220px); /* nav + hero padding budget */
+  width: 100%;
+}
+.hero--split .hero__media img {
+  object-position: center 65%; /* crop the top — focus the person, not the ceiling */
+}
+
 @media (max-width: 1024px) {
   .hero--split .hero__inner { grid-template-columns: 1fr; }
   .hero__media { max-height: 400px; }
