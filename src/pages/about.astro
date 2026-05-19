@@ -413,17 +413,24 @@ import SectionHeader from '../components/ui/SectionHeader.astro';
     white-space: nowrap;
   }
 
-  /* 50/50 Split bar (Pillar 02) */
+  /* 50/50 Split bar (Pillar 02)
+   * min-height matches .cochair (180px) so the bottom border-bottom
+   * rule aligns horizontally across the two pillars. Bar + legend
+   * are sized to fit inside that container. */
   .splitbar {
     margin-top: var(--space-xl);
     padding: var(--space-xl) 0;
     border-top: 1px solid rgba(232, 226, 217, 0.08);
     border-bottom: 1px solid rgba(232, 226, 217, 0.08);
+    min-height: 180px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
   }
   .splitbar__row {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    height: clamp(120px, 14vw, 180px);
+    height: 84px; /* fits within the 180px wrapper alongside the legend */
     border: 1px solid rgba(232, 226, 217, 0.15);
     overflow: hidden;
   }
@@ -444,8 +451,8 @@ import SectionHeader from '../components/ui/SectionHeader.astro';
   }
   .splitbar__pct {
     font-family: var(--font-headline);
-    font-size: clamp(3rem, 8vw, 5.5rem); /* boosted — these numbers ARE the page */
-    line-height: 0.9;
+    font-size: clamp(2rem, 4.5vw, 3rem); /* fits the 84px bar height while still confident */
+    line-height: 0.95;
     font-weight: 400;
     letter-spacing: -0.02em;
   }
