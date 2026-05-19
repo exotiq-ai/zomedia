@@ -217,9 +217,17 @@ function isActive(href: string): boolean {
    * to the bottom. Items stagger-fade in when the menu opens.
    * ─────────────────────────────────────────────────────────── */
   @media (max-width: 1024px) {
+    /* IMPORTANT: do NOT set backdrop-filter or transform/filter/perspective
+     * on .nav at this breakpoint. Any of those properties would make .nav
+     * the containing block for the fixed-positioned .nav__menu, clipping
+     * the full-screen overlay to the nav's own height. The opaque-ish
+     * background alone is enough on mobile. */
     .nav {
       background: rgba(10, 10, 11, 0.95);
-      backdrop-filter: blur(12px) saturate(1.2);
+      backdrop-filter: none;
+    }
+    .nav.is-scrolled {
+      backdrop-filter: none; /* mobile override — same containing-block reason */
     }
     .nav__toggle { display: flex; }
 
