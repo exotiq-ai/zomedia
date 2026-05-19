@@ -109,6 +109,24 @@ a:hover { color: var(--color-signal); }
   .section { padding-block: var(--space-3xl); }
 }
 
+/* ───────────────────────────────────────────────────────────
+ * Mobile typography pass — bump small-text tokens for phone
+ * readability. Cascades through every component that uses these
+ * tokens (eyebrows, card meta, divider labels, form labels, etc.)
+ * Desktop tokens are unchanged.
+ * ─────────────────────────────────────────────────────────── */
+@media (max-width: 768px) {
+  :root {
+    --text-micro: 0.9375rem;  /* 15px (was 13px) — eyebrows, meta */
+    --text-tiny:  1rem;       /* 16px (was 14px) — small labels, forms */
+    --text-small: 1.0625rem;  /* 17px (was 16px) — card text, buttons */
+    --text-body:  1.125rem;   /* 18px (was 17px) — body text */
+  }
+  body {
+    line-height: 1.65; /* slightly looser for phone reading */
+  }
+}
+
 /* ——— Skip link ——— */
 .skip-link {
   position: absolute;

@@ -395,7 +395,9 @@ select.form-control {
 
 @media (max-width: 768px) {
   .hero__headline { font-size: var(--text-h2); }
-  .hero__subhead { font-size: var(--text-body); }
+  /* Keep the hero subhead at body-lg on mobile for readability —
+   * the rest of mobile body got bumped too, this stays distinct. */
+  .hero__subhead { font-size: var(--text-body-lg); }
   .hero__inner { padding: var(--space-2xl) var(--grid-margin); }
   .hero--full { min-height: 40vh; }
   .hero__ctas { flex-direction: column; align-items: stretch; }
@@ -409,6 +411,15 @@ select.form-control {
   .card { padding: var(--space-lg); }
   /* Feature cards override the default --card-padding token; scale down on mobile */
   .card--feature { --card-padding: var(--space-lg); }
+}
+
+/* Default-size buttons in the home hero go full-width on small phones
+ * (previously the --lg variant handled this; --lg is no longer used). */
+@media (max-width: 480px) {
+  .hero__ctas .btn {
+    width: 100%;
+    justify-content: center;
+  }
 }
 
 @media (max-width: 480px) {
