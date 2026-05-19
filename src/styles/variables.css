@@ -102,11 +102,17 @@
    * --text-mega    — colossal numerals (oversized "50%", "100+")
    * --text-display — primary signature headlines (home hero)
    * --text-h1      — subpage hero headlines
-   * Headline-only treatments use Instrument Serif. */
+   * Headline-only treatments use Instrument Serif.
+   *
+   * NOTE on sizing: --text-display is fold-respecting. With 3-line headlines,
+   * a 100vh hero on a 1080-tall viewport gives ~700px for content. Headline
+   * therefore caps at 88px so 3 lines + eyebrow + subhead + CTAs all fit
+   * above the fold on desktop. Mobile floor at 44px keeps lines readable.
+   */
   --text-mega:    clamp(5rem, 18vw, 14rem);    /* 80 → 224px — for oversized numerals */
-  --text-display: clamp(4rem, 11vw, 10rem);    /* was 56–96px, now 64–160px */
-  --text-h1:      clamp(2.5rem, 6vw, 5rem);    /* was 40–64px, now 40–80px */
-  --text-h2:      clamp(1.875rem, 3.75vw, 3rem);
+  --text-display: clamp(2.75rem, 6.5vw, 5.5rem); /* 44 → 88px — fold-respecting */
+  --text-h1:      clamp(2.5rem, 5vw, 4rem);    /* 40 → 64px subpage hero */
+  --text-h2:      clamp(1.875rem, 3.5vw, 2.75rem);
   --text-h3:      clamp(1.375rem, 2.25vw, 1.875rem);
   --text-body:    1.0625rem;
   --text-body-lg: 1.25rem;

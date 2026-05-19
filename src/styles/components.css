@@ -300,14 +300,17 @@ select.form-control {
 .hero {
   position: relative;
   overflow: hidden;
-  min-height: 80vh;
+  /* Fit one fold below the nav — nav is ~80px tall so the hero owns the
+   * remaining viewport. The min-height ensures the hero is a deliberate
+   * stage, not an overflowing wall of type. */
+  min-height: calc(100vh - 80px);
   display: flex;
   align-items: center;
 }
 .hero__inner {
   max-width: var(--container-max);
   margin-inline: auto;
-  padding: var(--space-4xl) var(--grid-margin);
+  padding: var(--space-3xl) var(--grid-margin);
   width: 100%;
 }
 
