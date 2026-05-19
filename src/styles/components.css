@@ -422,16 +422,20 @@ select.form-control {
   background-repeat: no-repeat;
   overflow: hidden;
 }
+/* Overlay only applies when a hero image is set (legibility over photo).
+ * Default to 0 — no image, no overlay, no unnecessary dimming.
+ * Image pages explicitly set --hero-overlay in their style attribute. */
 .hero--editorial::before {
   content: '';
   position: absolute;
   inset: 0;
   background: linear-gradient(
     var(--hero-overlay-dir, to bottom),
-    rgba(10, 10, 11, calc(var(--hero-overlay, 0.7) * 0.6)) 0%,
-    rgba(10, 10, 11, var(--hero-overlay, 0.7)) 100%
+    rgba(10, 10, 11, calc(var(--hero-overlay, 0) * 0.6)) 0%,
+    rgba(10, 10, 11, var(--hero-overlay, 0)) 100%
   );
   z-index: 1;
+  pointer-events: none;
 }
 .hero--editorial .hero__inner {
   position: relative;
@@ -464,9 +468,30 @@ select.form-control {
 .hero--editorial-compact {
   min-height: auto;
   padding-block: var(--space-2xl);
+  border-bottom: 1px solid var(--color-border);
 }
 .hero--editorial-compact .hero__headline {
   font-size: var(--text-h1);
+  margin-bottom: 0;
+}
+/* A small signal-red mark at the start of compact heroes (text-only).
+ * Subtle editorial accent — gives the lone headline grounding without
+ * adding a redundant eyebrow. */
+.hero--editorial-compact > .container,
+.hero--editorial-compact > .container--narrow,
+.hero--editorial-compact > .hero__inner {
+  position: relative;
+}
+.hero--editorial-compact > .container::before,
+.hero--editorial-compact > .container--narrow::before,
+.hero--editorial-compact > .hero__inner::before {
+  content: '';
+  position: absolute;
+  left: var(--grid-margin);
+  top: calc(var(--space-2xl) * -1 + var(--space-md));
+  width: 32px;
+  height: 2px;
+  background: var(--color-signal);
 }
 
 /* Legacy aliases — deprecated, will be removed after page migration */
