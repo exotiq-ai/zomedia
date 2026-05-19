@@ -352,8 +352,13 @@ import SectionHeader from '../components/ui/SectionHeader.astro';
     font-weight: 600;
   }
 
-  /* Co-Chair diagram (Pillar 01) */
+  /* Co-Chair diagram (Pillar 01)
+   * flex-grow: 1 so both diagrams stretch to fill the equal-height
+   * pillar columns the grid enforces. The bottom borders align as a
+   * consequence (whichever diagram has more natural content sets the
+   * height; the other stretches to match). */
   .cochair {
+    flex-grow: 1;
     display: grid;
     grid-template-columns: 1fr auto 1fr;
     align-items: center;
@@ -414,10 +419,12 @@ import SectionHeader from '../components/ui/SectionHeader.astro';
   }
 
   /* 50/50 Split bar (Pillar 02)
-   * min-height matches .cochair (180px) so the bottom border-bottom
-   * rule aligns horizontally across the two pillars. Bar + legend
-   * are sized to fit inside that container. */
+   * flex-grow: 1 + flex column with justify-content: center makes the
+   * bar + legend sit vertically centered while the wrapper stretches
+   * to match the cochair's height. Bottom border-bottom aligns as a
+   * result. */
   .splitbar {
+    flex-grow: 1;
     margin-top: var(--space-xl);
     padding: var(--space-xl) 0;
     border-top: 1px solid rgba(232, 226, 217, 0.08);
