@@ -1,4 +1,7 @@
 ---
+import { Image } from 'astro:assets';
+import zoLogo from '../../assets/images/zo-media/zologo.png';
+
 const currentYear = new Date().getFullYear();
 
 const footerLinks = [
@@ -25,7 +28,7 @@ const socialLinks = [
   <div class="footer__inner">
     <div class="footer__brand">
       <a href="/" class="footer__logo">
-        <img src="/assets/images/zo-media/zologo.png" alt="Zo Media Productions" width="200" height="75" />
+        <Image src={zoLogo} alt="Zo Media Productions" width={200} height={75} loading="lazy" format="webp" />
       </a>
       <p class="footer__tagline">Amplifying incarcerated voices through literature, film, and art.</p>
       <p class="footer__org">A subsidiary of the United Black Family Scholarship Foundation, a 501(c)(3) organization.</p>

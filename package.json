@@ -9,7 +9,11 @@
     "preview": "astro preview"
   },
   "dependencies": {
+    "@astrojs/check": "^0.9.9",
     "@astrojs/sitemap": "^3.7.2",
-    "astro": "^6.3.1"
+    "@fontsource/instrument-serif": "^5.2.8",
+    "@fontsource/space-mono": "^5.2.9",
+    "astro": "^6.3.1",
+    "typescript": "^6.0.3"
   }
 }

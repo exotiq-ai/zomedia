@@ -1,15 +1,11 @@
 ---
+import { getCollection } from 'astro:content';
 import SubpageLayout from '../layouts/SubpageLayout.astro';
 
-const books = [
-  { title: "Domestic Genocide", author: "Ivan Kilgore", category: "memoir", print: "$14.95", ebook: "$4.99", image: "domestic_genocide.jpg", description: "A searing memoir exposing the systemic destruction of Black communities through mass incarceration." },
-  { title: "King: The Early Years", author: "Ivan Kilgore", category: "memoir", print: "$12.95", ebook: "$3.99", image: "king.jpg", description: "An intimate look at the formative years that shaped a voice for justice behind bars." },
-  { title: "Mayhem, Murder & Magnificence", author: "Ivan Kilgore", category: "essays", print: "$16.95", ebook: "$5.99", image: "mayhem_murder_magnificence.jpg", description: "Essays confronting violence, beauty, and transformation within the prison system." },
-  { title: "My Comrades' Thoughts", author: "Ivan Kilgore (editor)", category: "anthology", print: "$13.95", ebook: "$4.99", image: "blm.jpg", description: "An anthology of writings from incarcerated voices on justice, identity, and resistance." },
-  { title: "Kill the Bastard", author: "TBD", category: "memoir", print: "$14.95", ebook: "$4.99", image: "kill_the_bastard.jpg", description: "A raw, unflinching memoir from behind the wall." },
-  { title: "Social Justice Autobiographies", author: "Various", category: "anthology", print: "$15.95", ebook: "$5.99", image: "social_justice.jpg", description: "Personal narratives from incarcerated individuals fighting for systemic change." },
-  { title: "No Rhyme or Reason", author: "TBD", category: "poetry", print: "$11.95", ebook: "$3.99", image: "no_rhyme.jpg", description: "Poetry born from confinement — verse that refuses to be silenced." },
-];
+const bookEntries = await getCollection('books');
+const books = bookEntries
+  .map((entry) => entry.data)
+  .sort((a, b) => (a.order ?? 999) - (b.order ?? 999));
 ---
 
 <SubpageLayout title="Books" description="Literature by incarcerated voices — memoir, essays, poetry, and anthologies." breadcrumbs={[{ label: "Books" }]}>
@@ -36,18 +32,36 @@ const books = [
         {books.map((book) => (
           <article class="card card--feature book-card" data-category={book.category}>
             <div class="book-card__cover img-editorial">
-              <img src={`/assets/images/zo-media/${book.image}`} alt={`${book.title} cover`} loading="lazy" />
+              <img
+                src={book.coverImage}
+                alt={`${book.title} cover`}
+                loading="lazy"
+                decoding="async"
+                width="400"
+                height="600"
+              />
             </div>
             <div class="book-card__body">
-              <span class="eyebrow">{book.category}</span>
+              <span class="eyebrow">
+                {book.category}
+                {book.isForthcoming && <> &middot; Forthcoming</>}
+              </span>
               <h3 class="card__title">{book.title}</h3>
               <p class="book-card__author">{book.author}</p>
               <p class="card__text">{book.description}</p>
               <div class="book-card__prices">
-                <span class="book-card__price">Print: {book.print}</span>
-                <span class="book-card__price">eBook: {book.ebook}</span>
+                {book.priceHardcover && <span class="book-card__price">Print: {book.priceHardcover}</span>}
+                {book.priceEbook && <span class="book-card__price">eBook: {book.priceEbook}</span>}
               </div>
-              <button class="btn btn--primary btn--sm">Add to Cart</button>
+              {book.purchaseUrl ? (
+                <a class="btn btn--primary btn--sm" href={book.purchaseUrl} rel="noopener">
+                  {book.isForthcoming ? 'Pre-Order' : 'Add to Cart'}
+                </a>
+              ) : (
+                <button class="btn btn--primary btn--sm" type="button" disabled={book.isForthcoming}>
+                  {book.isForthcoming ? 'Coming Soon' : 'Add to Cart'}
+                </button>
+              )}
             </div>
           </article>
         ))}

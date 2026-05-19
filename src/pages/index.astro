@@ -1,6 +1,12 @@
 ---
+import { Image } from 'astro:assets';
 import BaseLayout from '../layouts/BaseLayout.astro';
 import SectionHeader from '../components/ui/SectionHeader.astro';
+import heroIvan from '../assets/images/zo-media/hero-ivan.jpg';
+import domesticGenocideCover from '../assets/images/zo-media/domestic-genocide-book-cover-adobe.png';
+import kingCover from '../assets/images/zo-media/King_frontcover-scaled.jpg';
+import mayhemCover from '../assets/images/zo-media/mayhem_murder_and_magnificence.jpg';
+import socialJusticeCover from '../assets/images/zo-media/socialjusticeautobiographies_cover-scaled.jpg';
 ---
 
 <BaseLayout title="Amplifying Incarcerated Voices Through Literature, Film & Art">
@@ -29,7 +35,15 @@ import SectionHeader from '../components/ui/SectionHeader.astro';
         </div>
       </div>
       <div class="hero__media signature-hero__media">
-        <img src="/assets/images/zo-media/hero-ivan.jpg" alt="An incarcerated writer at work — pen to paper, creating from inside" loading="eager" fetchpriority="high" />
+        <Image
+          src={heroIvan}
+          alt="An incarcerated writer at work — pen to paper, creating from inside"
+          widths={[640, 960, 1280, 1920]}
+          sizes="(max-width: 1024px) 100vw, 41vw"
+          loading="eager"
+          fetchpriority="high"
+          format="webp"
+        />
       </div>
     </div>
   </section>
@@ -99,19 +113,47 @@ import SectionHeader from '../components/ui/SectionHeader.astro';
       <SectionHeader title="Featured Books" align="center" />
       <div class="grid grid--4 books-grid mt-2xl">
         <a href="/books/" class="book-feature img-editorial">
-          <img src="/assets/images/zo-media/domestic-genocide-book-cover-adobe.png" alt="Domestic Genocide book cover" loading="lazy" />
+          <Image
+            src={domesticGenocideCover}
+            alt="Domestic Genocide book cover"
+            widths={[200, 400, 600]}
+            sizes="(max-width: 768px) 50vw, 25vw"
+            loading="lazy"
+            format="webp"
+          />
           <h3 class="book-feature__title">Domestic Genocide</h3>
         </a>
         <a href="/books/" class="book-feature img-editorial">
-          <img src="/assets/images/zo-media/King_frontcover-scaled.jpg" alt="King: The Early Years book cover" loading="lazy" />
+          <Image
+            src={kingCover}
+            alt="King: The Early Years book cover"
+            widths={[200, 400, 600]}
+            sizes="(max-width: 768px) 50vw, 25vw"
+            loading="lazy"
+            format="webp"
+          />
           <h3 class="book-feature__title">King: The Early Years</h3>
         </a>
         <a href="/books/" class="book-feature img-editorial">
-          <img src="/assets/images/zo-media/mayhem_murder_and_magnificence.jpg" alt="Mayhem, Murder & Magnificence book cover" loading="lazy" />
+          <Image
+            src={mayhemCover}
+            alt="Mayhem, Murder & Magnificence book cover"
+            widths={[200, 400, 600]}
+            sizes="(max-width: 768px) 50vw, 25vw"
+            loading="lazy"
+            format="webp"
+          />
           <h3 class="book-feature__title">Mayhem, Murder & Magnificence</h3>
         </a>
         <a href="/books/" class="book-feature img-editorial">
-          <img src="/assets/images/zo-media/socialjusticeautobiographies_cover-scaled.jpg" alt="Social Justice Autobiographies book cover" loading="lazy" />
+          <Image
+            src={socialJusticeCover}
+            alt="Social Justice Autobiographies book cover"
+            widths={[200, 400, 600]}
+            sizes="(max-width: 768px) 50vw, 25vw"
+            loading="lazy"
+            format="webp"
+          />
           <h3 class="book-feature__title">Social Justice Autobiographies</h3>
         </a>
       </div>

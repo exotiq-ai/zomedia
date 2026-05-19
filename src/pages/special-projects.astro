@@ -64,7 +64,10 @@ const projects = [
               <img class="project-card__illustration" src={`/assets/illustrations/${project.illustration}`} alt="" width="140" height="140" loading="lazy" />
               <h2 class="project-card__title">{project.title}</h2>
               <p class="project-card__tagline">{project.tagline}</p>
-              <span class="project-card__badge">Coming Soon</span>
+              <span class="project-card__badge">
+                <span class="project-card__badge-tick" aria-hidden="true"></span>
+                In Production
+              </span>
             </article>
           )
         ))}
@@ -128,17 +131,47 @@ const projects = [
   .project-card__cta {
     align-self: flex-start;
   }
+  /* Letterpress-style stamp — signal-red outline, mono, slight off-axis rotation.
+   * Sits like a wet-ink mark applied at the press. */
   .project-card__badge {
     align-self: flex-start;
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-sm);
     font-family: var(--font-mono);
     font-size: var(--text-xs);
     text-transform: uppercase;
     letter-spacing: var(--tracking-mega);
-    color: var(--color-bone);
-    background: rgba(10, 10, 11, 0.55);
-    padding: var(--space-xs) var(--space-md);
-    border: 1px solid rgba(232, 226, 217, 0.25);
-    border-radius: var(--radius-sm);
+    color: var(--color-signal);
+    background: rgba(10, 10, 11, 0.4);
+    padding: 0.4rem 0.7rem;
+    border: 1.5px solid var(--color-signal);
+    border-radius: 2px;
+    font-weight: 700;
+    transform: rotate(-2deg);
+    transform-origin: left center;
+    box-shadow:
+      0.5px 0.5px 0 rgba(214, 64, 69, 0.2),
+      1.5px 1.5px 0 rgba(214, 64, 69, 0.1);
+    transition: transform var(--duration-fast) var(--ease-snap);
+  }
+  .project-card:hover .project-card__badge {
+    transform: rotate(-1deg);
+  }
+  .project-card__badge-tick {
+    width: 5px;
+    height: 5px;
+    background: var(--color-signal);
+    border-radius: 50%;
+    flex-shrink: 0;
+    animation: card-badge-pulse 2.4s ease-in-out infinite;
+  }
+  @keyframes card-badge-pulse {
+    0%, 100% { opacity: 1; }
+    50%      { opacity: 0.35; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .project-card__badge-tick { animation: none; }
   }
   .project-card__footnote {
     font-family: var(--font-mono);

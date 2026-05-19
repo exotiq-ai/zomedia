@@ -1,13 +1,13 @@
 /* effects.css — grain, textures, animations, reveals */
 
-/* ——— Film grain overlay ——— */
+/* ——— Film grain overlay (bumped to actually be felt) ——— */
 body::after {
   content: '';
   position: fixed;
   inset: 0;
   pointer-events: none;
   z-index: 9999;
-  opacity: 0.03;
+  opacity: 0.06;
   background-image: url('/assets/textures/grain.svg');
   background-size: 200px 200px;
   mix-blend-mode: overlay;
@@ -247,7 +247,7 @@ body::after {
   transform: scale(1);
 }
 
-/* ——— Halftone pattern ——— */
+/* ——— Halftone pattern (now actually felt) ——— */
 .halftone {
   position: relative;
 }
@@ -256,7 +256,7 @@ body::after {
   position: absolute;
   inset: 0;
   pointer-events: none;
-  opacity: 0.04;
+  opacity: 0.08;
   background-image: radial-gradient(circle, var(--color-bone) 1px, transparent 1px);
   background-size: 4px 4px;
 }
@@ -270,7 +270,7 @@ body::after {
  *   .signal-divide    — full-width signal-red hairline rule
  * ─────────────────────────────────────────────────────────── */
 
-/* Paper-fiber grain — diagonal noise stripes at very low opacity */
+/* Paper-fiber grain — diagonal noise stripes */
 .texture-paper {
   position: relative;
 }
@@ -279,7 +279,7 @@ body::after {
   position: absolute;
   inset: 0;
   pointer-events: none;
-  opacity: 0.025;
+  opacity: 0.05;
   background-image:
     repeating-linear-gradient(45deg, var(--color-bone) 0 1px, transparent 1px 3px),
     repeating-linear-gradient(-45deg, var(--color-bone) 0 1px, transparent 1px 5px);
@@ -295,7 +295,7 @@ body::after {
   position: absolute;
   inset: 0;
   pointer-events: none;
-  opacity: 0.04;
+  opacity: 0.07;
   background-image: repeating-linear-gradient(
     0deg,
     transparent 0 2px,
@@ -303,6 +303,103 @@ body::after {
   );
   mix-blend-mode: overlay;
 }
+
+/* ───────────────────────────────────────────────────────────
+ * SIGNATURE MARKS — the recurring editorial press details that
+ * give this site a recognizable identity.
+ *
+ *   .section-mark           — a Roman numeral + signal-red rule
+ *                             placed at the top-left of a section
+ *                             (typesetter's chapter mark)
+ *   .drop-cap               — first-letter treatment for prose
+ *                             (large serif initial with a subtle
+ *                             signal-red descender)
+ *   .mega-numeral           — colossal background numeral acting
+ *                             as a section anchor (the "50%" treatment)
+ *   .signal-bars            — repeating vertical signal-red bars
+ *                             (a quiet nod to the carceral theme)
+ * ─────────────────────────────────────────────────────────── */
+
+.section-mark {
+  display: inline-flex;
+  align-items: baseline;
+  gap: var(--space-md);
+  margin-bottom: var(--space-xl);
+  font-family: var(--font-mono);
+  font-size: var(--text-micro);
+  letter-spacing: var(--tracking-mega);
+  text-transform: uppercase;
+  color: var(--color-fog);
+}
+.section-mark__num {
+  font-family: var(--font-headline);
+  font-size: 1.5rem;
+  font-weight: 400;
+  color: var(--color-signal);
+  letter-spacing: 0;
+  line-height: 1;
+}
+.section-mark__rule {
+  display: inline-block;
+  width: 48px;
+  height: 2px;
+  background: var(--color-signal);
+  transform: translateY(-4px);
+}
+
+/* Drop cap — first letter of a prose paragraph gets a serif initial.
+ * Apply by adding .has-drop-cap to a <p> element. */
+.has-drop-cap::first-letter {
+  font-family: var(--font-headline);
+  font-size: clamp(3.5rem, 6vw, 5rem);
+  line-height: 0.85;
+  float: left;
+  color: var(--color-bone);
+  padding-right: 0.15em;
+  padding-top: 0.04em;
+  margin-bottom: -0.1em;
+  font-weight: 400;
+  letter-spacing: -0.02em;
+}
+
+/* Mega numeral — oversized typographic anchor for data callouts.
+ * Use as a background watermark OR as a foreground display element. */
+.mega-numeral {
+  font-family: var(--font-headline);
+  font-size: var(--text-mega);
+  line-height: 0.85;
+  font-weight: 400;
+  letter-spacing: -0.04em;
+  color: var(--color-signal);
+}
+.mega-numeral--watermark {
+  position: absolute;
+  pointer-events: none;
+  user-select: none;
+  color: var(--color-bone);
+  opacity: 0.04;
+  white-space: nowrap;
+  z-index: 0;
+}
+.mega-numeral--wire { color: var(--color-wire); }
+.mega-numeral--bone { color: var(--color-bone); }
+
+/* Signal bars — vertical signal-red rules. Quiet carceral nod.
+ * Use as a section divider or decorative rule. */
+.signal-bars {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  height: 24px;
+}
+.signal-bars__bar {
+  display: block;
+  width: 2px;
+  height: 100%;
+  background: var(--color-signal);
+}
+.signal-bars__bar:nth-child(2n) { opacity: 0.6; }
+.signal-bars__bar:nth-child(3n) { opacity: 0.4; }
 
 /* Ink-bleed shadow — chromatic split like an off-register newspaper print */
 .ink-bleed {

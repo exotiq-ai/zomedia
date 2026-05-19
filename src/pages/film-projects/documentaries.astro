@@ -4,18 +4,38 @@ import SubpageLayout from '../../layouts/SubpageLayout.astro';
 
 <SubpageLayout title="Documentaries & Film Shorts" description="Documentary films and short works by incarcerated filmmakers." breadcrumbs={[{ label: "Film Projects", href: "/film-projects/" }, { label: "Documentaries & Film Shorts" }]}>
 
-  <section class="hero hero--editorial hero--editorial-compact">
-    <div class="hero__inner">
-      <h1 class="hero__headline">Documentaries &amp; Film Shorts</h1>
-    </div>
-  </section>
-
-  <section class="section">
-    <div class="container container--narrow">
-      <div class="card card--quiet coming-soon">
-        <span class="eyebrow">Coming Soon</span>
-        <p class="text-lg mt-md">Documentary projects coming soon. Zo Media is producing documentary films and short works capturing untold stories from behind the wall.</p>
-        <a href="/film-projects/" class="btn btn--outline mt-xl">&larr; Back to Film Projects</a>
+  <section class="proof">
+    <div class="proof__numeral" aria-hidden="true">01</div>
+    <div class="proof__inner">
+      <span class="proof__stamp">
+        <span class="proof__stamp-tick" aria-hidden="true"></span>
+        In Production
+      </span>
+      <h1 class="proof__title">Documentaries &amp; Film Shorts</h1>
+      <div class="proof__rule" aria-hidden="true"></div>
+      <p class="proof__lede">
+        Documentaries in development. Tape's rolling &mdash; just not finished yet.
+      </p>
+      <p class="proof__body">
+        Zo Media is producing documentary films and short works capturing untold stories from behind the wall &mdash; first-person, unflinching, on the record.
+      </p>
+      <dl class="proof__meta">
+        <div class="proof__meta-row">
+          <dt>Status</dt>
+          <dd>Pre-production / capture</dd>
+        </div>
+        <div class="proof__meta-row">
+          <dt>Format</dt>
+          <dd>Long-form &middot; Short-form</dd>
+        </div>
+        <div class="proof__meta-row">
+          <dt>Release</dt>
+          <dd>To come.</dd>
+        </div>
+      </dl>
+      <div class="proof__ctas">
+        <a href="/film-projects/" class="btn btn--outline">&larr; All Film Projects</a>
+        <a href="/the-wire/" class="btn btn--primary">Follow on The Wire</a>
       </div>
     </div>
   </section>
@@ -23,8 +43,184 @@ import SubpageLayout from '../../layouts/SubpageLayout.astro';
 </SubpageLayout>
 
 <style>
-  .coming-soon {
-    text-align: center;
-    padding: var(--space-3xl);
+  /* ───────────────────────────────────────────────────────────
+   * PROOF — shared "in-development" treatment for the three
+   * film-project placeholder pages. Typesetter's proof-page
+   * aesthetic: oversized numeral watermark, letterpress stamp,
+   * editorial metadata table.
+   * ─────────────────────────────────────────────────────────── */
+  .proof {
+    position: relative;
+    min-height: 78vh;
+    background: var(--color-soot);
+    padding: var(--space-4xl) var(--grid-margin);
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    isolation: isolate;
+  }
+  /* Paper-fiber grain over the surface */
+  .proof::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    opacity: 0.025;
+    background-image:
+      repeating-linear-gradient(45deg, var(--color-bone) 0 1px, transparent 1px 3px),
+      repeating-linear-gradient(-45deg, var(--color-bone) 0 1px, transparent 1px 5px);
+    mix-blend-mode: overlay;
+    z-index: 0;
+  }
+  /* Oversized numeral watermark — pulled off-canvas, low opacity */
+  .proof__numeral {
+    position: absolute;
+    right: -0.08em;
+    bottom: -0.18em;
+    font-family: var(--font-headline);
+    font-size: clamp(18rem, 45vw, 36rem);
+    line-height: 0.85;
+    font-weight: 400;
+    color: var(--color-bone);
+    opacity: 0.04;
+    letter-spacing: -0.05em;
+    user-select: none;
+    pointer-events: none;
+    z-index: 1;
+    white-space: nowrap;
+  }
+
+  .proof__inner {
+    position: relative;
+    z-index: 2;
+    max-width: 52rem;
+    width: 100%;
+  }
+
+  /* "In Production" letterpress stamp — outlined rectangle, mono, slightly off-axis */
+  .proof__stamp {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-sm);
+    font-family: var(--font-mono);
+    font-size: var(--text-micro);
+    letter-spacing: var(--tracking-mega);
+    text-transform: uppercase;
+    color: var(--color-signal);
+    background: transparent;
+    border: 1.5px solid var(--color-signal);
+    padding: 0.45rem 0.85rem;
+    border-radius: 2px;
+    font-weight: 700;
+    transform: rotate(-1.5deg);
+    transform-origin: left center;
+    margin-bottom: var(--space-2xl);
+    box-shadow:
+      0.5px 0.5px 0 rgba(214, 64, 69, 0.15),
+      1.5px 1.5px 0 rgba(214, 64, 69, 0.08);
+  }
+  .proof__stamp-tick {
+    width: 6px;
+    height: 6px;
+    background: var(--color-signal);
+    border-radius: 50%;
+    flex-shrink: 0;
+    animation: proof-pulse 2.4s ease-in-out infinite;
+  }
+
+  .proof__title {
+    font-family: var(--font-headline);
+    font-size: clamp(3rem, 8vw, 5.5rem);
+    line-height: var(--leading-crush);
+    letter-spacing: var(--tracking-tight);
+    color: var(--color-bone);
+    margin: 0 0 var(--space-lg);
+    font-weight: 400;
+  }
+
+  /* Signal-red short rule under the title */
+  .proof__rule {
+    width: 48px;
+    height: 3px;
+    background: var(--color-signal);
+    margin: 0 0 var(--space-xl);
+  }
+
+  .proof__lede {
+    font-family: var(--font-headline);
+    font-style: italic;
+    font-size: clamp(1.375rem, 2.4vw, 1.75rem);
+    line-height: var(--leading-tight);
+    color: var(--color-bone);
+    max-width: 42ch;
+    margin: 0 0 var(--space-md);
+  }
+
+  .proof__body {
+    font-family: var(--font-body);
+    font-size: var(--text-body-lg);
+    line-height: var(--leading-loose);
+    color: var(--color-chalk);
+    max-width: 56ch;
+    margin: 0 0 var(--space-2xl);
+  }
+
+  /* Editorial metadata — like a colophon */
+  .proof__meta {
+    display: grid;
+    grid-template-columns: 1fr;
+    border-top: 1px solid var(--color-border-emphasis);
+    margin: 0 0 var(--space-2xl);
+    padding-top: var(--space-md);
+  }
+  .proof__meta-row {
+    display: grid;
+    grid-template-columns: 8rem 1fr;
+    gap: var(--space-md);
+    padding: var(--space-sm) 0;
+    border-bottom: 1px solid var(--color-border);
+  }
+  .proof__meta-row:last-child {
+    border-bottom: none;
+  }
+  .proof__meta dt {
+    font-family: var(--font-mono);
+    font-size: var(--text-micro);
+    letter-spacing: var(--tracking-mega);
+    text-transform: uppercase;
+    color: var(--color-wire);
+    font-weight: 600;
+    align-self: center;
+  }
+  .proof__meta dd {
+    font-family: var(--font-body);
+    font-size: var(--text-base);
+    color: var(--color-chalk);
+    margin: 0;
+    align-self: center;
+  }
+
+  .proof__ctas {
+    display: flex;
+    gap: var(--space-md);
+    flex-wrap: wrap;
+  }
+
+  @keyframes proof-pulse {
+    0%, 100% { opacity: 1; }
+    50%      { opacity: 0.35; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .proof__stamp-tick { animation: none; }
+  }
+
+  @media (max-width: 768px) {
+    .proof { min-height: auto; padding: var(--space-3xl) var(--grid-margin); }
+    .proof__numeral { font-size: clamp(14rem, 60vw, 22rem); right: -0.1em; bottom: -0.1em; }
+    .proof__meta-row { grid-template-columns: 6rem 1fr; gap: var(--space-sm); }
+    .proof__ctas { flex-direction: column; align-items: stretch; }
   }
 </style>
+

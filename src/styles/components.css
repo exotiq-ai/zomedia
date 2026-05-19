@@ -225,7 +225,7 @@
   flex-shrink: 0;
 }
 
-/* ——— Stats row ——— */
+/* ——— Stats row — numbers are the brand, treat them like it ——— */
 .stats {
   display: flex;
   gap: var(--space-3xl);
@@ -238,10 +238,11 @@
 .stat__number {
   display: block;
   font-family: var(--font-headline);
-  font-size: var(--text-h1);
+  font-size: clamp(3.5rem, 8vw, 6.5rem); /* boosted — was --text-h1 (40-80px) */
   color: var(--color-signal);
-  line-height: 1;
-  margin-bottom: var(--space-xs);
+  line-height: 0.95;
+  letter-spacing: -0.03em;
+  margin-bottom: var(--space-sm);
 }
 .stat__label {
   font-family: var(--font-mono);

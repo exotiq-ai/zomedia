@@ -1,4 +1,7 @@
 ---
+import { Image } from 'astro:assets';
+import zoLogo from '../../assets/images/zo-media/zologo.png';
+
 interface Props {
   currentPath: string;
 }
@@ -35,7 +38,7 @@ function isActive(href: string): boolean {
 <nav class="nav" aria-label="Main navigation">
   <div class="nav__inner">
     <a href="/" class="nav__logo">
-      <img src="/assets/images/zo-media/zologo.png" alt="Zo Media Productions" width="160" height="60" />
+      <Image src={zoLogo} alt="Zo Media Productions" width={160} height={60} loading="eager" fetchpriority="high" format="webp" />
     </a>
 
     <button class="nav__toggle" aria-expanded="false" aria-controls="nav-menu" aria-label="Toggle menu">

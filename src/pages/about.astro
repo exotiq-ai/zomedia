@@ -16,7 +16,7 @@ import SectionHeader from '../components/ui/SectionHeader.astro';
   <section class="section">
     <div class="container container--narrow reveal">
       <SectionHeader eyebrow="Our Story" title="Built From the Inside Out" />
-      <p class="text-lg mt-lg">Zo Media Productions was founded as a subsidiary of the United Black Family Scholarship Foundation (UBFSF), a 501(c)(3) nonprofit organization. What began as a single publication has grown into a full cooperative media house — publishing books, producing film, and exhibiting visual art created by incarcerated people across the country.</p>
+      <p class="text-lg mt-lg has-drop-cap">Zo Media Productions was founded as a subsidiary of the United Black Family Scholarship Foundation (UBFSF), a 501(c)(3) nonprofit organization. What began as a single publication has grown into a full cooperative media house — publishing books, producing film, and exhibiting visual art created by incarcerated people across the country.</p>
       <p class="mt-md">We exist because the stories coming from inside prison walls are some of the most urgent, honest, and necessary narratives in American culture. These are not charity projects. They are works of literature, cinema, and art that stand on their own merit — created by people who happen to be incarcerated.</p>
       <p class="mt-md">Every title we publish, every film we produce, and every exhibition we mount generates real economic opportunity for the creator while opening a window into a system most Americans will never see firsthand.</p>
     </div>
@@ -423,7 +423,7 @@ import SectionHeader from '../components/ui/SectionHeader.astro';
   .splitbar__row {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    height: 96px;
+    height: clamp(120px, 14vw, 180px);
     border: 1px solid rgba(232, 226, 217, 0.15);
     overflow: hidden;
   }
@@ -444,9 +444,10 @@ import SectionHeader from '../components/ui/SectionHeader.astro';
   }
   .splitbar__pct {
     font-family: var(--font-headline);
-    font-size: clamp(2rem, 4.5vw, 2.75rem);
-    line-height: 1;
+    font-size: clamp(3rem, 8vw, 5.5rem); /* boosted — these numbers ARE the page */
+    line-height: 0.9;
     font-weight: 400;
+    letter-spacing: -0.02em;
   }
   .splitbar__legend {
     display: grid;

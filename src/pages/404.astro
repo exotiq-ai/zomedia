@@ -2,16 +2,246 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 ---
 
-<BaseLayout title="Page Not Found">
-  <section class="hero hero--editorial hero--editorial-center">
-    <div class="hero__inner">
-      <span class="hero__eyebrow">404</span>
-      <h1 class="hero__headline">Page Not Found</h1>
-      <p class="hero__subhead">The page you're looking for doesn't exist or has been moved.</p>
-      <div class="hero__ctas">
-        <a href="/" class="btn btn--primary">Back to Home</a>
-        <a href="/contact/" class="btn btn--outline">Contact Us</a>
+<BaseLayout title="404 — Twilight Zone">
+  <section class="zone404">
+    <div class="zone404__watermark" aria-hidden="true">404</div>
+    <div class="zone404__inner">
+      <span class="eyebrow eyebrow--signal zone404__eyebrow">Error 404 / Twilight Zone</span>
+      <h1 class="zone404__headline">
+        You're in the <span class="zone404__zo">Zo<span class="zone404__period">.</span></span>
+      </h1>
+      <p class="zone404__lede">
+        This page doesn't exist &mdash; like a lot of voices the system tries to silence.
+      </p>
+      <p class="zone404__sublede">
+        Let's get you back to the ones that do.
+      </p>
+      <div class="zone404__ctas">
+        <a href="/" class="btn btn--primary btn--lg">Back to the Wire</a>
+        <a href="/books/" class="btn btn--outline btn--lg">Read a Book</a>
+      </div>
+      <div class="zone404__footer">
+        <span class="zone404__mark">ZMP</span>
+        <span class="zone404__rule" aria-hidden="true"></span>
+        <span class="zone404__note">Twilight Zone &mdash; a phrase coined by founder Ivan Kilgore for the disorientation of incarceration.</span>
       </div>
     </div>
   </section>
 </BaseLayout>
+
+<style>
+  .zone404 {
+    position: relative;
+    min-height: 85vh;
+    background: var(--color-void);
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: var(--space-4xl) var(--grid-margin);
+    isolation: isolate;
+  }
+
+  /* Atmospheric paper grain layered on top of the void */
+  .zone404::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    opacity: 0.03;
+    background-image:
+      repeating-linear-gradient(45deg, var(--color-bone) 0 1px, transparent 1px 3px),
+      repeating-linear-gradient(-45deg, var(--color-bone) 0 1px, transparent 1px 5px);
+    mix-blend-mode: overlay;
+    z-index: 0;
+  }
+
+  /* Vignette — pulls focus to center */
+  .zone404::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background: radial-gradient(ellipse at center,
+      transparent 0%,
+      transparent 40%,
+      rgba(0, 0, 0, 0.45) 100%);
+    z-index: 0;
+  }
+
+  /* Oversized "404" watermark behind everything */
+  .zone404__watermark {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-family: var(--font-headline);
+    font-size: clamp(20rem, 50vw, 44rem);
+    line-height: 1;
+    font-weight: 400;
+    color: var(--color-bone);
+    opacity: 0.04;
+    letter-spacing: -0.06em;
+    user-select: none;
+    pointer-events: none;
+    z-index: 1;
+    white-space: nowrap;
+  }
+
+  .zone404__inner {
+    position: relative;
+    z-index: 2;
+    max-width: 56rem;
+    width: 100%;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .zone404__eyebrow {
+    margin-bottom: var(--space-xl);
+    animation: zone404-fade 0.7s var(--ease-snap) 100ms both;
+  }
+
+  .zone404__headline {
+    font-family: var(--font-headline);
+    font-size: clamp(4rem, 14vw, 9rem);
+    line-height: var(--leading-crush);
+    letter-spacing: var(--tracking-tight);
+    color: var(--color-bone);
+    margin: 0 0 var(--space-2xl);
+    font-weight: 400;
+    animation: zone404-rise 0.85s var(--ease-snap) 200ms both;
+  }
+
+  .zone404__zo {
+    position: relative;
+    display: inline-block;
+    color: var(--color-bone);
+  }
+  /* Signal-red underline mark on "Zo" — mirrors the home-page "inside" treatment */
+  .zone404__zo::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    right: 0.2em;
+    bottom: 0.04em;
+    height: clamp(4px, 0.6vw, 8px);
+    background: var(--color-signal);
+    transform: scaleX(0);
+    transform-origin: left;
+    animation: zone404-underline 0.65s var(--ease-snap) 900ms forwards;
+  }
+  .zone404__period {
+    color: var(--color-signal);
+  }
+
+  .zone404__lede {
+    font-family: var(--font-headline);
+    font-size: clamp(1.375rem, 2.6vw, 1.875rem);
+    line-height: var(--leading-tight);
+    color: var(--color-bone);
+    max-width: 38ch;
+    margin: 0 auto var(--space-md);
+    font-style: italic;
+    animation: zone404-fade 0.7s var(--ease-snap) 600ms both;
+  }
+
+  .zone404__sublede {
+    font-family: var(--font-body);
+    font-size: var(--text-body-lg);
+    line-height: var(--leading-loose);
+    color: var(--color-chalk);
+    max-width: 42ch;
+    margin: 0 auto var(--space-2xl);
+    animation: zone404-fade 0.7s var(--ease-snap) 800ms both;
+  }
+
+  .zone404__ctas {
+    display: flex;
+    gap: var(--space-md);
+    flex-wrap: wrap;
+    justify-content: center;
+    animation: zone404-fade 0.7s var(--ease-snap) 1000ms both;
+  }
+
+  .zone404__footer {
+    display: flex;
+    align-items: center;
+    gap: var(--space-md);
+    margin-top: var(--space-4xl);
+    max-width: 48rem;
+    width: 100%;
+    animation: zone404-fade 0.9s var(--ease-snap) 1300ms both;
+  }
+  .zone404__mark {
+    font-family: var(--font-mono);
+    font-size: var(--text-micro);
+    letter-spacing: var(--tracking-mega);
+    color: var(--color-signal);
+    font-weight: 700;
+    flex-shrink: 0;
+  }
+  .zone404__rule {
+    flex: 1;
+    height: 1px;
+    background: var(--color-border-emphasis);
+    position: relative;
+  }
+  .zone404__rule::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: -1px;
+    width: 24px;
+    height: 3px;
+    background: var(--color-signal);
+  }
+  .zone404__note {
+    font-family: var(--font-mono);
+    font-size: var(--text-micro);
+    letter-spacing: var(--tracking-wide);
+    color: var(--color-fog);
+    line-height: 1.5;
+    text-align: right;
+    max-width: 40ch;
+  }
+
+  @keyframes zone404-rise {
+    from { opacity: 0; transform: translateY(20px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes zone404-fade {
+    from { opacity: 0; transform: translateY(8px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes zone404-underline {
+    from { transform: scaleX(0); }
+    to   { transform: scaleX(1); }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .zone404__eyebrow,
+    .zone404__headline,
+    .zone404__lede,
+    .zone404__sublede,
+    .zone404__ctas,
+    .zone404__footer { animation: none; }
+    .zone404__zo::after { transform: scaleX(1); animation: none; }
+  }
+
+  @media (max-width: 768px) {
+    .zone404 { min-height: 80vh; padding: var(--space-3xl) var(--grid-margin); }
+    .zone404__watermark { font-size: clamp(14rem, 60vw, 22rem); }
+    .zone404__footer {
+      flex-direction: column;
+      align-items: center;
+      gap: var(--space-sm);
+      margin-top: var(--space-3xl);
+    }
+    .zone404__rule { width: 100%; max-width: 200px; }
+    .zone404__note { text-align: center; }
+    .zone404__ctas .btn { width: 100%; }
+  }
+</style>
