@@ -4,10 +4,14 @@ import BaseLayout from './BaseLayout.astro';
 interface Props {
   title: string;
   description?: string;
+  /**
+   * Breadcrumbs are accepted for forward-compat (every page passes them today)
+   * but not yet rendered. When a breadcrumb component is added, wire it in here.
+   */
   breadcrumbs?: Array<{ label: string; href?: string }>;
 }
 
-const { title, description, breadcrumbs = [] } = Astro.props;
+const { title, description } = Astro.props;
 ---
 
 <BaseLayout title={title} description={description}>

@@ -24,12 +24,13 @@ const books = [
   <section class="section">
     <div class="container">
       <div class="filter-bar" role="group" aria-label="Filter books by category">
-        <button class="filter-pill active" data-filter="all">All</button>
-        <button class="filter-pill" data-filter="memoir">Memoir</button>
-        <button class="filter-pill" data-filter="essays">Essays</button>
-        <button class="filter-pill" data-filter="poetry">Poetry</button>
-        <button class="filter-pill" data-filter="anthology">Anthology</button>
+        <button class="filter-pill active" data-filter="all" aria-pressed="true">All</button>
+        <button class="filter-pill" data-filter="memoir" aria-pressed="false">Memoir</button>
+        <button class="filter-pill" data-filter="essays" aria-pressed="false">Essays</button>
+        <button class="filter-pill" data-filter="poetry" aria-pressed="false">Poetry</button>
+        <button class="filter-pill" data-filter="anthology" aria-pressed="false">Anthology</button>
       </div>
+      <div id="book-filter-status" class="sr-only" aria-live="polite" aria-atomic="true"></div>
 
       <div class="grid grid--3 book-grid">
         {books.map((book) => (
@@ -142,22 +143,31 @@ const books = [
 
 <script>
   document.addEventListener('DOMContentLoaded', () => {
-    const pills = document.querySelectorAll('.filter-pill');
-    const cards = document.querySelectorAll('.book-card');
+    const pills = document.querySelectorAll<HTMLButtonElement>('.filter-pill');
+    const cards = document.querySelectorAll<HTMLElement>('.book-card');
+    const liveRegion = document.getElementById('book-filter-status');
 
     pills.forEach(pill => {
       pill.addEventListener('click', () => {
-        pills.forEach(p => p.classList.remove('active'));
+        pills.forEach(p => {
+          p.classList.remove('active');
+          p.setAttribute('aria-pressed', 'false');
+        });
         pill.classList.add('active');
+        pill.setAttribute('aria-pressed', 'true');
 
         const filter = pill.dataset.filter;
+        let visible = 0;
         cards.forEach(card => {
-          if (filter === 'all' || card.dataset.category === filter) {
-            card.classList.remove('hidden');
-          } else {
-            card.classList.add('hidden');
-          }
+          const match = filter === 'all' || card.dataset.category === filter;
+          card.classList.toggle('hidden', !match);
+          if (match) visible++;
         });
+
+        if (liveRegion) {
+          const label = filter === 'all' ? 'all books' : `${filter} books`;
+          liveRegion.textContent = `Showing ${visible} ${label}.`;
+        }
       });
     });
   });

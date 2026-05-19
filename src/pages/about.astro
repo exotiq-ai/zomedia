@@ -26,7 +26,7 @@ import SectionHeader from '../components/ui/SectionHeader.astro';
   <section class="founder-quote">
     <div class="container container--narrow reveal">
       <div class="founder-quote__rule" aria-hidden="true"></div>
-      <span class="founder-quote__eyebrow">Why &ldquo;Zo&rdquo;</span>
+      <span class="eyebrow eyebrow--signal founder-quote__eyebrow">Why &ldquo;Zo&rdquo;</span>
       <blockquote class="founder-quote__body">
         <span class="founder-quote__mark" aria-hidden="true">&ldquo;</span>
         <p>I often tell people who&rsquo;ve never experienced prison that we call it <em>the Zo</em> &mdash; short for <em>Twilight Zone</em> &mdash; due to the discombobulation that prisoners experience while incarcerated which makes them more dysfunctional than when they entered the system.</p>
@@ -202,12 +202,7 @@ import SectionHeader from '../components/ui/SectionHeader.astro';
     margin-bottom: var(--space-lg);
   }
   .founder-quote__eyebrow {
-    display: inline-block;
-    font-family: var(--font-mono);
-    font-size: var(--text-sm);
-    letter-spacing: var(--tracking-wide);
-    text-transform: uppercase;
-    color: var(--color-signal);
+    /* visual styles inherited from .eyebrow + .eyebrow--signal — only positioning here */
     margin-bottom: var(--space-xl);
   }
   .founder-quote__body {
@@ -436,7 +431,7 @@ import SectionHeader from '../components/ui/SectionHeader.astro';
   }
   .splitbar__seg--ubfsf {
     background: var(--color-wire);
-    color: #0A0A0B;
+    color: var(--color-void);
   }
   .splitbar__seg--coop {
     background: transparent;

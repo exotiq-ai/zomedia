@@ -105,7 +105,16 @@
   --text-body-lg: 1.25rem;
   --text-small: 1rem;
   --text-tiny: 0.875rem;
-  --text-micro: 0.8125rem;
+  --text-micro: 0.8125rem; /* 13px — mobile-safe minimum */
+
+  /* ——— Typography: Tailwind-style aliases (for ergonomics) ——— */
+  --text-xs:   var(--text-micro);   /* 13px */
+  --text-sm:   var(--text-tiny);    /* 14px */
+  --text-base: var(--text-body);    /* 17px */
+  --text-lg:   var(--text-body-lg); /* 20px */
+  --text-2xl:  var(--text-h3);      /* fluid 22-30px */
+  --text-3xl:  var(--text-h2);      /* fluid 30-44px */
+  --text-4xl:  var(--text-h1);      /* fluid 40-64px */
 
   /* ——— Typography: Line heights ——— */
   --leading-crush: 0.95;
@@ -158,4 +167,7 @@
   --duration-normal: 350ms;
   --duration-slow: 600ms;
   --duration-dramatic: 1000ms;
+
+  /* Duration alias */
+  --duration-base: var(--duration-fast);
 }

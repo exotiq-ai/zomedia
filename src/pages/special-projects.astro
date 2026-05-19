@@ -10,25 +10,25 @@ const projects = [
     title: "The Global Impact of Mass Incarceration",
     tagline: "Examining how American incarceration policy echoes worldwide",
     gradient: "linear-gradient(135deg, var(--color-graphite), var(--color-signal-dim))",
-    href: "#",
+    href: null,
   },
   {
     title: "Voices On Death Row",
     tagline: "First-person accounts from America's death rows",
     gradient: "linear-gradient(135deg, var(--color-graphite), #1a3a4a)",
-    href: "#",
+    href: null,
   },
   {
     title: "Tales From the Zo",
     tagline: "Stories from inside Zo Media's creative community",
-    gradient: "linear-gradient(135deg, var(--color-graphite), #9A7E35)",
-    href: "#",
+    gradient: "linear-gradient(135deg, var(--color-graphite), var(--color-wire-dim))",
+    href: null,
   },
   {
     title: "Writing Beyond the Prison: Reimagining the Carceral Ecosystem",
     tagline: "Challenging the boundaries of prison literature",
     gradient: "linear-gradient(135deg, var(--color-graphite), #2a1a3a)",
-    href: "#",
+    href: null,
   },
 ];
 ---
@@ -46,17 +46,21 @@ const projects = [
     <div class="container">
       <div class="grid grid--2">
         {projects.map((project) => (
-          <a href={project.href} class="project-card halftone" style={`background: ${project.gradient};`}>
-            <h2 class="project-card__title">
-              {project.title}
-            </h2>
-            <p class="project-card__tagline">
-              {project.tagline}
-            </p>
-            <span class="btn btn--outline btn--sm project-card__cta">
-              Visit Project &rarr;
-            </span>
-          </a>
+          project.href ? (
+            <a href={project.href} class="project-card halftone" style={`background: ${project.gradient};`}>
+              <h2 class="project-card__title">{project.title}</h2>
+              <p class="project-card__tagline">{project.tagline}</p>
+              <span class="btn btn--outline btn--sm project-card__cta">
+                Visit Project &rarr;
+              </span>
+            </a>
+          ) : (
+            <article class="project-card project-card--coming-soon halftone" style={`background: ${project.gradient};`} aria-label={`${project.title} — coming soon`}>
+              <h2 class="project-card__title">{project.title}</h2>
+              <p class="project-card__tagline">{project.tagline}</p>
+              <span class="project-card__badge">Coming Soon</span>
+            </article>
+          )
         ))}
       </div>
     </div>
@@ -98,16 +102,29 @@ const projects = [
   .project-card__tagline {
     font-family: var(--font-body);
     font-size: var(--text-base);
-    color: var(--color-fog);
+    color: var(--color-bone); /* was --color-fog — failed contrast on lighter gradients */
+    opacity: 0.85;
     margin-bottom: var(--space-lg);
   }
   .project-card__cta {
     align-self: flex-start;
   }
+  .project-card__badge {
+    align-self: flex-start;
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+    text-transform: uppercase;
+    letter-spacing: var(--tracking-mega);
+    color: var(--color-bone);
+    background: rgba(10, 10, 11, 0.55);
+    padding: var(--space-xs) var(--space-md);
+    border: 1px solid rgba(232, 226, 217, 0.25);
+    border-radius: var(--radius-sm);
+  }
   .project-card__footnote {
     font-family: var(--font-mono);
     font-size: var(--text-sm);
-    color: var(--color-ash);
+    color: var(--color-fog);
     letter-spacing: var(--tracking-wide);
     max-width: 48ch;
     margin-inline: auto;

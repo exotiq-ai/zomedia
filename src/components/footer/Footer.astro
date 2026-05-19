@@ -11,11 +11,13 @@ const footerLinks = [
   { label: 'Support', href: '/support/' },
 ];
 
+// Social links — URLs are placeholders until accounts are confirmed.
+// When you have real URLs, replace href values below.
 const socialLinks = [
-  { label: 'Facebook', icon: 'fb', href: '#' },
-  { label: 'Instagram', icon: 'ig', href: '#' },
-  { label: 'X / Twitter', icon: 'x', href: '#' },
-  { label: 'YouTube', icon: 'yt', href: '#' },
+  { label: 'Facebook',  icon: 'fb', href: null },
+  { label: 'Instagram', icon: 'ig', href: null },
+  { label: 'X / Twitter', icon: 'x', href: null },
+  { label: 'YouTube',   icon: 'yt', href: null },
 ];
 ---
 
@@ -52,9 +54,15 @@ const socialLinks = [
       <span class="footer__nav-label">Follow</span>
       <div class="footer__social-links">
         {socialLinks.map((link) => (
-          <a href={link.href} class="footer__social-link" aria-label={link.label}>
-            <img src={`/assets/icons/${link.icon}.svg`} alt="" width="20" height="20" />
-          </a>
+          link.href ? (
+            <a href={link.href} class="footer__social-link" aria-label={link.label} target="_blank" rel="noopener noreferrer">
+              <img src={`/assets/icons/${link.icon}.svg`} alt="" width="20" height="20" />
+            </a>
+          ) : (
+            <span class="footer__social-link footer__social-link--pending" aria-label={`${link.label} — coming soon`} title={`${link.label} (coming soon)`}>
+              <img src={`/assets/icons/${link.icon}.svg`} alt="" width="20" height="20" />
+            </span>
+          )
         ))}
       </div>
     </div>
@@ -100,7 +108,7 @@ const socialLinks = [
   }
   .footer__org {
     font-size: var(--text-small);
-    color: var(--color-ash);
+    color: var(--color-fog);
   }
 
   .footer__nav-label {
@@ -147,6 +155,7 @@ const socialLinks = [
   .footer__input:focus {
     outline: none;
     border-color: var(--color-signal);
+    box-shadow: 0 0 0 2px var(--color-signal);
   }
   .footer__input::placeholder { color: var(--color-ash); }
 
@@ -171,6 +180,17 @@ const socialLinks = [
   }
   .footer__social-link:hover img { filter: brightness(0) invert(1); }
 
+  /* Pending state — placeholder until real social URLs are available */
+  .footer__social-link--pending {
+    cursor: default;
+    opacity: 0.5;
+  }
+  .footer__social-link--pending:hover {
+    border-color: var(--color-border);
+    background: transparent;
+  }
+  .footer__social-link--pending:hover img { filter: brightness(0) invert(0.7); }
+
   .footer__bottom {
     border-top: 1px solid var(--color-border);
     background: var(--color-void);
@@ -186,7 +206,7 @@ const socialLinks = [
     font-size: var(--text-micro);
     letter-spacing: var(--tracking-wide);
     text-transform: uppercase;
-    color: var(--color-ash);
+    color: var(--color-fog);
   }
   .footer__address a {
     color: var(--color-fog);

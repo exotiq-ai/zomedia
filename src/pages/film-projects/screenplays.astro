@@ -4,20 +4,27 @@ import SubpageLayout from '../../layouts/SubpageLayout.astro';
 
 <SubpageLayout title="Screenplays" description="Original screenplays written by incarcerated creators." breadcrumbs={[{ label: "Film Projects", href: "/film-projects/" }, { label: "Screenplays" }]}>
 
-  <section class="hero hero--minimal">
-    <div class="container">
+  <section class="hero hero--editorial hero--editorial-compact">
+    <div class="hero__inner">
       <h1 class="hero__headline">Screenplays</h1>
     </div>
   </section>
 
   <section class="section">
     <div class="container container--narrow">
-      <div class="card" style="text-align: center; padding: var(--space-3xl);">
-        <span class="label" style="color: var(--color-wire);">Coming Soon</span>
-        <p class="text-lg" style="margin-top: var(--space-md);">Screenplay projects coming soon. Zo Media is developing original screenplays written by incarcerated creators.</p>
-        <a href="/film-projects/" class="btn btn--outline" style="margin-top: var(--space-xl);">&larr; Back to Film Projects</a>
+      <div class="card card--quiet coming-soon">
+        <span class="eyebrow">Coming Soon</span>
+        <p class="text-lg mt-md">Screenplay projects coming soon. Zo Media is developing original screenplays written by incarcerated creators.</p>
+        <a href="/film-projects/" class="btn btn--outline mt-xl">&larr; Back to Film Projects</a>
       </div>
     </div>
   </section>
 
 </SubpageLayout>
+
+<style>
+  .coming-soon {
+    text-align: center;
+    padding: var(--space-3xl);
+  }
+</style>

@@ -1,5 +1,6 @@
 ---
 import SubpageLayout from '../layouts/SubpageLayout.astro';
+import SectionHeader from '../components/ui/SectionHeader.astro';
 
 const title = "Board of Directors";
 const description = "The governing body overseeing Zo Media Productions cooperative and its mission.";
@@ -30,9 +31,7 @@ const board = [
 
   <section class="section">
     <div class="container">
-      <div class="divider">
-        <span class="divider__label">Board Members</span>
-      </div>
+      <SectionHeader eyebrow="Governance" title="Board Members" />
       <div class="grid grid--3 mt-xl">
         {board.map((member) => (
           <div class="card card--quiet text-center">
@@ -71,7 +70,7 @@ const board = [
   }
   .team-photo-placeholder__label {
     font-family: var(--font-mono);
-    color: var(--color-ash);
+    color: var(--color-fog);
     font-size: var(--text-tiny);
     text-transform: uppercase;
     letter-spacing: var(--tracking-wide);

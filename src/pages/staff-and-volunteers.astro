@@ -37,9 +37,7 @@ const volunteers = [
 
   <section class="section">
     <div class="container">
-      <div class="divider">
-        <span class="divider__label">Staff</span>
-      </div>
+      <SectionHeader eyebrow="The Team" title="Staff" />
       <div class="grid grid--3 mt-xl">
         {staff.map((member) => (
           <div class="card card--quiet text-center">
@@ -57,9 +55,7 @@ const volunteers = [
 
   <section class="section section--alt">
     <div class="container">
-      <div class="divider">
-        <span class="divider__label">Volunteers</span>
-      </div>
+      <SectionHeader eyebrow="The Team" title="Volunteers" />
       <div class="grid grid--3 mt-xl">
         {volunteers.map((member) => (
           <div class="card card--quiet text-center">
@@ -102,7 +98,7 @@ const volunteers = [
   }
   .team-photo-placeholder__label {
     font-family: var(--font-mono);
-    color: var(--color-ash);
+    color: var(--color-fog);
     font-size: var(--text-tiny);
     text-transform: uppercase;
     letter-spacing: var(--tracking-wide);

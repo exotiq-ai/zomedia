@@ -179,7 +179,7 @@
   font-size: var(--text-micro);
   letter-spacing: var(--tracking-wide);
   text-transform: uppercase;
-  color: var(--color-ash);
+  color: var(--color-fog);
 }
 
 /* ——— Pullquote ——— */
@@ -221,7 +221,7 @@
   font-size: var(--text-micro);
   letter-spacing: var(--tracking-mega);
   text-transform: uppercase;
-  color: var(--color-ash);
+  color: var(--color-fog);
   flex-shrink: 0;
 }
 
@@ -278,9 +278,9 @@
 .form-control:focus {
   outline: none;
   border-color: var(--color-signal);
-  box-shadow: 0 1px 0 0 var(--color-signal);
+  box-shadow: 0 0 0 2px var(--color-signal);
 }
-.form-control::placeholder { color: var(--color-ash); }
+.form-control::placeholder { color: var(--color-ash); /* placeholder text — ash is OK here */ }
 
 textarea.form-control {
   min-height: 150px;
@@ -382,6 +382,8 @@ select.form-control {
     font-size: var(--text-h3);
   }
   .card { padding: var(--space-lg); }
+  /* Feature cards override the default --card-padding token; scale down on mobile */
+  .card--feature { --card-padding: var(--space-lg); }
 }
 
 @media (max-width: 480px) {
