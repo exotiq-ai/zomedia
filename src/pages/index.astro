@@ -130,8 +130,10 @@ import SectionHeader from '../components/ui/SectionHeader.astro';
   </section>
 </BaseLayout>
 
-<script src="../scripts/counter.ts" data-astro-rerun></script>
-<script src="../scripts/magnetic.ts" data-astro-rerun></script>
+<script>
+  import '../scripts/counter';
+  import '../scripts/magnetic';
+</script>
 
 <style>
   /* Mission pullquote — centered variant (no left border) */

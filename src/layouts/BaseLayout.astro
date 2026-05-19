@@ -78,7 +78,9 @@ const currentPath = Astro.url.pathname;
     <slot />
   </main>
   <Footer />
-  <script src="../scripts/nav.ts"></script>
-  <script src="../scripts/reveal.ts" data-astro-rerun></script>
+  <script>
+    import '../scripts/nav';
+    import '../scripts/reveal';
+  </script>
 </body>
 </html>
