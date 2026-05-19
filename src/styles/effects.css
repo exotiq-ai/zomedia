@@ -13,16 +13,217 @@ body::after {
   mix-blend-mode: overlay;
 }
 
-/* ——— Reveal animations ——— */
-html.js .reveal {
-  opacity: 0;
-  transform: translateY(24px);
-  transition: opacity var(--duration-slow) var(--ease-snap),
-              transform var(--duration-slow) var(--ease-snap);
+/* ───────────────────────────────────────────────────────────
+ * SIGNATURE HERO — home page choreographed reveal
+ * Sequence (under no-preference motion):
+ *   100ms   eyebrow fades up
+ *   280ms   line 1 wipes left→right (like a print head)
+ *   560ms   line 2 wipes left→right
+ *   820ms   "told from " of line 3 wipes in
+ *   1000ms  vertical signal-red slit appears beside "inside"
+ *   1080ms  "inside" reveals from behind the slit
+ *   1480ms  signal-red underline draws beneath "inside"
+ *   1500ms  subhead fades up
+ *   1700ms  CTAs slide up (60ms stagger)
+ *   1900ms  hero media wipes in top-down
+ * ─────────────────────────────────────────────────────────── */
+
+@media (prefers-reduced-motion: no-preference) {
+  /* Eyebrow */
+  .signature-hero__eyebrow {
+    opacity: 0;
+    transform: translateY(8px);
+    animation: sigh-fade-up 0.6s var(--ease-snap) 100ms forwards;
+  }
+
+  /* Each headline line: a horizontal clip-path wipe like a print head */
+  .signature-hero__line {
+    display: block;
+    overflow: hidden;
+  }
+  .signature-hero__line-inner {
+    display: inline-block;
+    will-change: clip-path;
+  }
+  .signature-hero__line:nth-of-type(1) .signature-hero__line-inner {
+    clip-path: inset(0 100% 0 0);
+    animation: sigh-line-wipe 0.5s var(--ease-snap) 280ms forwards;
+  }
+  .signature-hero__line:nth-of-type(2) .signature-hero__line-inner {
+    clip-path: inset(0 100% 0 0);
+    animation: sigh-line-wipe 0.5s var(--ease-snap) 560ms forwards;
+  }
+  /* Final line — only the prefix wipes; "inside" gets its own reveal */
+  .signature-hero__prefix {
+    display: inline-block;
+    clip-path: inset(0 100% 0 0);
+    animation: sigh-line-wipe 0.45s var(--ease-snap) 820ms forwards;
+  }
+  .signature-hero__period {
+    opacity: 0;
+    animation: sigh-fade 0.3s var(--ease-snap) 1380ms forwards;
+  }
+
+  /* "inside" — emerges from behind a vertical signal-red slit */
+  .signature-hero__inside {
+    display: inline-block;
+    position: relative;
+    opacity: 0;
+    transform: translateX(-12px);
+    animation: sigh-inside-reveal 0.55s var(--ease-snap) 1080ms forwards;
+  }
+  .signature-hero__inside::before {
+    /* The signal-red "slit" — appears, opens to let word through, then fades */
+    content: '';
+    position: absolute;
+    left: -4px;
+    top: 0;
+    bottom: 0;
+    width: 3px;
+    background: var(--color-signal);
+    opacity: 0;
+    animation: sigh-slit 0.45s var(--ease-snap) 1000ms forwards;
+  }
+  .signature-hero__inside::after {
+    /* The deliberate signal-red underline that follows */
+    content: '';
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: -0.05em;
+    height: 3px;
+    background: var(--color-signal);
+    transform: scaleX(0);
+    transform-origin: left;
+    animation: sigh-underline 0.5s var(--ease-snap) 1480ms forwards;
+  }
+
+  /* Subhead */
+  .signature-hero__subhead {
+    opacity: 0;
+    transform: translateY(8px);
+    animation: sigh-fade-up 0.6s var(--ease-snap) 1500ms forwards;
+  }
+
+  /* CTAs — staggered */
+  .signature-hero__cta {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  .signature-hero__cta:nth-of-type(1) {
+    animation: sigh-fade-up 0.55s var(--ease-snap) 1700ms forwards;
+  }
+  .signature-hero__cta:nth-of-type(2) {
+    animation: sigh-fade-up 0.55s var(--ease-snap) 1780ms forwards;
+  }
+
+  /* Hero media — top-down wipe */
+  .signature-hero__media {
+    clip-path: inset(0 0 100% 0);
+    will-change: clip-path;
+    animation: sigh-media-wipe 0.8s var(--ease-snap) 1900ms forwards;
+  }
+
+  @keyframes sigh-line-wipe {
+    to { clip-path: inset(0 0 0 0); }
+  }
+  @keyframes sigh-fade-up {
+    to { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes sigh-fade {
+    to { opacity: 1; }
+  }
+  @keyframes sigh-inside-reveal {
+    to { opacity: 1; transform: translateX(0); }
+  }
+  @keyframes sigh-slit {
+    0%   { opacity: 1; transform: scaleY(0); transform-origin: top; }
+    50%  { opacity: 1; transform: scaleY(1); transform-origin: top; }
+    100% { opacity: 0; transform: scaleY(1); transform-origin: bottom; }
+  }
+  @keyframes sigh-underline {
+    to { transform: scaleX(1); }
+  }
+  @keyframes sigh-media-wipe {
+    to { clip-path: inset(0 0 0 0); }
+  }
 }
-html.js .reveal.is-visible {
-  opacity: 1;
-  transform: translateY(0);
+
+/* ───────────────────────────────────────────────────────────
+ * Reveal system — three variants for scroll-triggered animation.
+ *
+ *   .reveal           — default lift+fade (24px translate-up)
+ *   .reveal--unmask   — clip-path wipe from top (use on photos, hero bands)
+ *   .reveal--stagger  — children animate in sequence (use on grids)
+ *
+ * All resolve instantly under prefers-reduced-motion.
+ * ─────────────────────────────────────────────────────────── */
+@media (prefers-reduced-motion: no-preference) {
+  html.js .reveal {
+    opacity: 0;
+    transform: translateY(24px);
+    transition: opacity var(--duration-slow) var(--ease-snap),
+                transform var(--duration-slow) var(--ease-snap);
+    will-change: opacity, transform;
+  }
+  html.js .reveal.is-visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  /* Variant: clip-path unmask from top — for photos and hero bands */
+  html.js .reveal--unmask {
+    opacity: 1;
+    transform: none;
+    clip-path: inset(0 0 100% 0);
+    transition: clip-path 1s var(--ease-snap);
+    will-change: clip-path;
+  }
+  html.js .reveal--unmask.is-visible {
+    clip-path: inset(0 0 0 0);
+  }
+
+  /* Variant: stagger children — apply to a parent, children animate sequentially */
+  html.js .reveal--stagger > * {
+    opacity: 0;
+    transform: translateY(16px);
+    transition: opacity 0.6s var(--ease-snap),
+                transform 0.6s var(--ease-snap);
+  }
+  html.js .reveal--stagger.is-visible > * {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  html.js .reveal--stagger.is-visible > *:nth-child(1) { transition-delay: 0ms; }
+  html.js .reveal--stagger.is-visible > *:nth-child(2) { transition-delay: 80ms; }
+  html.js .reveal--stagger.is-visible > *:nth-child(3) { transition-delay: 160ms; }
+  html.js .reveal--stagger.is-visible > *:nth-child(4) { transition-delay: 240ms; }
+  html.js .reveal--stagger.is-visible > *:nth-child(5) { transition-delay: 320ms; }
+  html.js .reveal--stagger.is-visible > *:nth-child(6) { transition-delay: 400ms; }
+  html.js .reveal--stagger.is-visible > *:nth-child(n+7) { transition-delay: 480ms; }
+}
+
+/* ───────────────────────────────────────────────────────────
+ * Page-load hero reveal — for every subpage (.hero--editorial)
+ * Differs from the home signature hero — softer, no special "inside" treatment.
+ * ─────────────────────────────────────────────────────────── */
+@media (prefers-reduced-motion: no-preference) {
+  .hero--editorial .hero__eyebrow,
+  .hero--editorial .hero__headline,
+  .hero--editorial .hero__subhead,
+  .hero--editorial .hero__ctas {
+    opacity: 0;
+    transform: translateY(12px);
+    animation: hero-enter 0.65s var(--ease-snap) forwards;
+  }
+  .hero--editorial .hero__eyebrow { animation-delay: 80ms; }
+  .hero--editorial .hero__headline { animation-delay: 220ms; }
+  .hero--editorial .hero__subhead { animation-delay: 380ms; }
+  .hero--editorial .hero__ctas { animation-delay: 540ms; }
+
+  @keyframes hero-enter {
+    to { opacity: 1; transform: translateY(0); }
+  }
 }
 
 /* ——— Image treatments ——— */
@@ -66,6 +267,84 @@ html.js .reveal.is-visible {
   opacity: 0.04;
   background-image: radial-gradient(circle, var(--color-bone) 1px, transparent 1px);
   background-size: 4px 4px;
+}
+
+/* ───────────────────────────────────────────────────────────
+ * Texture system (Phase 9) — programmatic, no raster assets.
+ *
+ *   .texture-paper    — subtle paper-fiber grain on dark surfaces
+ *   .texture-newsprint — newsprint-style horizontal striations
+ *   .ink-bleed        — chromatic shadow split, like off-register print
+ *   .signal-divide    — full-width signal-red hairline rule
+ * ─────────────────────────────────────────────────────────── */
+
+/* Paper-fiber grain — diagonal noise stripes at very low opacity */
+.texture-paper {
+  position: relative;
+}
+.texture-paper::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0.025;
+  background-image:
+    repeating-linear-gradient(45deg, var(--color-bone) 0 1px, transparent 1px 3px),
+    repeating-linear-gradient(-45deg, var(--color-bone) 0 1px, transparent 1px 5px);
+  mix-blend-mode: overlay;
+}
+
+/* Newsprint horizontal striations — for editorial sections (the-wire) */
+.texture-newsprint {
+  position: relative;
+}
+.texture-newsprint::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0.04;
+  background-image: repeating-linear-gradient(
+    0deg,
+    transparent 0 2px,
+    var(--color-bone) 2px 3px
+  );
+  mix-blend-mode: overlay;
+}
+
+/* Ink-bleed shadow — chromatic split like an off-register newspaper print */
+.ink-bleed {
+  box-shadow:
+    0 1px 0 var(--color-signal-dim),
+    0 14px 30px rgba(0, 0, 0, 0.4);
+}
+@media (prefers-reduced-motion: no-preference) {
+  .ink-bleed {
+    transition: box-shadow var(--duration-fast) var(--ease-snap);
+  }
+  .ink-bleed:hover {
+    box-shadow:
+      -1px 1px 0 var(--color-signal-dim),
+      1px 0 0 var(--color-wire-dim),
+      0 18px 40px rgba(0, 0, 0, 0.5);
+  }
+}
+
+/* Signal-divide — a hairline rule with a 24px signal-red emphasis at the left */
+.signal-divide {
+  position: relative;
+  height: 1px;
+  background: var(--color-border-emphasis);
+  margin-block: var(--space-2xl);
+}
+.signal-divide::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: -1px;
+  width: 24px;
+  height: 3px;
+  background: var(--color-signal);
 }
 
 /* ——— Scanline (video/media containers) ——— */
@@ -121,4 +400,101 @@ html.js .reveal.is-visible {
   bottom: 0;
   width: 3px;
   background: var(--color-signal);
+}
+
+/* ───────────────────────────────────────────────────────────
+ * Micro-interactions (Phase 6)
+ * Card hovers, magnetic CTAs, filter-pill underline, eyebrow tracking expand
+ * ─────────────────────────────────────────────────────────── */
+@media (prefers-reduced-motion: no-preference) {
+
+  /* Card hover: subtle parallax — content shifts opposite the card lift,
+     creating a faint sense of depth */
+  .card {
+    transition:
+      transform var(--duration-fast) var(--ease-snap),
+      border-color var(--duration-fast) var(--ease-snap),
+      box-shadow var(--duration-fast) var(--ease-snap);
+  }
+  .card:hover {
+    box-shadow:
+      0 14px 30px rgba(0, 0, 0, 0.35),
+      0 2px 0 0 var(--color-signal-dim);
+  }
+  .card__title,
+  .card__text {
+    transition: transform var(--duration-fast) var(--ease-snap);
+  }
+  .card:hover .card__title { transform: translateY(-1px); }
+  .card:hover .card__text { transform: translateY(-2px); }
+
+  /* Book feature: cover scales + ink-bleed shadow */
+  .book-feature {
+    transition: transform var(--duration-fast) var(--ease-snap);
+  }
+  .book-feature img {
+    transition: transform var(--duration-normal) var(--ease-snap), filter var(--duration-normal) var(--ease-snap);
+  }
+  .book-feature:hover img {
+    transform: scale(1.05);
+    filter: grayscale(0%) contrast(1.05);
+  }
+  .book-feature:hover {
+    box-shadow:
+      0 16px 40px rgba(0, 0, 0, 0.45),
+      0 0 0 2px var(--color-signal-dim);
+  }
+
+  /* Filter pill: animated underline on the active state */
+  .filter-pill {
+    position: relative;
+    transition: color var(--duration-fast) var(--ease-snap);
+  }
+  .filter-pill::after {
+    content: '';
+    position: absolute;
+    left: var(--space-md);
+    right: var(--space-md);
+    bottom: 4px;
+    height: 2px;
+    background: var(--color-signal);
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform var(--duration-fast) var(--ease-snap);
+  }
+  .filter-pill.active::after,
+  .filter-pill[aria-pressed="true"]::after {
+    transform: scaleX(1);
+  }
+
+  /* Eyebrow tracking expand on viewport enter — opt-in via .eyebrow--animate */
+  .eyebrow--animate {
+    letter-spacing: 0.15em;
+    transition: letter-spacing 0.8s var(--ease-snap);
+  }
+  .eyebrow--animate.is-visible,
+  .reveal.is-visible .eyebrow--animate,
+  .reveal--stagger.is-visible .eyebrow--animate {
+    letter-spacing: var(--tracking-mega);
+  }
+
+  /* Magnetic CTA — subtle proximity attract on the home hero primary buttons */
+  .btn[data-magnetic] {
+    transition: transform var(--duration-fast) var(--ease-snap),
+                background var(--duration-fast) var(--ease-snap),
+                color var(--duration-fast) var(--ease-snap),
+                border-color var(--duration-fast) var(--ease-snap);
+    will-change: transform;
+  }
+
+  /* Project card (special projects) — line-draw on hover */
+  .project-card:not(.project-card--coming-soon) {
+    transition: transform var(--duration-fast) var(--ease-snap),
+                box-shadow var(--duration-fast) var(--ease-snap);
+  }
+  .project-card:not(.project-card--coming-soon):hover {
+    box-shadow:
+      0 16px 40px rgba(0, 0, 0, 0.4),
+      0 2px 0 0 var(--color-signal-dim);
+  }
 }

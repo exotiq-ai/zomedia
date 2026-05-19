@@ -1,0 +1,29 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" fill="none" aria-hidden="true">
+  <!-- An open book whose pages curl up into mountain ridges — pages-as-landscape -->
+  <!-- Distant mountains on the horizon -->
+  <path d="M0 100 L40 78 L70 88 L100 65 L130 80 L160 70 L200 88 L200 110 L0 110 Z"
+        fill="currentColor" opacity="0.18" />
+  <path d="M0 105 L30 92 L60 100 L95 80 L125 95 L160 88 L200 100 L200 115 L0 115 Z"
+        fill="currentColor" opacity="0.28" />
+  <!-- Open book base — V-shape -->
+  <path d="M30 145 L100 130 L100 175 L30 175 Z"
+        fill="rgba(232, 226, 217, 0.04)" stroke="currentColor" stroke-width="1.5" />
+  <path d="M100 130 L170 145 L170 175 L100 175 Z"
+        fill="rgba(232, 226, 217, 0.04)" stroke="currentColor" stroke-width="1.5" />
+  <!-- Center spine -->
+  <line x1="100" y1="130" x2="100" y2="175" stroke="currentColor" stroke-width="1.5" />
+  <!-- Page lines — curling up into the mountains -->
+  <g stroke="currentColor" stroke-width="0.75" opacity="0.5">
+    <path d="M40 150 L92 138" />
+    <path d="M45 158 L95 148" />
+    <path d="M50 165 L96 158" />
+  </g>
+  <g stroke="currentColor" stroke-width="0.75" opacity="0.5">
+    <path d="M104 138 L160 150" />
+    <path d="M105 148 L160 158" />
+    <path d="M104 158 L155 165" />
+  </g>
+  <!-- The "Zo" sun — a small disc rising over the mountains -->
+  <circle cx="100" cy="60" r="14" fill="#C8A84E" opacity="0.85" />
+  <circle cx="100" cy="60" r="20" stroke="#C8A84E" stroke-width="1" opacity="0.3" />
+</svg>

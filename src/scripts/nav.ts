@@ -1,3 +1,5 @@
+export {};
+
 const nav = document.querySelector<HTMLElement>('.nav');
 const toggle = document.querySelector<HTMLButtonElement>('.nav__toggle');
 const menu = document.querySelector<HTMLElement>('.nav__menu');

@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" fill="none" aria-hidden="true">
+  <!-- Stylized globe with prison-bar overlay; bars densest over the US -->
+  <circle cx="100" cy="100" r="78" stroke="currentColor" stroke-width="1.5" opacity="0.4" />
+  <ellipse cx="100" cy="100" rx="78" ry="32" stroke="currentColor" stroke-width="1" opacity="0.25" />
+  <ellipse cx="100" cy="100" rx="78" ry="60" stroke="currentColor" stroke-width="1" opacity="0.25" />
+  <line x1="100" y1="22" x2="100" y2="178" stroke="currentColor" stroke-width="1" opacity="0.25" />
+  <!-- Continent approximations -->
+  <path d="M50 70 Q60 60 75 65 Q85 75 80 90 Q70 95 55 88 Z" fill="currentColor" opacity="0.5" />
+  <path d="M85 100 Q95 92 110 95 Q120 110 115 125 Q100 130 88 115 Z" fill="currentColor" opacity="0.5" />
+  <path d="M125 80 Q140 75 150 85 Q145 100 130 95 Z" fill="currentColor" opacity="0.4" />
+  <path d="M130 120 Q145 118 150 135 Q140 145 128 138 Z" fill="currentColor" opacity="0.4" />
+  <!-- Prison bars — densest over the US (left side of the globe) -->
+  <g stroke="#D64045" stroke-width="2" stroke-linecap="round">
+    <line x1="50" y1="55" x2="50" y2="105" />
+    <line x1="60" y1="50" x2="60" y2="110" />
+    <line x1="70" y1="48" x2="70" y2="112" />
+    <line x1="80" y1="50" x2="80" y2="110" />
+  </g>
+  <g stroke="#D64045" stroke-width="1" opacity="0.5" stroke-linecap="round">
+    <line x1="95" y1="55" x2="95" y2="115" />
+    <line x1="110" y1="60" x2="110" y2="118" />
+    <line x1="125" y1="62" x2="125" y2="120" />
+    <line x1="140" y1="65" x2="140" y2="125" />
+  </g>
+  <g stroke="#D64045" stroke-width="0.75" opacity="0.3" stroke-linecap="round">
+    <line x1="155" y1="68" x2="155" y2="128" />
+  </g>
+</svg>

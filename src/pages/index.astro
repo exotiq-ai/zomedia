@@ -4,20 +4,32 @@ import SectionHeader from '../components/ui/SectionHeader.astro';
 ---
 
 <BaseLayout title="Amplifying Incarcerated Voices Through Literature, Film & Art">
-  <!-- Hero: Split Layout (home-page exception) -->
-  <section class="hero hero--split">
+  <!-- Hero: Split Layout (home-page exception) — signature reveal moment -->
+  <section class="hero hero--split signature-hero" data-signature-hero>
     <div class="hero__inner">
-      <div>
-        <span class="hero__eyebrow">A UBFSF 501(c)(3) Cooperative</span>
-        <h1 class="hero__headline">The stories that<br />matter most are<br />told from inside.</h1>
-        <p class="hero__subhead">Zo Media Productions is a cooperative that publishes literature, produces film, and exhibits art created by incarcerated people — building economic power and driving justice reform from behind the wall.</p>
-        <div class="hero__ctas">
-          <a href="/books/" class="btn btn--primary btn--lg">Explore the Books</a>
-          <a href="/support/" class="btn btn--outline btn--lg">Support the Mission</a>
+      <div class="signature-hero__copy">
+        <span class="hero__eyebrow signature-hero__eyebrow">A UBFSF 501(c)(3) Cooperative</span>
+        <h1 class="hero__headline signature-hero__headline" aria-label="The stories that matter most are told from inside.">
+          <span class="signature-hero__line" aria-hidden="true">
+            <span class="signature-hero__line-inner">The stories that</span>
+          </span>
+          <span class="signature-hero__line" aria-hidden="true">
+            <span class="signature-hero__line-inner">matter most are</span>
+          </span>
+          <span class="signature-hero__line signature-hero__line--final" aria-hidden="true">
+            <span class="signature-hero__line-inner">
+              <span class="signature-hero__prefix">told from&nbsp;</span><span class="signature-hero__inside">inside</span><span class="signature-hero__period">.</span>
+            </span>
+          </span>
+        </h1>
+        <p class="hero__subhead signature-hero__subhead">Zo Media Productions is a cooperative that publishes literature, produces film, and exhibits art created by incarcerated people &mdash; building economic power and driving justice reform from behind the wall.</p>
+        <div class="hero__ctas signature-hero__ctas">
+          <a href="/books/" class="btn btn--primary btn--lg signature-hero__cta" data-magnetic>Explore the Books</a>
+          <a href="/support/" class="btn btn--outline btn--lg signature-hero__cta" data-magnetic>Support the Mission</a>
         </div>
       </div>
-      <div class="hero__media">
-        <img src="/assets/images/zo-media/hero-ivan.jpg" alt="An incarcerated writer at work — pen to paper, creating from inside" loading="eager" />
+      <div class="hero__media signature-hero__media">
+        <img src="/assets/images/zo-media/hero-ivan.jpg" alt="An incarcerated writer at work — pen to paper, creating from inside" loading="eager" fetchpriority="high" />
       </div>
     </div>
   </section>
@@ -118,7 +130,8 @@ import SectionHeader from '../components/ui/SectionHeader.astro';
   </section>
 </BaseLayout>
 
-<script src="../scripts/counter.ts"></script>
+<script src="../scripts/counter.ts" data-astro-rerun></script>
+<script src="../scripts/magnetic.ts" data-astro-rerun></script>
 
 <style>
   /* Mission pullquote — centered variant (no left border) */

@@ -39,7 +39,7 @@ import SectionHeader from '../components/ui/SectionHeader.astro';
   </section>
 
   <!-- Cooperative Model -->
-  <section class="section section--alt coop">
+  <section class="section section--alt coop" data-coop-reveal>
     <div class="container">
       <header class="coop__header reveal">
         <span class="eyebrow">How We Work</span>
@@ -47,9 +47,9 @@ import SectionHeader from '../components/ui/SectionHeader.astro';
         <p class="coop__lede">Two pillars hold the cooperative together &mdash; one structural, one financial. Both carry equal weight.</p>
       </header>
 
-      <div class="coop__grid reveal">
+      <div class="coop__grid">
         <!-- Pillar 01 — People -->
-        <article class="pillar">
+        <article class="pillar pillar--01">
           <header class="pillar__head">
             <span class="pillar__num">01</span>
             <span class="pillar__cat">People</span>
@@ -79,7 +79,7 @@ import SectionHeader from '../components/ui/SectionHeader.astro';
         </article>
 
         <!-- Pillar 02 — Capital -->
-        <article class="pillar">
+        <article class="pillar pillar--02">
           <header class="pillar__head">
             <span class="pillar__num">02</span>
             <span class="pillar__cat">Capital</span>
@@ -89,10 +89,10 @@ import SectionHeader from '../components/ui/SectionHeader.astro';
           <div class="splitbar" aria-hidden="true">
             <div class="splitbar__row">
               <div class="splitbar__seg splitbar__seg--ubfsf">
-                <span class="splitbar__pct">50%</span>
+                <span class="splitbar__pct" data-coop-pct data-target="50">0%</span>
               </div>
               <div class="splitbar__seg splitbar__seg--coop">
-                <span class="splitbar__pct">50%</span>
+                <span class="splitbar__pct" data-coop-pct data-target="50">0%</span>
               </div>
             </div>
             <div class="splitbar__legend">
@@ -154,6 +154,8 @@ import SectionHeader from '../components/ui/SectionHeader.astro';
     </div>
   </section>
 </SubpageLayout>
+
+<script src="../scripts/coop-reveal.ts" data-astro-rerun></script>
 
 <style>
   /* ── Values cards override (slightly more padding than default) ── */
@@ -494,6 +496,117 @@ import SectionHeader from '../components/ui/SectionHeader.astro';
     .splitbar__legend {
       grid-template-columns: 1fr;
       gap: var(--space-sm);
+    }
+  }
+
+  /* ───────────────────────────────────────────────────────────
+   * Cooperative model — scroll-triggered interactive
+   *
+   * On viewport enter:
+   *   Pillar 01 nodes slide in from outside, pivot drops in, rules draw out
+   *   Pillar 02 splitbar fills (left then right), percentages count up,
+   *     legend fades in.
+   * ─────────────────────────────────────────────────────────── */
+  @media (prefers-reduced-motion: no-preference) {
+
+    /* --- Pillar 01 — Co-Chair diagram --- */
+    .coop[data-coop-reveal] .cochair__node--inside {
+      opacity: 0;
+      transform: translateX(-32px);
+      transition: opacity 0.6s var(--ease-snap), transform 0.6s var(--ease-snap);
+      transition-delay: 200ms;
+    }
+    .coop[data-coop-reveal] .cochair__node--outside {
+      opacity: 0;
+      transform: translateX(32px);
+      transition: opacity 0.6s var(--ease-snap), transform 0.6s var(--ease-snap);
+      transition-delay: 200ms;
+    }
+    .coop[data-coop-reveal] .cochair__pivot-label {
+      opacity: 0;
+      transform: translateY(-8px);
+      transition: opacity 0.5s var(--ease-snap), transform 0.5s var(--ease-snap);
+      transition-delay: 600ms;
+    }
+    .coop[data-coop-reveal] .cochair__pivot-rule {
+      transform: scaleY(0);
+      transition: transform 0.4s var(--ease-snap);
+      transition-delay: 600ms;
+    }
+
+    .coop[data-coop-reveal].is-revealing .cochair__node--inside,
+    .coop[data-coop-reveal].is-revealing .cochair__node--outside {
+      opacity: 1;
+      transform: translateX(0);
+    }
+    .coop[data-coop-reveal].is-revealing .cochair__pivot-label {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    .coop[data-coop-reveal].is-revealing .cochair__pivot-rule {
+      transform: scaleY(1);
+    }
+
+    /* --- Pillar 02 — Split bar --- */
+    .coop[data-coop-reveal] .splitbar__row {
+      position: relative;
+      overflow: hidden;
+    }
+    /* Each segment starts at 0 width, fills to 50% */
+    .coop[data-coop-reveal] .splitbar__seg--ubfsf {
+      transform: scaleX(0);
+      transform-origin: left;
+      transition: transform 0.7s var(--ease-snap);
+      transition-delay: 400ms;
+    }
+    .coop[data-coop-reveal] .splitbar__seg--coop {
+      transform: scaleX(0);
+      transform-origin: right;
+      transition: transform 0.7s var(--ease-snap);
+      transition-delay: 700ms;
+    }
+    /* Percentage text fades in slightly after the bar starts filling */
+    .coop[data-coop-reveal] .splitbar__seg--ubfsf .splitbar__pct {
+      opacity: 0;
+      transition: opacity 0.4s var(--ease-snap);
+      transition-delay: 700ms;
+    }
+    .coop[data-coop-reveal] .splitbar__seg--coop .splitbar__pct {
+      opacity: 0;
+      transition: opacity 0.4s var(--ease-snap);
+      transition-delay: 1000ms;
+    }
+    .coop[data-coop-reveal] .splitbar__legend {
+      opacity: 0;
+      transform: translateY(8px);
+      transition: opacity 0.5s var(--ease-snap), transform 0.5s var(--ease-snap);
+      transition-delay: 1200ms;
+    }
+
+    .coop[data-coop-reveal].is-revealing .splitbar__seg--ubfsf,
+    .coop[data-coop-reveal].is-revealing .splitbar__seg--coop {
+      transform: scaleX(1);
+    }
+    .coop[data-coop-reveal].is-revealing .splitbar__pct {
+      opacity: 1;
+    }
+    .coop[data-coop-reveal].is-revealing .splitbar__legend {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* Body paragraphs fade in after their pillar visuals settle */
+    .coop[data-coop-reveal] .pillar--01 .pillar__body,
+    .coop[data-coop-reveal] .pillar--02 .pillar__body {
+      opacity: 0;
+      transform: translateY(12px);
+      transition: opacity 0.5s var(--ease-snap), transform 0.5s var(--ease-snap);
+    }
+    .coop[data-coop-reveal] .pillar--01 .pillar__body { transition-delay: 900ms; }
+    .coop[data-coop-reveal] .pillar--02 .pillar__body { transition-delay: 1400ms; }
+    .coop[data-coop-reveal].is-revealing .pillar__body {
+      opacity: 1;
+      transform: translateY(0);
     }
   }
 </style>
