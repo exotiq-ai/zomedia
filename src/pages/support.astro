@@ -1,10 +1,14 @@
 ---
 import SubpageLayout from '../layouts/SubpageLayout.astro';
+import SectionHeader from '../components/ui/SectionHeader.astro';
 ---
 
 <SubpageLayout title="Support" breadcrumbs={[{ label: "Support" }]}>
-  <section class="support-hero">
-    <div class="support-hero__inner">
+  <section
+    class="hero hero--editorial hero--editorial-left"
+    style="--hero-image: url('/assets/images/at-desk-flipped.png'); --hero-image-position: right center;"
+  >
+    <div class="hero__inner">
       <span class="hero__eyebrow">Make an Impact</span>
       <h1 class="hero__headline">Support the<br />Movement</h1>
       <p class="hero__subhead">Every dollar fuels creative work by incarcerated artists, funds new publications, and contributes to the UBFSF Community Grant Fund — building pathways to economic independence and justice reform.</p>
@@ -14,29 +18,28 @@ import SubpageLayout from '../layouts/SubpageLayout.astro';
   <!-- Donation Tiers -->
   <section class="section section--alt">
     <div class="container reveal">
-      <span class="label">Give Today</span>
-      <h2 class="text-center">Choose Your Impact</h2>
-      <div class="grid grid--3" style="margin-top: var(--space-2xl);">
-        <div class="card" style="padding: var(--space-xl); text-align: center;">
+      <SectionHeader eyebrow="Give Today" title="Choose Your Impact" align="center" />
+      <div class="grid grid--3 mt-2xl">
+        <div class="card support-tier">
           <div class="signal-line"></div>
-          <span class="stat__number" style="font-size: var(--text-3xl);">$25</span>
-          <h3 class="card__title" style="margin-top: var(--space-sm);">Sustainer</h3>
+          <span class="stat__number support-tier__amount">$25</span>
+          <h3 class="card__title mt-sm">Sustainer</h3>
           <p class="card__text">Covers one book's production costs — editing, layout, and printing for a single title by an incarcerated author.</p>
-          <a href="#donate" class="btn btn--outline" style="margin-top: var(--space-lg); width: 100%;">Donate $25</a>
+          <a href="#donate" class="btn btn--outline support-tier__cta">Donate $25</a>
         </div>
-        <div class="card" style="padding: var(--space-xl); text-align: center; border-color: var(--color-signal);">
+        <div class="card support-tier support-tier--recommended">
           <div class="signal-line"></div>
-          <span class="stat__number" style="font-size: var(--text-3xl); color: var(--color-signal);">$50</span>
-          <h3 class="card__title" style="margin-top: var(--space-sm);">Champion</h3>
+          <span class="stat__number support-tier__amount text-signal">$50</span>
+          <h3 class="card__title mt-sm">Champion</h3>
           <p class="card__text">Sponsors a creator's materials — paper, postage, and supplies needed to draft manuscripts from inside the facility.</p>
-          <a href="#donate" class="btn btn--primary" style="margin-top: var(--space-lg); width: 100%;">Donate $50</a>
+          <a href="#donate" class="btn btn--primary support-tier__cta">Donate $50</a>
         </div>
-        <div class="card" style="padding: var(--space-xl); text-align: center;">
+        <div class="card support-tier">
           <div class="signal-line"></div>
-          <span class="stat__number" style="font-size: var(--text-3xl);">$100</span>
-          <h3 class="card__title" style="margin-top: var(--space-sm);">Patron</h3>
+          <span class="stat__number support-tier__amount">$100</span>
+          <h3 class="card__title mt-sm">Patron</h3>
           <p class="card__text">Funds a full publication cycle — from manuscript to marketplace — putting a finished book into readers' hands.</p>
-          <a href="#donate" class="btn btn--outline" style="margin-top: var(--space-lg); width: 100%;">Donate $100</a>
+          <a href="#donate" class="btn btn--outline support-tier__cta">Donate $100</a>
         </div>
       </div>
     </div>
@@ -45,17 +48,16 @@ import SubpageLayout from '../layouts/SubpageLayout.astro';
   <!-- Impact / Distribution -->
   <section class="section">
     <div class="container reveal">
-      <span class="label">Where It Goes</span>
-      <h2 class="text-center">How Funds Are Distributed</h2>
-      <div class="grid grid--2" style="margin-top: var(--space-2xl);">
-        <div class="card" style="padding: var(--space-xl);">
-          <span class="stat__number" style="font-size: var(--text-3xl); color: var(--color-wire);">50%</span>
-          <h3 class="card__title" style="margin-top: var(--space-sm);">UBFSF Community Grant Fund</h3>
+      <SectionHeader eyebrow="Where It Goes" title="How Funds Are Distributed" align="center" />
+      <div class="grid grid--2 mt-2xl">
+        <div class="card support-distribution">
+          <span class="stat__number support-distribution__pct text-wire">50%</span>
+          <h3 class="card__title mt-sm">UBFSF Community Grant Fund</h3>
           <p class="card__text">Half of all revenue goes directly to the United Black Family Scholarship Foundation's Community Grant Fund — supporting education, reentry programs, and family assistance for incarcerated individuals.</p>
         </div>
-        <div class="card" style="padding: var(--space-xl);">
-          <span class="stat__number" style="font-size: var(--text-3xl); color: var(--color-phosphor);">50%</span>
-          <h3 class="card__title" style="margin-top: var(--space-sm);">Cooperative Revenue Share</h3>
+        <div class="card support-distribution">
+          <span class="stat__number support-distribution__pct support-distribution__pct--alt">50%</span>
+          <h3 class="card__title mt-sm">Cooperative Revenue Share</h3>
           <p class="card__text">The other half is shared among creators and reinvested into new projects — paying incarcerated authors, artists, and filmmakers for their work and funding the next wave of publications.</p>
         </div>
       </div>
@@ -65,26 +67,25 @@ import SubpageLayout from '../layouts/SubpageLayout.astro';
   <!-- Other Ways to Help -->
   <section class="section section--alt">
     <div class="container reveal">
-      <span class="label">Beyond Donations</span>
-      <h2 class="text-center">Other Ways to Help</h2>
-      <div class="grid grid--3" style="margin-top: var(--space-2xl);">
-        <div class="card" style="padding: var(--space-xl);">
+      <SectionHeader eyebrow="Beyond Donations" title="Other Ways to Help" align="center" />
+      <div class="grid grid--3 mt-2xl">
+        <div class="card card--quiet support-help">
           <div class="signal-line"></div>
           <h3 class="card__title">Volunteer</h3>
           <p class="card__text">Join the cooperative as an outside co-chair. Student volunteers and community advocates partner directly with incarcerated members to lead projects.</p>
-          <a href="/contact/" class="btn btn--outline" style="margin-top: var(--space-lg);">Get Involved</a>
+          <a href="/contact/" class="btn btn--outline mt-lg">Get Involved</a>
         </div>
-        <div class="card" style="padding: var(--space-xl);">
+        <div class="card card--quiet support-help">
           <div class="signal-line"></div>
           <h3 class="card__title">Subscribe to The Wire</h3>
           <p class="card__text">Read and share our flagship newsletter — advocacy journalism written by and for incarcerated people. Every subscriber amplifies these voices.</p>
-          <a href="/the-wire/" class="btn btn--outline" style="margin-top: var(--space-lg);">Read The Wire</a>
+          <a href="/the-wire/" class="btn btn--outline mt-lg">Read The Wire</a>
         </div>
-        <div class="card" style="padding: var(--space-xl);">
+        <div class="card card--quiet support-help">
           <div class="signal-line"></div>
           <h3 class="card__title">Share Our Work</h3>
           <p class="card__text">Follow us on social media and share our publications. Visibility is currency — every share reaches someone who needs to hear these stories.</p>
-          <a href="/books/" class="btn btn--outline" style="margin-top: var(--space-lg);">Browse Books</a>
+          <a href="/books/" class="btn btn--outline mt-lg">Browse Books</a>
         </div>
       </div>
     </div>
@@ -92,66 +93,36 @@ import SubpageLayout from '../layouts/SubpageLayout.astro';
 </SubpageLayout>
 
 <style>
-  .support-hero {
-    position: relative;
-    min-height: 70vh;
-    display: flex;
-    align-items: center;
-    background: url('/assets/images/at-desk-flipped.png') right center/cover no-repeat;
-    background-color: var(--color-graphite);
-    overflow: hidden;
+  /* Donation tier cards: roomy padding + centered content */
+  .support-tier {
+    padding: var(--space-xl);
+    text-align: center;
   }
-  /* Left-side darkening so headline stays legible; person at desk visible on the right */
-  .support-hero::before {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background: linear-gradient(
-      to right,
-      rgba(10, 10, 11, 0.92) 0%,
-      rgba(10, 10, 11, 0.85) 35%,
-      rgba(10, 10, 11, 0.45) 60%,
-      rgba(10, 10, 11, 0.15) 85%,
-      rgba(10, 10, 11, 0) 100%
-    );
-    z-index: 1;
+  .support-tier__amount {
+    font-size: var(--text-3xl);
   }
-  /* Subtle bottom fade to settle into next section */
-  .support-hero::after {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background: linear-gradient(
-      to bottom,
-      rgba(10, 10, 11, 0) 70%,
-      rgba(10, 10, 11, 0.6) 100%
-    );
-    z-index: 1;
-  }
-  .support-hero__inner {
-    position: relative;
-    z-index: 2;
-    max-width: var(--container-max);
-    margin-inline: auto;
-    padding: var(--space-3xl) var(--grid-margin) var(--space-2xl);
+  .support-tier__cta {
+    margin-top: var(--space-lg);
     width: 100%;
   }
-  .support-hero__inner > * {
-    max-width: 56ch;
+  /* Recommended tier — signal-red border draws the eye */
+  .support-tier--recommended {
+    border-color: var(--color-signal);
   }
 
-  /* On mobile, image moves behind text with darker overlay (no room for split) */
-  @media (max-width: 768px) {
-    .support-hero {
-      min-height: 60vh;
-      background-position: 65% center;
-    }
-    .support-hero::before {
-      background: linear-gradient(
-        to bottom,
-        rgba(10, 10, 11, 0.6) 0%,
-        rgba(10, 10, 11, 0.88) 100%
-      );
-    }
+  /* Fund-distribution showcase cards */
+  .support-distribution {
+    padding: var(--space-xl);
+  }
+  .support-distribution__pct {
+    font-size: var(--text-3xl);
+  }
+  .support-distribution__pct--alt {
+    color: var(--color-phosphor);
+  }
+
+  /* "Other Ways to Help" — quiet cards, consistent padding */
+  .support-help {
+    padding: var(--space-xl);
   }
 </style>

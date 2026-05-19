@@ -1,11 +1,12 @@
 ---
 import SubpageLayout from '../layouts/SubpageLayout.astro';
+import SectionHeader from '../components/ui/SectionHeader.astro';
 ---
 
 <SubpageLayout title="The Phuckin' Wire" description="Advocacy journalism written by and for incarcerated people. Unfiltered. Uncensored. Unapologetic." breadcrumbs={[{ label: "The Phuckin' Wire" }]}>
 
-  <section class="hero hero--full section--dark">
-    <div class="container">
+  <section class="hero hero--editorial hero--editorial-center section--dark">
+    <div class="hero__inner">
       <span class="hero__eyebrow">THE PUBLICATION</span>
       <h1 class="hero__headline wire-headline">The Phuckin' Wire</h1>
       <p class="hero__subhead">Advocacy journalism written by and for incarcerated people. Unfiltered. Uncensored. Unapologetic.</p>
@@ -14,20 +15,23 @@ import SubpageLayout from '../layouts/SubpageLayout.astro';
 
   <section class="section">
     <div class="container container--narrow">
-      <span class="label">About the Wire</span>
-      <h2 style="margin-top: var(--space-md);">Journalism from the Inside</h2>
-      <p class="text-lg" style="margin-top: var(--space-lg);">The Phuckin' Wire is a newsletter covering criminal justice, creative work, and policy &mdash; written entirely by incarcerated people. Published by Zo Media Productions as a Substack, the Wire gives voice to those the system was designed to silence.</p>
-      <p style="margin-top: var(--space-md); color: var(--color-fog);">Each issue features investigative reporting, personal essays, poetry, and commentary on the criminal justice system. No editorial filters. No outside gatekeepers. Just the truth, told by the people living it.</p>
+      <SectionHeader eyebrow="About the Wire" title="Journalism from the Inside" />
+      <p class="text-lg mt-lg">The Phuckin' Wire is a newsletter covering criminal justice, creative work, and policy &mdash; written entirely by incarcerated people. Published by Zo Media Productions as a Substack, the Wire gives voice to those the system was designed to silence.</p>
+      <p class="text-fog mt-md">Each issue features investigative reporting, personal essays, poetry, and commentary on the criminal justice system. No editorial filters. No outside gatekeepers. Just the truth, told by the people living it.</p>
     </div>
   </section>
 
   <div class="divider"><span class="divider__label">Subscribe</span></div>
 
   <section class="section section--alt">
-    <div class="container container--narrow" style="text-align: center;">
-      <span class="label" style="color: var(--color-signal);">Get Every Issue</span>
-      <h2 style="margin-top: var(--space-md);">Never miss a story from inside.</h2>
-      <p class="text-lg" style="margin-top: var(--space-lg);">The Wire is available free &mdash; with a paid tier for those who want to directly fund incarcerated journalists.</p>
+    <div class="container container--narrow text-center">
+      <SectionHeader
+        eyebrow="Get Every Issue"
+        title="Never miss a story from inside."
+        align="center"
+        eyebrowTone="signal"
+      />
+      <p class="text-lg mt-lg">The Wire is available free &mdash; with a paid tier for those who want to directly fund incarcerated journalists.</p>
       <form data-netlify="true" name="wire-subscribe" method="POST" class="wire-form">
         <input type="hidden" name="form-name" value="wire-subscribe" />
         <div class="wire-form__row">
@@ -41,11 +45,10 @@ import SubpageLayout from '../layouts/SubpageLayout.astro';
 
   <section class="section">
     <div class="container container--narrow">
-      <span class="label">Institutional Partners</span>
-      <h2 style="margin-top: var(--space-md);">Sponsorships</h2>
-      <p class="text-lg" style="margin-top: var(--space-lg);">The Wire is supported by institutional sponsors committed to amplifying incarcerated voices. Johns Hopkins University is a confirmed sponsor.</p>
-      <p style="margin-top: var(--space-md); color: var(--color-fog);">Interested in sponsoring The Wire? Institutional and organizational sponsorships are available. Reach out to discuss how your institution can support independent journalism from inside the system.</p>
-      <a href="/contact/" class="btn btn--outline" style="margin-top: var(--space-xl);">Inquire About Sponsorship</a>
+      <SectionHeader eyebrow="Institutional Partners" title="Sponsorships" />
+      <p class="text-lg mt-lg">The Wire is supported by institutional sponsors committed to amplifying incarcerated voices. Johns Hopkins University is a confirmed sponsor.</p>
+      <p class="text-fog mt-md">Interested in sponsoring The Wire? Institutional and organizational sponsorships are available. Reach out to discuss how your institution can support independent journalism from inside the system.</p>
+      <a href="/contact/" class="btn btn--outline mt-xl">Inquire About Sponsorship</a>
     </div>
   </section>
 
@@ -53,20 +56,19 @@ import SubpageLayout from '../layouts/SubpageLayout.astro';
 
   <section class="section section--alt">
     <div class="container">
-      <span class="label">Recent Issues</span>
-      <h2 style="margin-top: var(--space-md);">Latest from The Wire</h2>
-      <div class="grid grid--3" style="margin-top: var(--space-2xl);">
-        <div class="card" style="text-align: center; padding: var(--space-2xl);">
-          <span class="label" style="color: var(--color-wire);">Coming Soon</span>
-          <p class="card__text" style="margin-top: var(--space-sm);">Issues will appear here as they are published.</p>
+      <SectionHeader eyebrow="Recent Issues" title="Latest from The Wire" />
+      <div class="grid grid--3 mt-2xl">
+        <div class="card card--quiet wire-placeholder">
+          <span class="eyebrow">Coming Soon</span>
+          <p class="card__text mt-sm">Issues will appear here as they are published.</p>
         </div>
-        <div class="card" style="text-align: center; padding: var(--space-2xl);">
-          <span class="label" style="color: var(--color-wire);">Coming Soon</span>
-          <p class="card__text" style="margin-top: var(--space-sm);">Subscribe above to get notified when new issues drop.</p>
+        <div class="card card--quiet wire-placeholder">
+          <span class="eyebrow">Coming Soon</span>
+          <p class="card__text mt-sm">Subscribe above to get notified when new issues drop.</p>
         </div>
-        <div class="card" style="text-align: center; padding: var(--space-2xl);">
-          <span class="label" style="color: var(--color-wire);">Coming Soon</span>
-          <p class="card__text" style="margin-top: var(--space-sm);">The Wire publishes on a rolling basis.</p>
+        <div class="card card--quiet wire-placeholder">
+          <span class="eyebrow">Coming Soon</span>
+          <p class="card__text mt-sm">The Wire publishes on a rolling basis.</p>
         </div>
       </div>
     </div>
@@ -97,9 +99,17 @@ import SubpageLayout from '../layouts/SubpageLayout.astro';
     margin-top: var(--space-md);
   }
 
+  /* Placeholder issue cards — centered, roomy */
+  .wire-placeholder {
+    text-align: center;
+    padding: var(--space-2xl);
+  }
+
   @media (max-width: 600px) {
     .wire-form__row {
       flex-direction: column;
     }
   }
 </style>
+</content>
+</invoke>

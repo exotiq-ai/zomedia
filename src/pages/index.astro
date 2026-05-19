@@ -1,9 +1,10 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
+import SectionHeader from '../components/ui/SectionHeader.astro';
 ---
 
 <BaseLayout title="Amplifying Incarcerated Voices Through Literature, Film & Art">
-  <!-- Hero: Split Layout -->
+  <!-- Hero: Split Layout (home-page exception) -->
   <section class="hero hero--split">
     <div class="hero__inner">
       <div>
@@ -24,8 +25,8 @@ import BaseLayout from '../layouts/BaseLayout.astro';
   <!-- Mission Pullquote -->
   <section class="section section--alt">
     <div class="container container--narrow text-center reveal">
-      <span class="label">Our Mission</span>
-      <blockquote class="pullquote" style="border-left: none; text-align: center; padding-inline: 0;">
+      <span class="eyebrow">Our Mission</span>
+      <blockquote class="pullquote pullquote--center">
         We provide the platform for incarcerated talent to produce literature, film, and visual art that drives systemic justice reform. Every story published, every piece exhibited, and every film produced creates both economic opportunity for the creator and a window into a system most Americans never see.
       </blockquote>
     </div>
@@ -33,10 +34,9 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 
   <!-- Stats / Impact Counter -->
   <section class="section">
-    <div class="container text-center reveal">
-      <span class="label">Impact</span>
-      <h2>By The Numbers</h2>
-      <div class="stats" style="margin-top: var(--space-2xl);">
+    <div class="container reveal">
+      <SectionHeader eyebrow="Impact" title="By The Numbers" align="center" />
+      <div class="stats mt-2xl">
         <div class="stat">
           <span class="stat__number" data-counter data-target="12">0</span>
           <span class="stat__label">Books Published</span>
@@ -60,18 +60,18 @@ import BaseLayout from '../layouts/BaseLayout.astro';
   <!-- The Wire Promo -->
   <section class="section section--alt">
     <div class="container reveal">
-      <span class="label">The Publication</span>
-      <div class="grid grid--asymmetric" style="align-items: center; margin-top: var(--space-lg);">
+      <span class="eyebrow">The Publication</span>
+      <div class="grid grid--asymmetric wire-promo__grid mt-lg">
         <div>
           <h2>The Phuckin' Wire</h2>
-          <p class="text-lg" style="margin-top: var(--space-lg);">Our flagship newsletter — advocacy journalism written by and for incarcerated people. Unfiltered. Uncensored. Unapologetic.</p>
-          <a href="/the-wire/" class="btn btn--outline" style="margin-top: var(--space-xl);">Read The Wire</a>
+          <p class="text-lg mt-lg">Our flagship newsletter — advocacy journalism written by and for incarcerated people. Unfiltered. Uncensored. Unapologetic.</p>
+          <a href="/the-wire/" class="btn btn--outline mt-xl">Read The Wire</a>
         </div>
-        <div class="card halftone" style="text-align: center; padding: var(--space-2xl) var(--space-xl);">
-          <span class="label" style="color: var(--color-signal);">Subscribe</span>
-          <p class="card__title" style="margin-top: var(--space-sm);">Get every issue delivered.</p>
-          <p class="card__text" style="margin-top: var(--space-sm);">Stories, investigations, and creative work from inside the system.</p>
-          <form data-netlify="true" name="wire-subscribe" method="POST" style="display: flex; gap: var(--space-sm); margin-top: var(--space-lg);">
+        <div class="card halftone wire-promo__card">
+          <span class="eyebrow eyebrow--signal">Subscribe</span>
+          <p class="card__title mt-sm">Get every issue delivered.</p>
+          <p class="card__text mt-sm">Stories, investigations, and creative work from inside the system.</p>
+          <form data-netlify="true" name="wire-subscribe" method="POST" class="wire-promo__form mt-lg">
             <input type="hidden" name="form-name" value="wire-subscribe" />
             <input type="email" name="email" placeholder="your@email.com" required class="form-control" aria-label="Email for The Wire" />
             <button type="submit" class="btn btn--primary">Go</button>
@@ -84,9 +84,8 @@ import BaseLayout from '../layouts/BaseLayout.astro';
   <!-- Featured Books -->
   <section class="section">
     <div class="container reveal">
-      <span class="label">From Our Catalog</span>
-      <h2 class="text-center">Featured Books</h2>
-      <div class="grid grid--4" style="margin-top: var(--space-2xl); gap: var(--space-xl);">
+      <SectionHeader eyebrow="From Our Catalog" title="Featured Books" align="center" />
+      <div class="grid grid--4 books-grid mt-2xl">
         <a href="/books/" class="book-feature img-editorial">
           <img src="/assets/images/zo-media/domestic-genocide-book-cover-adobe.png" alt="Domestic Genocide book cover" loading="lazy" />
           <h3 class="book-feature__title">Domestic Genocide</h3>
@@ -110,10 +109,8 @@ import BaseLayout from '../layouts/BaseLayout.astro';
   <!-- Final CTA -->
   <section class="section section--alt">
     <div class="container text-center reveal">
-      <span class="label">Get Involved</span>
-      <h2>Support the movement.</h2>
-      <p class="text-lg" style="margin-top: var(--space-md); margin-inline: auto;">Every donation fuels creative work by incarcerated artists and funds the UBFSF Community Grant Fund.</p>
-      <div style="margin-top: var(--space-xl); display: flex; gap: var(--space-md); justify-content: center; flex-wrap: wrap;">
+      <SectionHeader eyebrow="Get Involved" title="Support the movement." align="center" lede="Every donation fuels creative work by incarcerated artists and funds the UBFSF Community Grant Fund." />
+      <div class="final-cta__actions mt-xl">
         <a href="/support/" class="btn btn--primary btn--lg">Donate Now</a>
         <a href="/contact/" class="btn btn--outline btn--lg">Get In Touch</a>
       </div>
@@ -124,6 +121,30 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 <script src="../scripts/counter.ts"></script>
 
 <style>
+  /* Mission pullquote — centered variant (no left border) */
+  .pullquote--center {
+    border-left: none;
+    text-align: center;
+    padding-inline: 0;
+  }
+
+  /* The Wire promo grid alignment */
+  .wire-promo__grid {
+    align-items: center;
+  }
+  .wire-promo__card {
+    text-align: center;
+    padding: var(--space-2xl) var(--space-xl);
+  }
+  .wire-promo__form {
+    display: flex;
+    gap: var(--space-sm);
+  }
+
+  /* Featured Books grid */
+  .books-grid {
+    gap: var(--space-xl);
+  }
   .book-feature {
     position: relative;
     overflow: hidden;
@@ -147,5 +168,13 @@ import BaseLayout from '../layouts/BaseLayout.astro';
     font-size: var(--text-h3);
     color: var(--color-bone);
     line-height: var(--leading-tight);
+  }
+
+  /* Final CTA action row */
+  .final-cta__actions {
+    display: flex;
+    gap: var(--space-md);
+    justify-content: center;
+    flex-wrap: wrap;
   }
 </style>

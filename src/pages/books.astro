@@ -14,8 +14,8 @@ const books = [
 
 <SubpageLayout title="Books" description="Literature by incarcerated voices — memoir, essays, poetry, and anthologies." breadcrumbs={[{ label: "Books" }]}>
 
-  <section class="hero hero--minimal">
-    <div class="container">
+  <section class="hero hero--editorial hero--editorial-compact">
+    <div class="hero__inner">
       <h1 class="hero__headline">Books</h1>
       <p class="hero__subhead">Literature by incarcerated voices &mdash; memoir, essays, poetry, and anthologies.</p>
     </div>
@@ -33,12 +33,12 @@ const books = [
 
       <div class="grid grid--3 book-grid">
         {books.map((book) => (
-          <article class="card book-card" data-category={book.category}>
+          <article class="card card--feature book-card" data-category={book.category}>
             <div class="book-card__cover img-editorial">
               <img src={`/assets/images/zo-media/${book.image}`} alt={`${book.title} cover`} loading="lazy" />
             </div>
             <div class="book-card__body">
-              <span class="label">{book.category}</span>
+              <span class="eyebrow">{book.category}</span>
               <h3 class="card__title">{book.title}</h3>
               <p class="book-card__author">{book.author}</p>
               <p class="card__text">{book.description}</p>

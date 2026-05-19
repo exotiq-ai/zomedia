@@ -1,10 +1,14 @@
 ---
 import SubpageLayout from '../layouts/SubpageLayout.astro';
+import SectionHeader from '../components/ui/SectionHeader.astro';
 ---
 
 <SubpageLayout title="Contact Us" breadcrumbs={[{ label: "Contact Us" }]}>
-  <section class="contact-hero">
-    <div class="contact-hero__inner">
+  <section
+    class="hero hero--editorial hero--editorial-compact"
+    style="--hero-image: url('/assets/images/zo-media/zo-tower.001.jpeg'); --hero-overlay: 0.7;"
+  >
+    <div class="hero__inner">
       <h1 class="hero__headline">Get In Touch</h1>
       <p class="hero__subhead">Questions, partnerships, press inquiries, or just want to say what's up — we're here.</p>
     </div>
@@ -15,8 +19,8 @@ import SubpageLayout from '../layouts/SubpageLayout.astro';
       <div class="grid grid--asymmetric">
         <!-- Contact Form -->
         <div>
-          <h2>Send a Message</h2>
-          <form data-netlify="true" netlify-honeypot="bot-field" name="contact" method="POST" style="margin-top: var(--space-xl);">
+          <SectionHeader title="Send a Message" />
+          <form data-netlify="true" netlify-honeypot="bot-field" name="contact" method="POST" class="contact-form mt-xl">
             <input type="hidden" name="form-name" value="contact" />
             <p class="sr-only"><label>Don't fill this out: <input name="bot-field" /></label></p>
             <div class="form-group">
@@ -43,34 +47,34 @@ import SubpageLayout from '../layouts/SubpageLayout.astro';
               <label for="message" class="form-label">Message</label>
               <textarea id="message" name="message" required class="form-control" rows="6" placeholder="What's on your mind?"></textarea>
             </div>
-            <button type="submit" class="btn btn--primary btn--lg" style="margin-top: var(--space-md);">Send Message</button>
+            <button type="submit" class="btn btn--primary btn--lg mt-md">Send Message</button>
           </form>
         </div>
 
         <!-- Contact Info Card -->
         <div>
-          <div class="card" style="padding: var(--space-2xl);">
+          <div class="card contact-info-card">
             <div class="signal-line"></div>
             <h3 class="card__title">Contact Information</h3>
-            <div style="margin-top: var(--space-xl); display: flex; flex-direction: column; gap: var(--space-lg);">
-              <div>
-                <span class="label" style="color: var(--color-wire);">Mailing Address</span>
-                <p style="margin-top: var(--space-xs); font-family: var(--font-mono); font-size: var(--text-sm);">
+            <div class="contact-info-list">
+              <div class="contact-info__row">
+                <span class="eyebrow">Mailing Address</span>
+                <p class="contact-info__text mt-xs">
                   Zo Media Productions<br />
                   P.O. Box 862<br />
                   Bristow, OK 74010
                 </p>
               </div>
-              <div>
-                <span class="label" style="color: var(--color-wire);">Phone</span>
-                <p style="margin-top: var(--space-xs);">
-                  <a href="tel:+19189245872" class="strike-hover" style="font-family: var(--font-mono); font-size: var(--text-sm);">1-918-924-5872</a>
+              <div class="contact-info__row">
+                <span class="eyebrow">Phone</span>
+                <p class="mt-xs">
+                  <a href="tel:+19189245872" class="strike-hover contact-info__link">1-918-924-5872</a>
                 </p>
               </div>
-              <div>
-                <span class="label" style="color: var(--color-wire);">Email</span>
-                <p style="margin-top: var(--space-xs);">
-                  <a href="mailto:info@zomediaproductions.com" class="strike-hover" style="font-family: var(--font-mono); font-size: var(--text-sm);">info@zomediaproductions.com</a>
+              <div class="contact-info__row">
+                <span class="eyebrow">Email</span>
+                <p class="mt-xs">
+                  <a href="mailto:info@zomediaproductions.com" class="strike-hover contact-info__link">info@zomediaproductions.com</a>
                 </p>
               </div>
             </div>
@@ -82,29 +86,21 @@ import SubpageLayout from '../layouts/SubpageLayout.astro';
 </SubpageLayout>
 
 <style>
-  .contact-hero {
-    position: relative;
-    min-height: 40vh;
+  .contact-info-card {
+    padding: var(--space-2xl);
+  }
+  .contact-info-list {
+    margin-top: var(--space-xl);
     display: flex;
-    align-items: flex-end;
-    background: url('/assets/images/zo-media/zo-tower.001.jpeg') center/cover no-repeat;
+    flex-direction: column;
+    gap: var(--space-lg);
   }
-  .contact-hero::after {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background: linear-gradient(
-      to bottom,
-      rgba(10, 10, 11, 0.5) 0%,
-      rgba(10, 10, 11, 0.9) 100%
-    );
+  .contact-info__text {
+    font-family: var(--font-mono);
+    font-size: var(--text-sm);
   }
-  .contact-hero__inner {
-    position: relative;
-    z-index: 1;
-    max-width: var(--container-max);
-    margin-inline: auto;
-    padding: var(--space-3xl) var(--grid-margin) var(--space-2xl);
-    width: 100%;
+  .contact-info__link {
+    font-family: var(--font-mono);
+    font-size: var(--text-sm);
   }
 </style>

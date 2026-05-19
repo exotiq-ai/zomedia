@@ -1,5 +1,6 @@
 ---
 import SubpageLayout from '../layouts/SubpageLayout.astro';
+import SectionHeader from '../components/ui/SectionHeader.astro';
 
 const title = "Staff & Volunteers";
 const description = "Meet the team behind Zo Media Productions — a cooperative model where every position is co-held by inside and outside members.";
@@ -19,7 +20,7 @@ const volunteers = [
 ---
 
 <SubpageLayout title={title} description={description} breadcrumbs={breadcrumbs}>
-  <section class="hero hero--minimal">
+  <section class="hero hero--editorial hero--editorial-compact">
     <div class="container container--narrow">
       <span class="hero__eyebrow">THE TEAM</span>
       <h1 class="hero__headline">Staff & Volunteers</h1>
@@ -39,11 +40,11 @@ const volunteers = [
       <div class="divider">
         <span class="divider__label">Staff</span>
       </div>
-      <div class="grid grid--3" style="margin-top: var(--space-xl);">
+      <div class="grid grid--3 mt-xl">
         {staff.map((member) => (
-          <div class="card" style="text-align: center;">
-            <div style="width: 120px; height: 120px; border-radius: 50%; background: var(--color-graphite); margin: 0 auto var(--space-md); display: flex; align-items: center; justify-content: center;">
-              <span style="font-family: var(--font-mono); color: var(--color-ash); font-size: var(--text-tiny); text-transform: uppercase; letter-spacing: var(--tracking-wide);">Photo TBD</span>
+          <div class="card card--quiet text-center">
+            <div class="team-photo-placeholder">
+              <span class="team-photo-placeholder__label">Photo TBD</span>
             </div>
             <h3 class="card__title">{member.name}</h3>
             <p class="card__meta">{member.role}</p>
@@ -59,11 +60,11 @@ const volunteers = [
       <div class="divider">
         <span class="divider__label">Volunteers</span>
       </div>
-      <div class="grid grid--3" style="margin-top: var(--space-xl);">
+      <div class="grid grid--3 mt-xl">
         {volunteers.map((member) => (
-          <div class="card" style="text-align: center;">
-            <div style="width: 120px; height: 120px; border-radius: 50%; background: var(--color-graphite); margin: 0 auto var(--space-md); display: flex; align-items: center; justify-content: center;">
-              <span style="font-family: var(--font-mono); color: var(--color-ash); font-size: var(--text-tiny); text-transform: uppercase; letter-spacing: var(--tracking-wide);">Photo TBD</span>
+          <div class="card card--quiet text-center">
+            <div class="team-photo-placeholder">
+              <span class="team-photo-placeholder__label">Photo TBD</span>
             </div>
             <h3 class="card__title">{member.name}</h3>
             <p class="card__meta">{member.role}</p>
@@ -75,12 +76,35 @@ const volunteers = [
   </section>
 
   <section class="section">
-    <div class="container container--narrow" style="text-align: center;">
-      <h2 style="font-family: var(--font-headline); font-size: var(--text-2xl); color: var(--color-bone); margin-bottom: var(--space-md);">Interested in volunteering?</h2>
-      <p class="text-lg" style="margin-bottom: var(--space-lg);">
-        We are always looking for dedicated people who want to support incarcerated creatives. Reach out to learn about current opportunities.
-      </p>
-      <a href="/contact/" class="btn btn--primary btn--lg">Get in Touch</a>
+    <div class="container container--narrow">
+      <SectionHeader
+        title="Interested in volunteering?"
+        lede="We are always looking for dedicated people who want to support incarcerated creatives. Reach out to learn about current opportunities."
+        align="center"
+      />
+      <div class="text-center mt-lg">
+        <a href="/contact/" class="btn btn--primary btn--lg">Get in Touch</a>
+      </div>
     </div>
   </section>
 </SubpageLayout>
+
+<style>
+  .team-photo-placeholder {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    background: var(--color-graphite);
+    margin: 0 auto var(--space-md);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .team-photo-placeholder__label {
+    font-family: var(--font-mono);
+    color: var(--color-ash);
+    font-size: var(--text-tiny);
+    text-transform: uppercase;
+    letter-spacing: var(--tracking-wide);
+  }
+</style>
