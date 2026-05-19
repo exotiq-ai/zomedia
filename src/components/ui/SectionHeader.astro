@@ -1,0 +1,56 @@
+---
+/**
+ * SectionHeader — the canonical section-start pattern.
+ * eyebrow + h2 (+ optional lede paragraph).
+ *
+ * Use everywhere a section begins. Replaces hand-rolled
+ *   <span class="label">...</span><h2>...</h2>
+ * patterns across the site.
+ *
+ * Props:
+ *   eyebrow   — short label above the heading (e.g., "Our Story")
+ *   title     — the H2 text
+ *   lede      — optional intro paragraph below the heading
+ *   align     — "left" (default) | "center"
+ *   eyebrowTone — "wire" (default) | "signal" | "bone" | "fog"
+ *   narrow    — constrain header to ~64ch (default true)
+ *   level     — heading level, 2 (default) or 3
+ */
+interface Props {
+  eyebrow?: string;
+  title: string;
+  lede?: string;
+  align?: 'left' | 'center';
+  eyebrowTone?: 'wire' | 'signal' | 'bone' | 'fog';
+  narrow?: boolean;
+  level?: 2 | 3;
+}
+
+const {
+  eyebrow,
+  title,
+  lede,
+  align = 'left',
+  eyebrowTone = 'wire',
+  narrow = true,
+  level = 2,
+} = Astro.props;
+
+const headerClasses = [
+  'section-header',
+  align === 'center' && 'section-header--center',
+  narrow && 'section-header--narrow',
+].filter(Boolean).join(' ');
+
+const eyebrowClass = eyebrowTone === 'wire'
+  ? 'eyebrow'
+  : `eyebrow eyebrow--${eyebrowTone}`;
+---
+
+<header class={headerClasses}>
+  {eyebrow && <span class={eyebrowClass}>{eyebrow}</span>}
+  {level === 2
+    ? <h2 class="section-header__title" set:html={title} />
+    : <h3 class="section-header__title" set:html={title} />}
+  {lede && <p class="section-header__lede" set:html={lede} />}
+</header>

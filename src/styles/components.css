@@ -61,6 +61,37 @@
 }
 
 /* ───────────────────────────────────────────────────────────
+ * SECTION HEADER — eyebrow + h2 + optional lede.
+ * Single pattern used at the top of every section.
+ * ─────────────────────────────────────────────────────────── */
+.section-header {
+  margin-bottom: var(--space-2xl);
+}
+.section-header--narrow { max-width: 64ch; }
+.section-header--center { text-align: center; margin-inline: auto; }
+.section-header--center .section-header__lede { margin-inline: auto; }
+
+.section-header__title {
+  margin: 0;
+}
+.section-header .eyebrow {
+  margin-bottom: var(--space-md);
+}
+.section-header__lede {
+  margin-top: var(--space-lg);
+  font-family: var(--font-body);
+  font-size: var(--text-body-lg);
+  line-height: var(--leading-loose);
+  color: var(--color-fog);
+  max-width: 56ch;
+}
+
+@media (max-width: 768px) {
+  .section-header { margin-bottom: var(--space-xl); }
+  .section-header__lede { font-size: var(--text-body); }
+}
+
+/* ───────────────────────────────────────────────────────────
  * EYEBROW — the canonical section-marker label.
  * One pattern site-wide. Mono, mobile-safe 13px, wire-gold.
  * Modifier --signal flips to red for action contexts.
@@ -83,12 +114,26 @@
 .eyebrow--bone   { color: var(--color-bone); }
 .eyebrow--fog    { color: var(--color-fog); }
 
-/* ——— Cards ——— */
+/* ───────────────────────────────────────────────────────────
+ * CARDS — three intentional variants.
+ *
+ *   .card           — Default. Signal-red top accent.
+ *                     Use for: feature cards, primary CTAs,
+ *                     donation tiers, anything that announces "this matters."
+ *
+ *   .card--quiet    — No accent border, hairline outline only.
+ *                     Use for: content blocks, supporting info,
+ *                     secondary lists, data callouts that shouldn't shout.
+ *
+ *   .card--feature  — Larger padding, image-led, used in grids
+ *                     where the card IS the visual focus.
+ *                     Use for: books grid, project tiles, blog cards.
+ * ─────────────────────────────────────────────────────────── */
 .card {
   background: var(--color-soot);
   border: 1px solid var(--color-border);
   border-top: 3px solid var(--color-signal);
-  padding: var(--space-xl);
+  padding: var(--card-padding, var(--space-xl));
   display: flex;
   flex-direction: column;
   gap: var(--space-md);
@@ -101,6 +146,23 @@
   border-top-color: var(--color-signal-hot);
   transform: translateY(-2px);
 }
+
+/* Quiet variant — no accent, used for supporting content blocks */
+.card--quiet {
+  border-top: 1px solid var(--color-border);
+}
+.card--quiet:hover {
+  border-color: var(--color-border-emphasis);
+  border-top-color: var(--color-border-emphasis);
+  transform: translateY(-2px);
+}
+
+/* Feature variant — larger padding, image-led grids */
+.card--feature {
+  --card-padding: var(--space-2xl);
+  background: var(--color-soot);
+}
+
 .card__title {
   font-family: var(--font-headline);
   font-size: var(--text-h3);
@@ -326,7 +388,86 @@ select.form-control {
   .btn--lg { padding: 0.875rem 1.5rem; font-size: var(--text-small); width: 100%; justify-content: center; }
 }
 
-/* ——— Hero: Full variant ——— */
+/* ───────────────────────────────────────────────────────────
+ * HERO — two canonical variants:
+ *
+ *   .hero--split     — Home page only. Text on left, image on right (7fr 5fr).
+ *   .hero--editorial — Every subpage. Text-led, optional background image
+ *                      configured via CSS variables.
+ *
+ * Configure .hero--editorial with these inline custom properties:
+ *   --hero-image          — url('/path/to/image.jpg')
+ *   --hero-image-position — e.g. 'right center', 'center 30%' (default: center)
+ *   --hero-overlay        — overlay strength 0–1 (default: 0.7)
+ *   --hero-overlay-dir    — gradient direction (default: 'to bottom')
+ *
+ * Modifiers:
+ *   .hero--editorial-left   — Left side darker (for right-positioned imagery)
+ *   .hero--editorial-center — Centered text alignment (default: left)
+ *   .hero--editorial-compact — Shorter min-height
+ *
+ * Legacy aliases .hero--full / .hero--minimal still work during transition.
+ * ─────────────────────────────────────────────────────────── */
+.hero--editorial {
+  position: relative;
+  min-height: 60vh;
+  display: flex;
+  align-items: center;
+  background-color: var(--color-soot);
+  background-image: var(--hero-image, none);
+  background-position: var(--hero-image-position, center);
+  background-size: cover;
+  background-repeat: no-repeat;
+  overflow: hidden;
+}
+.hero--editorial::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    var(--hero-overlay-dir, to bottom),
+    rgba(10, 10, 11, calc(var(--hero-overlay, 0.7) * 0.6)) 0%,
+    rgba(10, 10, 11, var(--hero-overlay, 0.7)) 100%
+  );
+  z-index: 1;
+}
+.hero--editorial .hero__inner {
+  position: relative;
+  z-index: 2;
+  text-align: left;
+}
+.hero--editorial-center .hero__inner {
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.hero--editorial-center .hero__subhead { margin-inline: auto; }
+
+/* Left-side dominant darkening — for imagery positioned right with subject visible */
+.hero--editorial-left::before {
+  background: linear-gradient(
+    to right,
+    rgba(10, 10, 11, 0.92) 0%,
+    rgba(10, 10, 11, 0.85) 35%,
+    rgba(10, 10, 11, 0.45) 60%,
+    rgba(10, 10, 11, 0.15) 85%,
+    rgba(10, 10, 11, 0) 100%
+  );
+}
+.hero--editorial-left .hero__inner > * {
+  max-width: 56ch;
+}
+
+.hero--editorial-compact {
+  min-height: auto;
+  padding-block: var(--space-2xl);
+}
+.hero--editorial-compact .hero__headline {
+  font-size: var(--text-h1);
+}
+
+/* Legacy aliases — deprecated, will be removed after page migration */
 .hero--full {
   min-height: 60vh;
   background: var(--color-soot);
@@ -339,11 +480,24 @@ select.form-control {
 }
 .hero--full .hero__subhead { margin-inline: auto; }
 
-/* ——— Hero: Minimal variant ——— */
 .hero--minimal {
   min-height: auto;
   padding-block: var(--space-2xl);
 }
 .hero--minimal .hero__headline {
   font-size: var(--text-h1);
+}
+
+@media (max-width: 768px) {
+  .hero--editorial {
+    min-height: 50vh;
+  }
+  /* On mobile, side-darkened hero collapses to bottom-darkening for legibility */
+  .hero--editorial-left::before {
+    background: linear-gradient(
+      to bottom,
+      rgba(10, 10, 11, 0.6) 0%,
+      rgba(10, 10, 11, 0.88) 100%
+    );
+  }
 }
