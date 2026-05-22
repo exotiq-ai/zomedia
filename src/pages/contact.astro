@@ -20,6 +20,13 @@ import SectionHeader from '../components/ui/SectionHeader.astro';
         <!-- Contact Form -->
         <div>
           <SectionHeader title="Send a Message" />
+          <!--
+            Netlify Forms captures every named field automatically (including
+            inquiry-type). Configure notification routing in the Netlify
+            dashboard (Forms → Settings → Form notifications) to forward each
+            inquiry-type value to the right inbox — no routing logic needed in
+            code here.
+          -->
           <form data-netlify="true" netlify-honeypot="bot-field" name="contact" method="POST" class="contact-form mt-xl">
             <input type="hidden" name="form-name" value="contact" />
             <p class="sr-only"><label>Don't fill this out: <input name="bot-field" /></label></p>
@@ -32,16 +39,23 @@ import SectionHeader from '../components/ui/SectionHeader.astro';
               <input type="email" id="email" name="email" required class="form-control" placeholder="your@email.com" />
             </div>
             <div class="form-group">
-              <label for="subject" class="form-label">Subject</label>
-              <select id="subject" name="subject" required class="form-control">
-                <option value="" disabled selected>Select a topic</option>
+              <label for="organization" class="form-label">Organization <span class="form-label__optional">(optional)</span></label>
+              <input type="text" id="organization" name="organization" class="form-control" placeholder="Company, studio, or affiliation" />
+            </div>
+            <div class="form-group">
+              <label for="inquiry-type" class="form-label">Inquiry Type</label>
+              <select id="inquiry-type" name="inquiry-type" required class="form-control">
+                <option value="" disabled selected>Select an inquiry type</option>
                 <option value="general">General Inquiry</option>
+                <option value="film">Film Collaboration</option>
+                <option value="book">Book / Publishing Inquiry</option>
+                <option value="donation">Donation / Sponsorship</option>
                 <option value="press">Press / Media</option>
-                <option value="partnership">Partnership</option>
-                <option value="submission">Creative Submission</option>
-                <option value="support">Donations / Support</option>
-                <option value="other">Other</option>
               </select>
+            </div>
+            <div class="form-group">
+              <label for="subject" class="form-label">Subject</label>
+              <input type="text" id="subject" name="subject" required class="form-control" placeholder="A short summary" />
             </div>
             <div class="form-group">
               <label for="message" class="form-label">Message</label>
@@ -103,4 +117,55 @@ import SectionHeader from '../components/ui/SectionHeader.astro';
     font-family: var(--font-mono);
     font-size: var(--text-sm);
   }
+  .form-label__optional {
+    color: var(--color-ash);
+    text-transform: none;
+    letter-spacing: 0;
+    font-weight: 400;
+  }
 </style>
+
+<script>
+  /**
+   * Pre-select the Inquiry Type dropdown from a URL query param.
+   * Accepts ?type=film, ?type=book, ?type=donation, ?type=press,
+   * ?type=general — also accepts ?intent= as a legacy alias used by
+   * the donate buttons on /support/.
+   */
+  function preselectInquiryType() {
+    const select = document.getElementById('inquiry-type') as HTMLSelectElement | null;
+    if (!select) return;
+    const params = new URLSearchParams(window.location.search);
+    const raw = (params.get('type') || params.get('intent') || '').toLowerCase().trim();
+    if (!raw) return;
+
+    const alias: Record<string, string> = {
+      film: 'film',
+      films: 'film',
+      collab: 'film',
+      collaboration: 'film',
+      book: 'book',
+      books: 'book',
+      publishing: 'book',
+      donate: 'donation',
+      donation: 'donation',
+      sponsor: 'donation',
+      sponsorship: 'donation',
+      support: 'donation',
+      press: 'press',
+      media: 'press',
+      general: 'general',
+    };
+
+    const target = alias[raw];
+    if (!target) return;
+    const match = Array.from(select.options).find((o) => o.value === target);
+    if (match) {
+      select.value = target;
+      select.dispatchEvent(new Event('change', { bubbles: true }));
+    }
+  }
+
+  preselectInquiryType();
+  document.addEventListener('astro:page-load', preselectInquiryType);
+</script>

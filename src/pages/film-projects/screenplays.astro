@@ -1,5 +1,6 @@
 ---
 import SubpageLayout from '../../layouts/SubpageLayout.astro';
+import FilmCTA from '../../components/content/FilmCTA.astro';
 ---
 
 <SubpageLayout title="Screenplays" description="Original screenplays written by incarcerated creators." breadcrumbs={[{ label: "Film Projects", href: "/film-projects/" }, { label: "Screenplays" }]}>
@@ -17,7 +18,7 @@ import SubpageLayout from '../../layouts/SubpageLayout.astro';
         Scripts being polished. Look for them on stage and screen, soon.
       </p>
       <p class="proof__body">
-        Zo Media is developing original screenplays written by incarcerated creators &mdash; stories built from the inside, with the weight to move a room.
+        Zo Media is developing original screenplays written by incarcerated creators &mdash; stories built from the inside, with the weight to move a room. If you're inside and writing scripts &mdash; or outside and want to produce one &mdash; we want to hear from you.
       </p>
       <dl class="proof__meta">
         <div class="proof__meta-row">
@@ -39,6 +40,11 @@ import SubpageLayout from '../../layouts/SubpageLayout.astro';
       </div>
     </div>
   </section>
+
+  <FilmCTA
+    headline="Pitch us a script. Or fund the next one."
+    body="Zo Media is actively reading and developing screenplays from incarcerated writers. Your contribution underwrites the development table — staffing, materials, and the producers who carry these scripts to the screen."
+  />
 
 </SubpageLayout>
 
