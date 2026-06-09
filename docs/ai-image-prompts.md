@@ -6,12 +6,39 @@
 
 1. Find the slot you need (numbered to match `creative-direction.md` §3).
 2. Copy the prompt block for your tool (Kling or NanoBanana — they prefer different phrasing).
-3. Tweak the **variables in `<angle brackets>`** (skin tone, time of day, location, etc.).
+3. Tweak the **variables in `<angle brackets>`** (skin tone, time of day, location, etc.). See "Variable defaults" below for the decisions to make once and apply consistently.
 4. Generate at least 4 candidates. Throw out any with: AI artifacts on hands/fingers, illegible glyphs trying to be text, melted geometry, fake-looking grain.
 5. Run the chosen output through the §5 treatment specs in the brief (B&W, contrast +5–10, crop to spec aspect).
 6. Drop into `src/assets/images/zo-media/` and import via Astro `<Image>`.
 
 **Iteration rule**: if you regenerate 6+ times and can't get one without AI tells, the prompt isn't the problem — the subject probably needs a real photographer. Don't ship a near-miss.
+
+## Pilot first, then batch
+
+Before sending the full list to AI generation:
+
+1. **Generate ONE image per slot at the lowest tier** (NanoBanana standard, Kling fast mode). Save the seeds.
+2. **Review the entire pilot set together**, side by side, in the rough crop they'll appear on the site.
+3. **Throw out any slot where the model can't get close on the first try** — that slot either needs a stronger prompt rewrite or a real photographer; either way, don't burn iterations on it now.
+4. **Only then run the survivors at full quality** with 4 variants each.
+
+This catches "the prompt sounds great but the model can't actually do it" failures before you spend the credits.
+
+## Variable defaults (decide once, apply everywhere)
+
+When a prompt has `<Black man's hands, mid-forties / age and race ambiguous>`:
+
+- **For slots representing Zo Media authors** (Slots 1, 7, 8 — anywhere a viewer reads the subject as "one of our writers"): default to **a Black man's hands, mid-forties to fifties**. Most Zo Media authors are Black men; representing them honestly matters. Vary occasionally so it doesn't feel like a single person.
+- **For atmospheric/generic slots** (textures, environments, anywhere the hands are incidental): default to **age and race ambiguous** — frame tighter, side-light heavier, less skin visible.
+- **Never specify** brand-affiliated jewelry, watches, prison ID bracelets, wedding rings, religious symbols. Add these to the negative prompt unless deliberately wanted. Hands should be unadorned.
+
+## Universal negative prompts (add to every prompt)
+
+Append these to the negative prompt of every slot below, in addition to slot-specific ones:
+
+```
+face, body, identifiable person, watch, ring, bracelet, religious jewelry, prison ID, brand logo, watermark, signature, legible text, attempted writing, oversaturated, plastic skin, AI hands artifact, extra fingers, fused fingers, mangled anatomy, cartoon, vector, illustration, stock-photo lighting, commercial product photography
+```
 
 ---
 
@@ -104,10 +131,16 @@ These three images must read as **a matched set** — same treatment, same contr
 
 ### 4a. Screenplays card — typewriter + script pages
 
+**Important**: this is the **highest-risk slot** for AI failure. Models default to trying to render coherent text on the loaded page and almost always fail. The reliable workaround is to compose the shot so the loaded paper is **mostly out of frame or extremely shallow-focus**, leaving only the typewriter mechanism sharp.
+
 **Kling.ai**:
 ```
-Cinematic overhead photograph of a vintage manual typewriter (mid-century, no visible brand), a sheet of paper loaded with the top half of a film script visible — formatted with scene headings in monospace, but text illegible. Beside it a stack of pages held by a brass brad clip. Soft top-down lamp light, slight vignette. Shot on 35mm. Black and white, high contrast. 3:2 aspect ratio. Editorial documentary mood. No hands, no person.
+Cinematic 3/4-angle close-up photograph of a vintage mid-century manual typewriter (no visible brand markings). The camera is positioned low and tight on the carriage and type bars — the loaded paper sits in the background, completely out of focus and ambiguous. Beside the typewriter, the corner of a stack of paper held by a brass brad clip is just visible in soft focus. Soft top-down lamp light from above, slight vignette on the edges. Shot on 50mm at f/2.0. Black and white, high contrast. 3:2 aspect ratio. Editorial documentary mood. No hands, no person, no legible text anywhere — paper surfaces should be either blurred or shown from such a shallow angle that no letters could be read.
 ```
+
+**Slot-specific negatives**: `legible text, attempted writing, font that looks like real letters, sharp focus on loaded paper, words, sentences`
+
+If the model keeps inserting "SCRIPT" or scene headings on the page, regenerate with the phrase **"the paper is blank"** added explicitly.
 
 ### 4b. Theatrical card — empty stage with worklight
 
@@ -149,10 +182,14 @@ Cinematic medium shot of a writing scene — a hand (no face, frame cuts at the 
 
 ## Slot 8 — The Wire: masthead (hands with newsletter)
 
+**Important**: same risk as Slot 4a — AI will try to render headlines and fail. Compose so the newsprint is **shown at an angle steep enough that text reads only as column rules and ink density**, never as letters.
+
 **Kling.ai**:
 ```
-Cinematic close-up photograph of two hands holding open a folded broadsheet newspaper, fresh ink slightly smudging the fingertips. Only hands and forearms visible, no face, frame cuts at the elbows. The newsprint shows column rules and what reads as serif headlines, but text is illegible at this crop. Soft overhead light, slight shadow under the page. Shot on 35mm at f/2.8. Black and white, high contrast, slight newsprint grain. Full-bleed wide aspect 21:9. No legible text, no masthead, no logos.
+Cinematic close-up photograph of a Black man's hands (mid-forties to fifties, no jewelry) holding open a folded broadsheet newspaper at a steep raking angle to the camera. The newsprint is seen so obliquely that columns and ink density are visible but no individual letter could be made out. Fresh ink slightly smudges the fingertips. Only hands and forearms visible, no face, frame cuts at the elbows. Soft overhead light, slight shadow under the page. Shot on 35mm at f/2.8. Black and white, high contrast, slight newsprint grain. Full-bleed wide aspect 21:9.
 ```
+
+**Slot-specific negatives**: `legible headline, words, masthead text, attempted lettering, newspaper title, brand, logo, date, byline`
 
 ---
 
