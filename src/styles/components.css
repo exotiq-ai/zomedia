@@ -359,11 +359,39 @@ select.form-control {
   position: relative;
   overflow: hidden;
 }
-.hero__media img {
+.hero__media img,
+.hero__media video {
   width: 100%;
   height: 100%;
   object-fit: cover;
   filter: contrast(1.05);
+}
+
+.signature-hero__media {
+  background: var(--color-soot);
+  border: 1px solid var(--color-border-subtle);
+  box-shadow: var(--shadow-lg);
+}
+
+.signature-hero__video,
+.signature-hero__poster {
+  display: block;
+  position: absolute;
+  inset: 0;
+}
+
+.signature-hero__video {
+  z-index: 2;
+}
+
+.signature-hero__poster {
+  z-index: 1;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .signature-hero__video {
+    display: none;
+  }
 }
 
 /* Split-hero specifically: constrain the image so it aligns vertically with

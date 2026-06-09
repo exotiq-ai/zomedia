@@ -2,7 +2,6 @@
 import { Image } from 'astro:assets';
 import BaseLayout from '../layouts/BaseLayout.astro';
 import SectionHeader from '../components/ui/SectionHeader.astro';
-import heroIvan from '../assets/images/zo-media/hero-ivan.jpg';
 import domesticGenocideCover from '../assets/images/zo-media/domestic-genocide-book-cover-adobe.png';
 import kingCover from '../assets/images/zo-media/King_frontcover-scaled.jpg';
 import mayhemCover from '../assets/images/zo-media/mayhem_murder_and_magnificence.jpg';
@@ -34,15 +33,27 @@ import socialJusticeCover from '../assets/images/zo-media/socialjusticeautobiogr
           <a href="/support/" class="btn btn--outline signature-hero__cta" data-magnetic>Support the Mission</a>
         </div>
       </div>
-      <div class="hero__media signature-hero__media">
-        <Image
-          src={heroIvan}
-          alt="An incarcerated writer at work — pen to paper, creating from inside"
-          widths={[640, 960, 1280, 1920]}
-          sizes="(max-width: 1024px) 100vw, 41vw"
+      <div class="hero__media signature-hero__media" aria-label="Close-up video of a hand writing on lined paper">
+        <video
+          class="signature-hero__video"
+          autoplay
+          muted
+          loop
+          playsinline
+          preload="metadata"
+          poster="/assets/images/zo-media/hero-writing-poster.jpg"
+          aria-hidden="true"
+        >
+          <source src="/assets/video/zo-media/hero-writing-loop.mp4" type="video/mp4" />
+          <source src="/assets/video/zo-media/hero-writing-loop.webm" type="video/webm" />
+        </video>
+        <img
+          class="signature-hero__poster"
+          src="/assets/images/zo-media/hero-writing-poster.jpg"
+          alt="A close-up of a hand writing on lined paper"
           loading="eager"
           fetchpriority="high"
-          format="webp"
+          decoding="async"
         />
       </div>
     </div>
