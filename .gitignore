@@ -5,3 +5,7 @@ dist/
 debug/
 .astro/
 _legacy/
+
+.env
+.env.*
+!.env.example
