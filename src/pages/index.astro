@@ -34,7 +34,15 @@ import socialJusticeCover from '../assets/images/zo-media/socialjusticeautobiogr
           <a href="/support/" class="btn btn--outline signature-hero__cta" data-magnetic>Support the Mission</a>
         </div>
       </div>
-      <div class="hero__media signature-hero__media">
+      <div class="hero__media signature-hero__media ken-burns" data-ivan-slot>
+        {/*
+          Placeholder slot — currently using hero-ivan.jpg until Ivan's
+          hosted intro video lands. Per project owner direction this is
+          a deliberate temporary placeholder (see
+          src/assets/images/zo-media/NOTES.md). When the video is ready,
+          swap this <Image> for an autoplay-muted-loop <video> with the
+          same column constraints.
+        */}
         <Image
           src={heroIvan}
           alt="An incarcerated writer at work — pen to paper, creating from inside"
@@ -57,6 +65,49 @@ import socialJusticeCover from '../assets/images/zo-media/socialjusticeautobiogr
       </blockquote>
     </div>
   </section>
+
+  <!-- Two-tone display moment — editorial signature -->
+  <section class="section section--flush two-tone-band">
+    <div class="container reveal">
+      <h2 class="display two-tone two-tone-band__headline">
+        <span>We publish</span>
+        <span class="two-tone__muted">what the system silences.</span>
+      </h2>
+    </div>
+  </section>
+
+  {/*
+    Editorial identity ticker — site voice as a moving editorial band.
+    Currently a thematic identity run rather than pull-quotes (the
+    cooperative does not yet have a curated pull-quote library). When
+    real lines from Wire issues are approved for surface, swap the
+    items below for "<quote> — Issue NN" pairs and re-double the set.
+  */}
+  <div class="ticker" aria-label="Editorial identity band">
+    <div class="ticker__track">
+      <span class="ticker__item">Voices from inside.</span>
+      <span class="ticker__divider" aria-hidden="true">✦</span>
+      <span class="ticker__item">Published by incarcerated creators.</span>
+      <span class="ticker__divider" aria-hidden="true">✦</span>
+      <span class="ticker__item">Literature. Film. Art.</span>
+      <span class="ticker__divider" aria-hidden="true">✦</span>
+      <span class="ticker__item">Stories the system silences.</span>
+      <span class="ticker__divider" aria-hidden="true">✦</span>
+      <span class="ticker__item">Read. Watch. Listen.</span>
+      <span class="ticker__divider" aria-hidden="true">✦</span>
+      {/* Duplicate set — required for seamless CSS marquee loop */}
+      <span class="ticker__item">Voices from inside.</span>
+      <span class="ticker__divider" aria-hidden="true">✦</span>
+      <span class="ticker__item">Published by incarcerated creators.</span>
+      <span class="ticker__divider" aria-hidden="true">✦</span>
+      <span class="ticker__item">Literature. Film. Art.</span>
+      <span class="ticker__divider" aria-hidden="true">✦</span>
+      <span class="ticker__item">Stories the system silences.</span>
+      <span class="ticker__divider" aria-hidden="true">✦</span>
+      <span class="ticker__item">Read. Watch. Listen.</span>
+      <span class="ticker__divider" aria-hidden="true">✦</span>
+    </div>
+  </div>
 
   <!-- Stats / Impact Counter -->
   <section class="section">
@@ -183,6 +234,31 @@ import socialJusticeCover from '../assets/images/zo-media/socialjusticeautobiogr
     border-left: none;
     text-align: center;
     padding-inline: 0;
+  }
+
+  /* Two-tone display band — VOTR-style editorial moment.
+   * The headline stacks: bone foreground line, husk muted line. */
+  .two-tone-band {
+    padding-block: var(--space-3xl);
+    background: var(--color-void);
+    border-top: 1px solid var(--color-border);
+  }
+  .two-tone-band__headline {
+    font-size: clamp(2.5rem, 8vw, 6rem);
+    line-height: 0.95;
+    letter-spacing: var(--tracking-tight);
+    margin: 0;
+  }
+  .two-tone-band__headline span {
+    display: block;
+  }
+
+  /* Ken Burns container in the home hero — the existing hero__media
+   * already constrains aspect ratio; the .ken-burns class adds the
+   * slow drift on the inner <img>. */
+  .signature-hero__media.ken-burns {
+    /* Animation lives on the <img> per effects.css. No container
+     * overrides needed beyond the existing hero__media rules. */
   }
 
   /* The Wire promo grid alignment */

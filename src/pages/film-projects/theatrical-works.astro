@@ -1,5 +1,6 @@
 ---
 import SubpageLayout from '../../layouts/SubpageLayout.astro';
+import FilmCTA from '../../components/content/FilmCTA.astro';
 ---
 
 <SubpageLayout title="Theatrical Works" description="Stage plays and performances by incarcerated artists." breadcrumbs={[{ label: "Film Projects", href: "/film-projects/" }, { label: "Theatrical Works" }]}>
@@ -17,7 +18,7 @@ import SubpageLayout from '../../layouts/SubpageLayout.astro';
         Stage work being prepared. Curtain rises soon.
       </p>
       <p class="proof__body">
-        Zo Media is producing original stage plays and live performances created by incarcerated artists &mdash; staged readings, full productions, and traveling work meant to be heard out loud.
+        Zo Media is producing original stage plays and live performances created by incarcerated artists &mdash; staged readings, full productions, and traveling work meant to be heard out loud. We're looking for writers, directors, and producers ready to bring these works to audiences.
       </p>
       <dl class="proof__meta">
         <div class="proof__meta-row">
@@ -39,6 +40,11 @@ import SubpageLayout from '../../layouts/SubpageLayout.astro';
       </div>
     </div>
   </section>
+
+  <FilmCTA
+    headline="Bring a stage to these voices."
+    body="Live performance moves rooms. Your contribution underwrites staging, rehearsal, and the artists carrying these works onto the stage — and connects us with directors, producers, and venues ready to host them."
+  />
 
 </SubpageLayout>
 

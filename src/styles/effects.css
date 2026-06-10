@@ -587,3 +587,136 @@ body::after {
       0 2px 0 0 var(--color-signal-dim);
   }
 }
+
+/* ───────────────────────────────────────────────────────────
+ * KEN BURNS — slow zoom-and-drift on a static photo.
+ * Use as a video-weight-free way to make a hero image feel
+ * alive. Apply to a container with overflow:hidden; the <img>
+ * inside scales and translates. Pause for reduced-motion users.
+ * ─────────────────────────────────────────────────────────── */
+.ken-burns {
+  overflow: hidden;
+}
+.ken-burns > img,
+.ken-burns > picture > img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transform-origin: center 60%;
+  will-change: transform;
+}
+@media (prefers-reduced-motion: no-preference) {
+  .ken-burns > img,
+  .ken-burns > picture > img {
+    animation: ken-burns-drift 22s var(--ease-smooth) infinite alternate;
+  }
+}
+@keyframes ken-burns-drift {
+  0%   { transform: scale(1.02) translate(0, 0); }
+  100% { transform: scale(1.10) translate(-1.5%, -1%); }
+}
+
+/* ───────────────────────────────────────────────────────────
+ * TICKER / MARQUEE — horizontal-scrolling editorial pull-quotes.
+ * Zero-weight motion, very on-brand for an editorial press.
+ *
+ * Markup:
+ *   <div class="ticker"><div class="ticker__track">
+ *     <span class="ticker__item">…</span>
+ *     <span class="ticker__divider" aria-hidden="true">✦</span>
+ *     … (DOUBLE the set so the loop is seamless) …
+ *   </div></div>
+ * ─────────────────────────────────────────────────────────── */
+.ticker {
+  position: relative;
+  overflow: hidden;
+  border-top: 1px solid var(--color-border-emphasis);
+  border-bottom: 1px solid var(--color-border-emphasis);
+  background: var(--color-soot);
+  padding-block: var(--space-lg);
+  /* Fade edges so items appear from / disappear into the void */
+  mask-image: linear-gradient(
+    to right,
+    transparent 0,
+    black 80px,
+    black calc(100% - 80px),
+    transparent 100%
+  );
+  -webkit-mask-image: linear-gradient(
+    to right,
+    transparent 0,
+    black 80px,
+    black calc(100% - 80px),
+    transparent 100%
+  );
+}
+.ticker__track {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2xl);
+  width: max-content;
+  animation: ticker-slide 60s linear infinite;
+}
+.ticker:hover .ticker__track,
+.ticker:focus-within .ticker__track {
+  animation-play-state: paused;
+}
+.ticker__item {
+  font-family: var(--font-headline);
+  font-style: italic;
+  font-size: clamp(1.125rem, 2vw, 1.5rem);
+  line-height: 1.2;
+  color: var(--color-chalk);
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+.ticker__item-source {
+  font-family: var(--font-mono);
+  font-style: normal;
+  font-size: var(--text-micro);
+  letter-spacing: var(--tracking-wide);
+  text-transform: uppercase;
+  color: var(--color-wire);
+  margin-left: var(--space-md);
+}
+.ticker__divider {
+  color: var(--color-signal);
+  font-size: var(--text-micro);
+  letter-spacing: var(--tracking-mega);
+  flex-shrink: 0;
+}
+@keyframes ticker-slide {
+  from { transform: translateX(0); }
+  to   { transform: translateX(-50%); } /* assumes content is doubled */
+}
+@media (prefers-reduced-motion: reduce) {
+  .ticker__track {
+    animation: none;
+    /* Show a static, scrollable subset instead of an animated one */
+    overflow-x: auto;
+    width: 100%;
+  }
+}
+
+/* ───────────────────────────────────────────────────────────
+ * TWO-TONE DISPLAY HEADLINE — the VOTR move.
+ *
+ * Use on oversized editorial display type to split the headline
+ * into bone (foreground) and husk (background). Add .two-tone
+ * to the headline; mark the muted words with .two-tone__muted.
+ *
+ *   <h2 class="display two-tone">
+ *     <span>WE PUBLISH</span>
+ *     <span class="two-tone__muted">WHAT THE SYSTEM SILENCES</span>
+ *   </h2>
+ *
+ * The muted span gets the husk color. Both can sit on one line or
+ * stack — that's purely a flex/block decision at the call site.
+ * ─────────────────────────────────────────────────────────── */
+.two-tone {
+  color: var(--color-bone);
+  font-style: italic;
+}
+.two-tone__muted {
+  color: var(--color-husk);
+}
