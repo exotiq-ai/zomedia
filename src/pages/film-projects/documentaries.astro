@@ -1,6 +1,8 @@
 ---
+import { Image } from 'astro:assets';
 import SubpageLayout from '../../layouts/SubpageLayout.astro';
 import FilmCTA from '../../components/content/FilmCTA.astro';
+import heroIvan from '../../assets/images/zo-media/hero-ivan.jpg';
 ---
 
 <SubpageLayout title="Documentaries & Film Shorts" description="Documentary films and short works by incarcerated filmmakers." breadcrumbs={[{ label: "Film Projects", href: "/film-projects/" }, { label: "Documentaries & Film Shorts" }]}>
@@ -66,23 +68,37 @@ import FilmCTA from '../../components/content/FilmCTA.astro';
     </div>
   </section>
 
-  <!-- Bio: Ivan Kilgore — text-led, no synthetic portrait. -->
+  <!-- Bio: Ivan Kilgore -->
   <section class="section">
-    <div class="container container--narrow reveal director-bio-band">
-      <span class="eyebrow">About the Director</span>
-      <h2 class="director-bio-band__name">Ivan Kilgore</h2>
-      <div class="director-bio-band__rule" aria-hidden="true"></div>
-      <p class="director-bio-band__lede">
-        Founder and CEO of Zo Media Productions.
-      </p>
-      <p class="director-bio-band__body">
-        Ivan Kilgore is an incarcerated writer, filmmaker, and organizer. His work exposes the institutional machinery of mass incarceration from the inside &mdash; on the page, on the screen, on the record.
-      </p>
-      <p class="director-bio-band__body">
-        His books include <em>Domestic Genocide</em> and <em>King: The Early Years</em>.
-      </p>
-      <div class="director-bio-band__actions">
-        <a href="/books/" class="btn btn--outline">Read the Books</a>
+    <div class="container reveal">
+      <div class="grid grid--asymmetric director-bio">
+        <div class="director-bio__portrait img-editorial">
+          <Image
+            src={heroIvan}
+            alt="Ivan Kilgore — founder of Zo Media Productions"
+            widths={[320, 480, 720, 960]}
+            sizes="(max-width: 768px) 80vw, 32vw"
+            loading="lazy"
+            format="webp"
+          />
+        </div>
+        <div class="director-bio__body">
+          <span class="eyebrow">About the Director</span>
+          <h2 class="director-bio__name">Ivan Kilgore</h2>
+          <div class="director-bio__rule" aria-hidden="true"></div>
+          <p class="director-bio__lede">
+            Founder and CEO of Zo Media Productions.
+          </p>
+          <p>
+            Ivan Kilgore is an incarcerated writer, filmmaker, and organizer. His work exposes the institutional machinery of mass incarceration from the inside &mdash; on the page, on the screen, on the record.
+          </p>
+          <p>
+            His books include <em>Domestic Genocide</em> and <em>King: The Early Years</em>.
+          </p>
+          <div class="director-bio__actions">
+            <a href="/books/" class="btn btn--outline">Read the Books</a>
+          </div>
+        </div>
       </div>
     </div>
   </section>
@@ -328,47 +344,59 @@ import FilmCTA from '../../components/content/FilmCTA.astro';
   }
 
   /* ───────────────────────────────────────────────────────────
-   * DIRECTOR BIO BAND — text-led, no portrait. Centered editorial
-   * column with oversized name and signal-red rule. Portrait is
-   * intentionally absent until a real photograph of Ivan exists.
+   * DIRECTOR BIO — image left, prose right
    * ─────────────────────────────────────────────────────────── */
-  .director-bio-band {
-    text-align: left;
+  .director-bio {
+    align-items: center;
+    gap: var(--space-3xl);
   }
-  .director-bio-band__name {
+  .director-bio__portrait {
+    aspect-ratio: 3 / 4;
+    overflow: hidden;
+    border-radius: var(--radius-md);
+    border: 1px solid var(--color-border-emphasis);
+  }
+  .director-bio__portrait :global(img) {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center top;
+  }
+  .director-bio__body {
+    max-width: 56ch;
+  }
+  .director-bio__name {
     font-family: var(--font-headline);
-    font-size: clamp(2.5rem, 6vw, 4rem);
+    font-size: clamp(2.25rem, 5vw, 3.25rem);
     line-height: var(--leading-crush);
     letter-spacing: var(--tracking-tight);
     color: var(--color-bone);
     margin: var(--space-md) 0 var(--space-md);
   }
-  .director-bio-band__rule {
-    width: 64px;
+  .director-bio__rule {
+    width: 48px;
     height: 3px;
     background: var(--color-signal);
-    margin: 0 0 var(--space-xl);
+    margin: 0 0 var(--space-lg);
   }
-  .director-bio-band__lede {
+  .director-bio__lede {
     font-family: var(--font-headline);
     font-style: italic;
-    font-size: clamp(1.25rem, 2vw, 1.5rem);
+    font-size: var(--text-body-lg);
     color: var(--color-bone);
     line-height: var(--leading-tight);
     margin: 0 0 var(--space-md);
-    max-width: 50ch;
   }
-  .director-bio-band__body {
+  .director-bio__body p {
     color: var(--color-chalk);
-    font-size: var(--text-body-lg);
     line-height: var(--leading-loose);
-    max-width: 60ch;
   }
-  .director-bio-band__body + .director-bio-band__body {
-    margin-top: var(--space-md);
-  }
-  .director-bio-band__actions {
+  .director-bio__actions {
     margin-top: var(--space-xl);
+  }
+
+  @media (max-width: 1024px) {
+    .director-bio__portrait { max-width: 480px; margin-inline: auto; }
   }
 
   /* ───────────────────────────────────────────────────────────
