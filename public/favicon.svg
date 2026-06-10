@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="Zo Media Productions">
+  <!-- Background — site void tone, rounded for modern PWA install -->
+  <rect width="64" height="64" rx="10" fill="#0A0A0B"/>
+  <!-- Italic serif "Zo" — drawn from the same Instrument Serif aesthetic
+       as the site headlines. Tiny signal-red dot tucks under the o,
+       echoing the site's red-rule accent. -->
+  <text
+    x="32" y="44"
+    text-anchor="middle"
+    font-family="'Instrument Serif', 'Playfair Display', Georgia, serif"
+    font-style="italic"
+    font-weight="400"
+    font-size="44"
+    fill="#E8E2D9"
+    letter-spacing="-1.5"
+  >Zo</text>
+  <!-- Signal-red mark under the wordmark — the site's red-rule signature -->
+  <rect x="22" y="50" width="20" height="3" fill="#D64045"/>
+</svg>

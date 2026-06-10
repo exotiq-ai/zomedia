@@ -46,7 +46,7 @@ function isActive(href: string): boolean {
 <nav class="nav" aria-label="Main navigation">
   <div class="nav__inner">
     <a href="/" class="nav__logo" aria-label="Zo Media Productions — home">
-      <Image src={zoLogo} alt="Zo Media Productions" width={160} height={60} loading="eager" fetchpriority="high" format="webp" />
+      <Image src={zoLogo} alt="Zo Media Productions" widths={[220, 320, 480]} sizes="(max-width: 1024px) 180px, 240px" loading="eager" fetchpriority="high" format="webp" />
     </a>
 
     <button class="nav__toggle" aria-expanded="false" aria-controls="nav-menu" aria-label="Toggle menu">
@@ -128,13 +128,24 @@ function isActive(href: string): boolean {
     gap: var(--space-xl);
   }
 
-  .nav__logo img {
-    height: 64px;
-    width: auto;
-    filter: brightness(0) invert(1);
-    transition: opacity var(--duration-fast);
+  .nav__logo {
+    /* Anchor the logo against the nav baseline; let the image breathe. */
+    display: inline-flex;
+    align-items: center;
+    flex-shrink: 0;
   }
-  .nav__logo:hover img { opacity: 0.8; }
+  .nav__logo img {
+    height: 80px;
+    width: auto;
+    /* Filter to white so the ink works on the dark site background. */
+    filter: brightness(0) invert(1);
+    transition: opacity var(--duration-fast), filter var(--duration-fast);
+  }
+  .nav__logo:hover img { opacity: 0.85; }
+  /* On smaller desktops, scale down so the logo doesn't crowd the menu. */
+  @media (max-width: 1280px) {
+    .nav__logo img { height: 68px; }
+  }
 
   .nav__menu {
     display: flex;

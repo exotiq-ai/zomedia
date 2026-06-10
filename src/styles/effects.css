@@ -608,12 +608,15 @@ body::after {
 @media (prefers-reduced-motion: no-preference) {
   .ken-burns > img,
   .ken-burns > picture > img {
-    animation: ken-burns-drift 22s var(--ease-smooth) infinite alternate;
+    /* 14s alternate (28s round-trip) — perceptible drift, still restrained.
+     * Bumped from 22s per direction; slightly larger zoom range too so the
+     * motion reads at the new tempo. */
+    animation: ken-burns-drift 14s var(--ease-smooth) infinite alternate;
   }
 }
 @keyframes ken-burns-drift {
-  0%   { transform: scale(1.02) translate(0, 0); }
-  100% { transform: scale(1.10) translate(-1.5%, -1%); }
+  0%   { transform: scale(1.03) translate(0, 0); }
+  100% { transform: scale(1.12) translate(-2%, -1.5%); }
 }
 
 /* ───────────────────────────────────────────────────────────

@@ -5,8 +5,25 @@ import SectionHeader from '../components/ui/SectionHeader.astro';
 
 <SubpageLayout title="The Phuckin' Wire" description="Advocacy journalism written by and for incarcerated people. Unfiltered. Uncensored. Unapologetic." breadcrumbs={[{ label: "The Phuckin' Wire" }]}>
 
-  <section class="hero hero--editorial hero--editorial-center section--dark">
+  <section class="hero hero--editorial hero--editorial-center section--dark wire-hero">
     <div class="hero__inner">
+      {/*
+        Wire masthead — the publication's hand-drawn logo as a printed
+        patch sitting on the dark page. Source file lives in /public so
+        Astro doesn't optimize it (the logo's ink/cream tonal balance is
+        baked-in and we want it to render as-shot). Drop the file at:
+        /public/assets/images/zo-media/phuckin-wire-logo.png
+      */}
+      <div class="wire-mark" aria-hidden="true">
+        <img
+          src="/assets/images/zo-media/phuckin-wire-logo.png"
+          alt=""
+          width="360"
+          height="360"
+          loading="eager"
+          decoding="async"
+        />
+      </div>
       <span class="hero__eyebrow">THE PUBLICATION</span>
       <h1 class="hero__headline wire-headline">The Phuckin' Wire</h1>
       <p class="hero__subhead">Advocacy journalism written by and for incarcerated people. Unfiltered. Uncensored. Unapologetic.</p>
@@ -77,6 +94,42 @@ import SectionHeader from '../components/ui/SectionHeader.astro';
 </SubpageLayout>
 
 <style>
+  /* ───────────────────────────────────────────────────────────
+   * WIRE HERO MASTHEAD — the Phuckin' Wire logo as a printed
+   * patch sitting on the dark page. Keeps the logo's native
+   * cream + ink palette; doesn't tint or invert. Slight rotation
+   * and soft shadow read it as a stuck-on stamp/sticker — fits
+   * the typesetter aesthetic of the rest of the site.
+   * ─────────────────────────────────────────────────────────── */
+  .wire-hero .hero__inner {
+    /* Make room for the mark above the headline; tighten vertical rhythm. */
+    padding-block: var(--space-3xl);
+  }
+  .wire-mark {
+    display: flex;
+    justify-content: center;
+    margin-bottom: var(--space-xl);
+  }
+  .wire-mark img {
+    display: block;
+    width: clamp(180px, 22vw, 280px);
+    height: auto;
+    aspect-ratio: 1 / 1;
+    border-radius: 50%;
+    transform: rotate(-3deg);
+    box-shadow:
+      0 14px 30px rgba(0, 0, 0, 0.45),
+      0 2px 0 rgba(214, 64, 69, 0.18);
+    transition: transform var(--duration-normal) var(--ease-snap);
+  }
+  .wire-mark:hover img {
+    transform: rotate(-1deg) scale(1.02);
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .wire-mark img { transform: none; }
+    .wire-mark:hover img { transform: none; }
+  }
+
   .wire-headline {
     font-size: clamp(3rem, 8vw, 6rem);
   }
