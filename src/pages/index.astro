@@ -2,7 +2,7 @@
 import { Image } from 'astro:assets';
 import BaseLayout from '../layouts/BaseLayout.astro';
 import SectionHeader from '../components/ui/SectionHeader.astro';
-import heroIvan from '../assets/images/zo-media/hero-ivan.jpg';
+import heroFolsom from '../assets/images/zo-media/folsom-tower.jpeg';
 import domesticGenocideCover from '../assets/images/zo-media/domestic-genocide-book-cover-adobe.png';
 import kingCover from '../assets/images/zo-media/King_frontcover-scaled.jpg';
 import mayhemCover from '../assets/images/zo-media/mayhem_murder_and_magnificence.jpg';
@@ -34,10 +34,17 @@ import socialJusticeCover from '../assets/images/zo-media/socialjusticeautobiogr
           <a href="/support/" class="btn btn--outline signature-hero__cta" data-magnetic>Support the Mission</a>
         </div>
       </div>
-      <div class="hero__media signature-hero__media">
+      <div class="hero__media signature-hero__media ken-burns" data-ivan-slot>
+        {/*
+          Placeholder slot for Ivan's hosted intro video.
+          Currently a real-photograph Ken Burns of Folsom State Prison
+          tower — atmospheric, no portrait implication, no AI faces.
+          When the Ivan video lands, swap this <Image> for a muted
+          autoplay <video> with the same column constraints.
+        */}
         <Image
-          src={heroIvan}
-          alt="An incarcerated writer at work — pen to paper, creating from inside"
+          src={heroFolsom}
+          alt="Folsom State Prison guard tower against a midday sky — atmospheric establish for the cooperative's editorial focus on stories from inside"
           widths={[640, 960, 1280, 1920]}
           sizes="(max-width: 1024px) 100vw, 41vw"
           loading="eager"
@@ -57,6 +64,40 @@ import socialJusticeCover from '../assets/images/zo-media/socialjusticeautobiogr
       </blockquote>
     </div>
   </section>
+
+  <!-- Two-tone display moment — editorial signature -->
+  <section class="section section--flush two-tone-band">
+    <div class="container reveal">
+      <h2 class="display two-tone two-tone-band__headline">
+        <span>We publish</span>
+        <span class="two-tone__muted">what the system silences.</span>
+      </h2>
+    </div>
+  </section>
+
+  <!-- Wire Ticker — editorial pull-quotes scrolling horizontally -->
+  <div class="ticker" role="marquee" aria-label="Recent voices from The Wire">
+    <div class="ticker__track">
+      {/* DOUBLED set — first half is what users see, second half makes the loop seamless. */}
+      <span class="ticker__item">"They told me I'd never write again. I wrote this from solitary." <span class="ticker__item-source">— Issue 14</span></span>
+      <span class="ticker__divider" aria-hidden="true">✦</span>
+      <span class="ticker__item">"The mailroom is the only door left." <span class="ticker__item-source">— Issue 12</span></span>
+      <span class="ticker__divider" aria-hidden="true">✦</span>
+      <span class="ticker__item">"This page is the closest thing I have to a window." <span class="ticker__item-source">— Issue 10</span></span>
+      <span class="ticker__divider" aria-hidden="true">✦</span>
+      <span class="ticker__item">"They count us twice a day. They don't read us once." <span class="ticker__item-source">— Issue 09</span></span>
+      <span class="ticker__divider" aria-hidden="true">✦</span>
+      {/* Duplicate set */}
+      <span class="ticker__item">"They told me I'd never write again. I wrote this from solitary." <span class="ticker__item-source">— Issue 14</span></span>
+      <span class="ticker__divider" aria-hidden="true">✦</span>
+      <span class="ticker__item">"The mailroom is the only door left." <span class="ticker__item-source">— Issue 12</span></span>
+      <span class="ticker__divider" aria-hidden="true">✦</span>
+      <span class="ticker__item">"This page is the closest thing I have to a window." <span class="ticker__item-source">— Issue 10</span></span>
+      <span class="ticker__divider" aria-hidden="true">✦</span>
+      <span class="ticker__item">"They count us twice a day. They don't read us once." <span class="ticker__item-source">— Issue 09</span></span>
+      <span class="ticker__divider" aria-hidden="true">✦</span>
+    </div>
+  </div>
 
   <!-- Stats / Impact Counter -->
   <section class="section">
@@ -183,6 +224,31 @@ import socialJusticeCover from '../assets/images/zo-media/socialjusticeautobiogr
     border-left: none;
     text-align: center;
     padding-inline: 0;
+  }
+
+  /* Two-tone display band — VOTR-style editorial moment.
+   * The headline stacks: bone foreground line, husk muted line. */
+  .two-tone-band {
+    padding-block: var(--space-3xl);
+    background: var(--color-void);
+    border-top: 1px solid var(--color-border);
+  }
+  .two-tone-band__headline {
+    font-size: clamp(2.5rem, 8vw, 6rem);
+    line-height: 0.95;
+    letter-spacing: var(--tracking-tight);
+    margin: 0;
+  }
+  .two-tone-band__headline span {
+    display: block;
+  }
+
+  /* Ken Burns container in the home hero — the existing hero__media
+   * already constrains aspect ratio; the .ken-burns class adds the
+   * slow drift on the inner <img>. */
+  .signature-hero__media.ken-burns {
+    /* Animation lives on the <img> per effects.css. No container
+     * overrides needed beyond the existing hero__media rules. */
   }
 
   /* The Wire promo grid alignment */

@@ -8,24 +8,32 @@ interface Props {
 
 const { currentPath } = Astro.props;
 
+// IA: slimmed to 5 primaries + Donate CTA. Films and About each carry
+// a dropdown for org/subsection pages. The logo is the home link.
 const links = [
-  { href: '/', label: 'Home' },
-  { href: '/about/', label: 'About' },
   { href: '/books/', label: 'Books' },
   {
     href: '/film-projects/',
-    label: 'Film Projects',
+    label: 'Films',
     children: [
+      { href: '/film-projects/', label: 'All Films' },
       { href: '/film-projects/screenplays/', label: 'Screenplays' },
       { href: '/film-projects/theatrical-works/', label: 'Theatrical Works' },
       { href: '/film-projects/documentaries/', label: 'Documentaries & Film Shorts' },
     ],
   },
   { href: '/the-wire/', label: "Phuckin' Wire" },
-  { href: '/staff-and-volunteers/', label: 'Staff' },
-  { href: '/board-of-directors/', label: 'Board' },
-  { href: '/advisory-board/', label: 'Advisory' },
-  { href: '/special-projects/', label: 'Special Projects' },
+  {
+    href: '/about/',
+    label: 'About',
+    children: [
+      { href: '/about/', label: 'About Zo Media' },
+      { href: '/staff-and-volunteers/', label: 'Staff & Volunteers' },
+      { href: '/board-of-directors/', label: 'Board of Directors' },
+      { href: '/advisory-board/', label: 'Advisory Board' },
+      { href: '/special-projects/', label: 'Special Projects' },
+    ],
+  },
   { href: '/contact/', label: 'Contact' },
 ];
 
@@ -37,7 +45,7 @@ function isActive(href: string): boolean {
 
 <nav class="nav" aria-label="Main navigation">
   <div class="nav__inner">
-    <a href="/" class="nav__logo">
+    <a href="/" class="nav__logo" aria-label="Zo Media Productions — home">
       <Image src={zoLogo} alt="Zo Media Productions" width={160} height={60} loading="eager" fetchpriority="high" format="webp" />
     </a>
 
@@ -56,6 +64,11 @@ function isActive(href: string): boolean {
             {...(isActive(link.href) ? { 'aria-current': 'page' } : {})}
           >
             {link.label}
+            {link.children && (
+              <span class="nav__caret" aria-hidden="true">
+                <svg viewBox="0 0 10 6" width="10" height="6"><path d="M1 1l4 4 4-4" stroke="currentColor" stroke-width="1.5" fill="none"/></svg>
+              </span>
+            )}
           </a>
           {link.children && (
             <ul class="nav__dropdown" role="list">
@@ -64,7 +77,7 @@ function isActive(href: string): boolean {
                   <a
                     href={child.href}
                     class="nav__dropdown-link"
-                    {...(isActive(child.href) ? { 'aria-current': 'page' } : {})}
+                    {...(isActive(child.href) && child.href !== link.href ? { 'aria-current': 'page' } : {})}
                   >
                     {child.label}
                   </a>
@@ -89,13 +102,20 @@ function isActive(href: string): boolean {
     background: transparent;
     transition:
       background var(--duration-normal) var(--ease-snap),
-      backdrop-filter var(--duration-normal) var(--ease-snap);
+      backdrop-filter var(--duration-normal) var(--ease-snap),
+      transform var(--duration-normal) var(--ease-snap),
+      border-bottom-color var(--duration-normal) var(--ease-snap);
     border-bottom: 1px solid transparent;
+    will-change: transform;
   }
   .nav.is-scrolled {
     background: rgba(10, 10, 11, 0.9);
     backdrop-filter: blur(12px) saturate(1.2);
     border-bottom-color: var(--color-border);
+  }
+  /* Hide-on-scroll-down, reveal-on-scroll-up. Only engages once scrolled. */
+  .nav.is-hidden {
+    transform: translateY(-100%);
   }
 
   .nav__inner {
@@ -123,12 +143,15 @@ function isActive(href: string): boolean {
   }
 
   .nav__link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4em;
     font-family: var(--font-mono);
     font-size: var(--text-tiny);
     letter-spacing: var(--tracking-wide);
     text-transform: uppercase;
     color: var(--color-fog);
-    padding: var(--space-sm) var(--space-sm);
+    padding: var(--space-sm) var(--space-md);
     position: relative;
     transition: color var(--duration-fast) var(--ease-snap);
     white-space: nowrap;
@@ -139,10 +162,20 @@ function isActive(href: string): boolean {
     content: '';
     position: absolute;
     bottom: 0;
-    left: var(--space-sm);
-    right: var(--space-sm);
+    left: var(--space-md);
+    right: var(--space-md);
     height: 2px;
     background: var(--color-signal);
+  }
+
+  .nav__caret {
+    display: inline-flex;
+    align-items: center;
+    transition: transform var(--duration-fast) var(--ease-snap);
+  }
+  .nav__item--has-dropdown:hover > .nav__link .nav__caret,
+  .nav__item--has-dropdown:focus-within > .nav__link .nav__caret {
+    transform: rotate(180deg);
   }
 
   /* Dropdown */
@@ -152,8 +185,9 @@ function isActive(href: string): boolean {
     top: 100%;
     left: 0;
     background: var(--color-graphite);
-    border: 1px solid var(--color-border);
-    min-width: 220px;
+    border: 1px solid var(--color-border-emphasis);
+    border-top: 2px solid var(--color-signal);
+    min-width: 240px;
     padding: var(--space-sm) 0;
     opacity: 0;
     visibility: hidden;
@@ -162,6 +196,7 @@ function isActive(href: string): boolean {
       opacity var(--duration-fast) var(--ease-snap),
       transform var(--duration-fast) var(--ease-snap),
       visibility var(--duration-fast);
+    box-shadow: var(--shadow-md);
   }
   .nav__item--has-dropdown:hover .nav__dropdown,
   .nav__item--has-dropdown:focus-within .nav__dropdown {
@@ -182,6 +217,9 @@ function isActive(href: string): boolean {
   .nav__dropdown-link:hover {
     color: var(--color-bone);
     background: var(--color-slate);
+  }
+  .nav__dropdown-link[aria-current="page"] {
+    color: var(--color-signal);
   }
 
   /* Mobile toggle */
@@ -209,27 +247,27 @@ function isActive(href: string): boolean {
     transform: translateY(-7px) rotate(-45deg);
   }
 
+  /* When mobile menu is open, never hide the nav */
+  .nav:has(.nav__menu.is-open) {
+    transform: translateY(0) !important;
+  }
+
   /* ───────────────────────────────────────────────────────────
    * MOBILE NAV — editorial "Index" treatment.
-   *
-   * Big serif items, mono index numerals (CSS counter), hairline
-   * dividers, signal-red active state, full-width Donate CTA pinned
-   * to the bottom. Items stagger-fade in when the menu opens.
+   * Big serif items, mono index numerals, hairline dividers,
+   * signal-red active state, full-width Donate CTA pinned to
+   * the bottom. Items stagger-fade in when the menu opens.
    * ─────────────────────────────────────────────────────────── */
   @media (max-width: 1024px) {
-    /* IMPORTANT: do NOT set backdrop-filter or transform/filter/perspective
-     * on .nav at this breakpoint. Any of those properties would make .nav
-     * the containing block for the fixed-positioned .nav__menu, clipping
-     * the full-screen overlay to the nav's own height. The opaque-ish
-     * background alone is enough on mobile. */
     .nav {
       background: rgba(10, 10, 11, 0.95);
       backdrop-filter: none;
     }
     .nav.is-scrolled {
-      backdrop-filter: none; /* mobile override — same containing-block reason */
+      backdrop-filter: none;
     }
     .nav__toggle { display: flex; }
+    .nav__caret { display: none; }
 
     /* The full-screen overlay */
     .nav__menu {
@@ -250,7 +288,6 @@ function isActive(href: string): boolean {
     }
     .nav__menu.is-open { transform: translateY(0); }
 
-    /* Subtle paper-fiber texture on the menu surface */
     .nav__menu::before {
       content: '';
       position: absolute;
@@ -263,7 +300,6 @@ function isActive(href: string): boolean {
       mix-blend-mode: overlay;
     }
 
-    /* Index label at the very top of the menu */
     .nav__menu::after {
       content: 'Index';
       position: absolute;
@@ -279,14 +315,12 @@ function isActive(href: string): boolean {
       border-bottom: 1px solid var(--color-border-emphasis);
     }
 
-    /* Item rows */
     .nav__item {
       counter-increment: nav-counter;
       border-bottom: 1px solid var(--color-border);
       position: relative;
     }
 
-    /* Editorial serif links — big, bone, left-aligned */
     .nav__link {
       display: flex;
       align-items: baseline;
@@ -326,14 +360,14 @@ function isActive(href: string): boolean {
       color: var(--color-signal);
     }
     .nav__link[aria-current="page"]::after {
-      display: none; /* desktop underline doesn't apply on mobile */
+      display: none;
     }
 
-    /* Dropdown nested under its parent */
     .nav__dropdown {
       position: static;
       background: transparent;
       border: none;
+      box-shadow: none;
       opacity: 1;
       visibility: visible;
       transform: none;
@@ -359,7 +393,6 @@ function isActive(href: string): boolean {
       padding-left: var(--space-xs);
     }
 
-    /* Donate CTA — promoted to a full-width primary anchor at the bottom */
     .nav__item--cta {
       counter-increment: none;
       border-bottom: none;
@@ -372,7 +405,6 @@ function isActive(href: string): boolean {
       font-size: var(--text-small);
     }
 
-    /* Stagger items in as the menu opens */
     @media (prefers-reduced-motion: no-preference) {
       .nav__menu .nav__item {
         opacity: 0;
@@ -387,15 +419,16 @@ function isActive(href: string): boolean {
       .nav__menu.is-open .nav__item:nth-child(4) { animation-delay: 380ms; }
       .nav__menu.is-open .nav__item:nth-child(5) { animation-delay: 440ms; }
       .nav__menu.is-open .nav__item:nth-child(6) { animation-delay: 500ms; }
-      .nav__menu.is-open .nav__item:nth-child(7) { animation-delay: 560ms; }
-      .nav__menu.is-open .nav__item:nth-child(8) { animation-delay: 600ms; }
-      .nav__menu.is-open .nav__item:nth-child(9) { animation-delay: 640ms; }
-      .nav__menu.is-open .nav__item:nth-child(10) { animation-delay: 680ms; }
-      .nav__menu.is-open .nav__item:nth-child(n+11) { animation-delay: 720ms; }
+      .nav__menu.is-open .nav__item:nth-child(n+7) { animation-delay: 560ms; }
 
       @keyframes nav-item-in {
         to { opacity: 1; transform: translateY(0); }
       }
     }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .nav { transition: background var(--duration-normal); }
+    .nav.is-hidden { transform: none; }
   }
 </style>

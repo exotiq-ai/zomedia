@@ -75,6 +75,12 @@
   --color-wire-dim: #9A7E35;
   --color-phosphor: #4EEBC2;
 
+  /* ——— Colors: Husk — two-tone display headline secondary
+   *   Used for the muted-text half of oversized two-tone display
+   *   treatments (the "ON DEATH ROW" trick — set ahead of the bone
+   *   foreground word). Lower-saturation, lower-luminance bone. ——— */
+  --color-husk: #6B6760;
+
   /* ——— Colors: Neutrals ——— */
   --color-soot: #141416;
   --color-graphite: #1E1E22;
