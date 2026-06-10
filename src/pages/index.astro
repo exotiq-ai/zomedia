@@ -75,26 +75,35 @@ import socialJusticeCover from '../assets/images/zo-media/socialjusticeautobiogr
     </div>
   </section>
 
-  <!-- Wire Ticker — editorial pull-quotes scrolling horizontally -->
-  <div class="ticker" role="marquee" aria-label="Recent voices from The Wire">
+  {/*
+    Editorial identity ticker — site voice as a moving editorial band.
+    Currently a thematic identity run rather than pull-quotes (the
+    cooperative does not yet have a curated pull-quote library). When
+    real lines from Wire issues are approved for surface, swap the
+    items below for "<quote> — Issue NN" pairs and re-double the set.
+  */}
+  <div class="ticker" aria-label="Editorial identity band">
     <div class="ticker__track">
-      {/* DOUBLED set — first half is what users see, second half makes the loop seamless. */}
-      <span class="ticker__item">"They told me I'd never write again. I wrote this from solitary." <span class="ticker__item-source">— Issue 14</span></span>
+      <span class="ticker__item">Voices from inside.</span>
       <span class="ticker__divider" aria-hidden="true">✦</span>
-      <span class="ticker__item">"The mailroom is the only door left." <span class="ticker__item-source">— Issue 12</span></span>
+      <span class="ticker__item">Published by incarcerated creators.</span>
       <span class="ticker__divider" aria-hidden="true">✦</span>
-      <span class="ticker__item">"This page is the closest thing I have to a window." <span class="ticker__item-source">— Issue 10</span></span>
+      <span class="ticker__item">Literature. Film. Art.</span>
       <span class="ticker__divider" aria-hidden="true">✦</span>
-      <span class="ticker__item">"They count us twice a day. They don't read us once." <span class="ticker__item-source">— Issue 09</span></span>
+      <span class="ticker__item">Stories the system silences.</span>
       <span class="ticker__divider" aria-hidden="true">✦</span>
-      {/* Duplicate set */}
-      <span class="ticker__item">"They told me I'd never write again. I wrote this from solitary." <span class="ticker__item-source">— Issue 14</span></span>
+      <span class="ticker__item">Read. Watch. Listen.</span>
       <span class="ticker__divider" aria-hidden="true">✦</span>
-      <span class="ticker__item">"The mailroom is the only door left." <span class="ticker__item-source">— Issue 12</span></span>
+      {/* Duplicate set — required for seamless CSS marquee loop */}
+      <span class="ticker__item">Voices from inside.</span>
       <span class="ticker__divider" aria-hidden="true">✦</span>
-      <span class="ticker__item">"This page is the closest thing I have to a window." <span class="ticker__item-source">— Issue 10</span></span>
+      <span class="ticker__item">Published by incarcerated creators.</span>
       <span class="ticker__divider" aria-hidden="true">✦</span>
-      <span class="ticker__item">"They count us twice a day. They don't read us once." <span class="ticker__item-source">— Issue 09</span></span>
+      <span class="ticker__item">Literature. Film. Art.</span>
+      <span class="ticker__divider" aria-hidden="true">✦</span>
+      <span class="ticker__item">Stories the system silences.</span>
+      <span class="ticker__divider" aria-hidden="true">✦</span>
+      <span class="ticker__item">Read. Watch. Listen.</span>
       <span class="ticker__divider" aria-hidden="true">✦</span>
     </div>
   </div>
