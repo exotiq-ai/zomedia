@@ -16,15 +16,14 @@ body::after {
 /* ───────────────────────────────────────────────────────────
  * SIGNATURE HERO — home page choreographed reveal
  *
- * Each headline line wipes in left-to-right (clip-path inset reveal)
- * with a synced blinking signal-red caret on the line's right edge so
- * it reads as a typewriter writing the line. The "inside" word still
- * gets the signal-red slit + reveal + underline as the climactic
- * flourish, then the period types last as a finished sentence.
+ * Each headline line wipes in left-to-right via animated clip-path
+ * inset, paired with a slight upward drift so the line arrives rather
+ * than snaps. The "inside" word gets a signal-red slit + reveal +
+ * underline as the climactic flourish, then the period types last.
  *
  * Total sequence ~2.6s. Beat list:
  *   200ms   eyebrow fades up
- *   420ms   line 1 wipes in (+ caret blinks at line 1's end)
+ *   420ms   line 1 wipes in
  *   780ms   line 2 wipes in
  *   1140ms  "told from " of line 3 wipes in
  *   1380ms  vertical signal-red slit appears beside "inside"
@@ -34,7 +33,6 @@ body::after {
  *   1950ms  subhead fades up
  *   2200ms  CTAs slide up (100ms stagger)
  *   2400ms  hero media wipes in top-down
- *   2900ms  final caret fades after 3 trailing blinks
  * ─────────────────────────────────────────────────────────── */
 
 @media (prefers-reduced-motion: no-preference) {
@@ -47,19 +45,14 @@ body::after {
     animation: sigh-fade-up 0.8s var(--sig-ease) 200ms forwards;
   }
 
-  /* Each headline line: a horizontal wipe paired with a slight rise.
-     The line is the container; line-inner holds the text and gets
-     clip-path animated. Caret sits as a sibling of line-inner, at the
-     line's natural right edge. */
+  /* Each headline line: horizontal wipe + slight rise */
   .signature-hero__line {
     display: block;
-    overflow: visible;
+    overflow: hidden;
   }
   .signature-hero__line-inner {
     display: inline-block;
-    overflow: hidden;
     will-change: clip-path, transform, opacity;
-    vertical-align: bottom;
   }
   .signature-hero__line:nth-of-type(1) .signature-hero__line-inner {
     clip-path: inset(0 100% 0 0);
@@ -73,7 +66,7 @@ body::after {
     opacity: 0.7;
     animation: sigh-line-settle 0.9s var(--sig-ease) 780ms forwards;
   }
-  /* Final line: only the prefix wipes; "inside" gets its own reveal. */
+  /* Final line: only the prefix wipes; "inside" gets its own reveal */
   .signature-hero__prefix {
     display: inline-block;
     clip-path: inset(0 100% 0 0);
@@ -84,38 +77,6 @@ body::after {
   .signature-hero__period {
     opacity: 0;
     animation: sigh-fade 0.4s var(--sig-ease) 1800ms forwards;
-  }
-
-  /* Blinking carriage caret — signal-red vertical bar at each line's
-     end. Visible during the line's wipe window, hidden afterward. The
-     final-line caret persists past the wipe end and fades on a slow
-     trail so the last keystroke lingers. */
-  .signature-hero__caret {
-    display: inline-block;
-    width: 0.08em;
-    height: 0.92em;
-    margin-left: 0.06em;
-    vertical-align: -0.08em;
-    background: var(--color-signal);
-    opacity: 0;
-  }
-  .signature-hero__line:nth-of-type(1) .signature-hero__caret {
-    animation:
-      sigh-caret-show 0ms linear 420ms forwards,
-      sigh-caret-blink 520ms steps(2, end) 420ms 2,
-      sigh-caret-hide 0ms linear 1500ms forwards;
-  }
-  .signature-hero__line:nth-of-type(2) .signature-hero__caret {
-    animation:
-      sigh-caret-show 0ms linear 780ms forwards,
-      sigh-caret-blink 520ms steps(2, end) 780ms 2,
-      sigh-caret-hide 0ms linear 1860ms forwards;
-  }
-  .signature-hero__caret--final {
-    animation:
-      sigh-caret-show 0ms linear 1140ms forwards,
-      sigh-caret-blink 520ms steps(2, end) 1140ms infinite,
-      sigh-caret-trail 1.4s ease-out 2400ms forwards;
   }
 
   /* "inside" — emerges from behind a vertical signal-red slit */
@@ -183,18 +144,8 @@ body::after {
       opacity: 1;
     }
   }
-  @keyframes sigh-fade-up    { to { opacity: 1; transform: translateY(0); } }
-  @keyframes sigh-fade       { to { opacity: 1; } }
-  @keyframes sigh-caret-show { to { opacity: 1; } }
-  @keyframes sigh-caret-hide { to { opacity: 0; } }
-  @keyframes sigh-caret-blink {
-    0%, 49%   { opacity: 1; }
-    50%, 100% { opacity: 0; }
-  }
-  @keyframes sigh-caret-trail {
-    0%   { opacity: 1; }
-    100% { opacity: 0; }
-  }
+  @keyframes sigh-fade-up { to { opacity: 1; transform: translateY(0); } }
+  @keyframes sigh-fade    { to { opacity: 1; } }
   @keyframes sigh-inside-reveal {
     to { opacity: 1; transform: translateX(0); }
   }
@@ -207,7 +158,7 @@ body::after {
   @keyframes sigh-media-wipe { to { clip-path: inset(0 0 0 0); } }
 }
 
-/* Reduced-motion: skip all animations, show everything immediately. */
+/* Reduced-motion: skip animations, show everything immediately. */
 @media (prefers-reduced-motion: reduce) {
   .signature-hero__line-inner,
   .signature-hero__prefix,
@@ -220,7 +171,6 @@ body::after {
     transform: none;
     clip-path: none;
   }
-  .signature-hero__caret { display: none; }
   .signature-hero__inside::before { display: none; }
   .signature-hero__inside::after { transform: scaleX(1); }
   .signature-hero__media { clip-path: none; }
