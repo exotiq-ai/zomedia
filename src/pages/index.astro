@@ -8,57 +8,6 @@ import folsomTower from '../assets/images/zo-media/folsom-tower.jpeg';
 import filmCinematographer from '../assets/images/zo-media/film-cinematographer.jpg';
 import stageCapitolMarquee from '../assets/images/zo-media/stage-capitol-marquee.jpg';
 import supportWritingLetter from '../assets/images/zo-media/support-writing-letter.png';
-
-// ─────────────────────────────────────────────────────────────
-// SIGNATURE HERO — typewriter cadence
-//
-// Pre-compute per-character delays so the home-hero headline types
-// char-by-char with realistic typewriter rhythm (longer pauses on
-// punctuation + word boundaries, micro-pauses every few chars,
-// carriage-return pause between lines). All math at build time —
-// no client JS, just CSS animations referencing custom properties.
-// ─────────────────────────────────────────────────────────────
-const TYPE_BASE_MS = 52;        // average per-char interval
-const TYPE_SPACE_EXTRA = 32;    // extra pause after a space
-const TYPE_PUNCT_EXTRA = 95;    // extra pause after punctuation
-const TYPE_MICRO_PAUSE = 40;    // tiny pause every 7th char (organic)
-const LINE_RETURN_GAP = 280;    // carriage-return pause between lines
-const EYEBROW_DELAY = 220;      // when the eyebrow starts
-const TYPING_START = 780;       // when first char appears
-
-function computeLine(text: string, startDelay: number) {
-  let d = startDelay;
-  const chars = Array.from(text).map((ch, i) => {
-    // Substitute regular spaces with non-breaking spaces so HTML
-    // whitespace rules don't collapse them between inline-block char
-    // spans, and so a single line never wraps mid-phrase.
-    const rendered = ch === ' ' ? ' ' : ch;
-    const entry = { ch: rendered, delay: Math.round(d) };
-    let interval = TYPE_BASE_MS;
-    if (ch === ' ') interval += TYPE_SPACE_EXTRA;
-    else if (/[.,;:!?]/.test(ch)) interval += TYPE_PUNCT_EXTRA;
-    if (i > 0 && i % 7 === 0) interval += TYPE_MICRO_PAUSE;
-    d += interval;
-    return entry;
-  });
-  return { chars, endDelay: Math.round(d) };
-}
-
-const line1 = computeLine('The stories that', TYPING_START);
-const line2 = computeLine('matter most are', line1.endDelay + LINE_RETURN_GAP);
-const prefix = computeLine('told from ', line2.endDelay + LINE_RETURN_GAP);
-
-// "inside" word — slit appears, word reveals through it, underline draws
-const INSIDE_SLIT_DELAY = prefix.endDelay + 80;
-const INSIDE_REVEAL_DELAY = INSIDE_SLIT_DELAY + 140;
-const INSIDE_UNDERLINE_DELAY = INSIDE_REVEAL_DELAY + 380;
-
-// Period types last — a finished sentence
-const PERIOD_DELAY = INSIDE_UNDERLINE_DELAY + 180;
-const SUBHEAD_DELAY = PERIOD_DELAY + 320;
-const CTA_DELAY = SUBHEAD_DELAY + 380;
-const MEDIA_DELAY = CTA_DELAY + 220;
-const FINAL_END = MEDIA_DELAY + 1000;
 import phuckinWireMark from '../assets/images/zo-media/phuckin-wire-mark.jpg';
 
 // WHAT WE MAKE — six fronts of the cooperative, in newspaper TOC order.
@@ -150,41 +99,30 @@ const tiles = [
     </defs>
   </svg>
 
-  <!-- Hero: Split Layout (home-page exception) — typewriter signature reveal.
-       Each character is its own span with a build-time computed delay
-       (see frontmatter). Carets blink at the active line. The "inside"
+  <!-- Hero: Split Layout (home-page exception) — signature reveal moment.
+       Each headline line wipes in left-to-right with a synced blinking
+       signal-red caret riding the line's active period, so it reads as
+       a typewriter writing rather than just text appearing. The "inside"
        word still gets the signal-red slit + underline as the climactic
-       flourish. Reduced-motion shows everything instantly. -->
-  <section
-    class="hero hero--split signature-hero"
-    data-signature-hero
-    style={`--type-end: ${prefix.endDelay}ms; --inside-slit: ${INSIDE_SLIT_DELAY}ms; --inside-reveal: ${INSIDE_REVEAL_DELAY}ms; --inside-underline: ${INSIDE_UNDERLINE_DELAY}ms; --period: ${PERIOD_DELAY}ms; --subhead: ${SUBHEAD_DELAY}ms; --cta-1: ${CTA_DELAY}ms; --cta-2: ${CTA_DELAY + 100}ms; --media: ${MEDIA_DELAY}ms; --final-end: ${FINAL_END}ms;`}
-  >
+       flourish, and the period types last. -->
+  <section class="hero hero--split signature-hero" data-signature-hero>
     <div class="hero__inner">
       <div class="signature-hero__copy">
-        <span
-          class="hero__eyebrow signature-hero__eyebrow"
-          style={`--eyebrow-delay: ${EYEBROW_DELAY}ms;`}
-        >A UBFSF 501(c)(3) Cooperative</span>
+        <span class="hero__eyebrow signature-hero__eyebrow">A UBFSF 501(c)(3) Cooperative</span>
         <h1 class="hero__headline signature-hero__headline" aria-label="The stories that matter most are told from inside.">
           <span class="signature-hero__line" aria-hidden="true">
-            {line1.chars.map(({ ch, delay }) => (
-              <span class="signature-hero__char" style={`--d: ${delay}ms`}>{ch === ' ' ? ' ' : ch}</span>
-            ))}
-            <span class="signature-hero__caret" style={`--caret-start: ${TYPING_START}ms; --caret-end: ${line1.endDelay}ms;`} aria-hidden="true"></span>
+            <span class="signature-hero__line-inner">The stories that</span>
+            <span class="signature-hero__caret" aria-hidden="true"></span>
           </span>
           <span class="signature-hero__line" aria-hidden="true">
-            {line2.chars.map(({ ch, delay }) => (
-              <span class="signature-hero__char" style={`--d: ${delay}ms`}>{ch === ' ' ? ' ' : ch}</span>
-            ))}
-            <span class="signature-hero__caret" style={`--caret-start: ${line1.endDelay + LINE_RETURN_GAP}ms; --caret-end: ${line2.endDelay}ms;`} aria-hidden="true"></span>
+            <span class="signature-hero__line-inner">matter most are</span>
+            <span class="signature-hero__caret" aria-hidden="true"></span>
           </span>
           <span class="signature-hero__line signature-hero__line--final" aria-hidden="true">
-            <span class="signature-hero__prefix">
-              {prefix.chars.map(({ ch, delay }) => (
-                <span class="signature-hero__char" style={`--d: ${delay}ms`}>{ch === ' ' ? ' ' : ch}</span>
-              ))}
-            </span><span class="signature-hero__inside">inside</span><span class="signature-hero__period">.</span><span class="signature-hero__caret signature-hero__caret--final" style={`--caret-start: ${line2.endDelay + LINE_RETURN_GAP}ms; --caret-end: ${FINAL_END}ms;`} aria-hidden="true"></span>
+            <span class="signature-hero__line-inner">
+              <span class="signature-hero__prefix">told from&nbsp;</span><span class="signature-hero__inside">inside</span><span class="signature-hero__period">.</span>
+            </span>
+            <span class="signature-hero__caret signature-hero__caret--final" aria-hidden="true"></span>
           </span>
         </h1>
         <p class="hero__subhead signature-hero__subhead">Zo Media Productions is a cooperative that publishes literature, produces film, and exhibits art created by incarcerated people &mdash; building economic power and driving justice reform from behind the wall.</p>

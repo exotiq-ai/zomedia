@@ -14,23 +14,27 @@ body::after {
 }
 
 /* ───────────────────────────────────────────────────────────
- * SIGNATURE HERO — typewriter cadence on first paint
+ * SIGNATURE HERO — home page choreographed reveal
  *
- * Each headline character is its own .signature-hero__char span with
- * a per-char delay (--d) computed at build time in index.astro. The
- * char pops in over 60ms (steps-like sharpness) on its delay. A
- * .signature-hero__caret sibling on each line shows a blinking
- * signal-red bar from --caret-start to --caret-end so the carriage
- * is visible at the active line.
+ * Each headline line wipes in left-to-right (clip-path inset reveal)
+ * with a synced blinking signal-red caret on the line's right edge so
+ * it reads as a typewriter writing the line. The "inside" word still
+ * gets the signal-red slit + reveal + underline as the climactic
+ * flourish, then the period types last as a finished sentence.
  *
- * The "inside" word keeps its signal-red slit + reveal + underline as
- * the climactic flourish — typing stops, the slit appears, the word
- * emerges, the underline draws, then the period types last.
- *
- * All delays after typing reference CSS vars on the section element:
- *   --eyebrow-delay  --inside-slit  --inside-reveal  --inside-underline
- *   --period  --subhead  --cta-1  --cta-2  --media
- * Tweak the constants in index.astro frontmatter to retime everything.
+ * Total sequence ~2.6s. Beat list:
+ *   200ms   eyebrow fades up
+ *   420ms   line 1 wipes in (+ caret blinks at line 1's end)
+ *   780ms   line 2 wipes in
+ *   1140ms  "told from " of line 3 wipes in
+ *   1380ms  vertical signal-red slit appears beside "inside"
+ *   1500ms  "inside" reveals from behind the slit
+ *   1800ms  period fades in
+ *   1900ms  signal-red underline draws beneath "inside"
+ *   1950ms  subhead fades up
+ *   2200ms  CTAs slide up (100ms stagger)
+ *   2400ms  hero media wipes in top-down
+ *   2900ms  final caret fades after 3 trailing blinks
  * ─────────────────────────────────────────────────────────── */
 
 @media (prefers-reduced-motion: no-preference) {
@@ -40,70 +44,87 @@ body::after {
   .signature-hero__eyebrow {
     opacity: 0;
     transform: translateY(8px);
-    animation: sigh-fade-up 0.8s var(--sig-ease) var(--eyebrow-delay, 200ms) forwards;
+    animation: sigh-fade-up 0.8s var(--sig-ease) 200ms forwards;
   }
 
-  /* Per-line container — block-level so caret hangs at line end */
+  /* Each headline line: a horizontal wipe paired with a slight rise.
+     The line is the container; line-inner holds the text and gets
+     clip-path animated. Caret sits as a sibling of line-inner, at the
+     line's natural right edge. */
   .signature-hero__line {
     display: block;
-    position: relative;
+    overflow: visible;
   }
-
-  /* Per-character pop — sharp single-step "key strike". Hidden chars
-     collapse to zero rendered width via font-size:0 (no glyph to draw,
-     so no width), and on strike animate back to font-size:100% (= the
-     parent's natural inherited size). This keeps the caret (sibling)
-     at the active typing edge, with no clipping artifacts on wide
-     glyphs like M, W, m, w — unlike max-width clipping which slices
-     wider letterforms partially off-screen. */
-  .signature-hero__char {
+  .signature-hero__line-inner {
     display: inline-block;
-    font-size: 0;
+    overflow: hidden;
+    will-change: clip-path, transform, opacity;
+    vertical-align: bottom;
+  }
+  .signature-hero__line:nth-of-type(1) .signature-hero__line-inner {
+    clip-path: inset(0 100% 0 0);
+    transform: translateY(6px);
+    opacity: 0.7;
+    animation: sigh-line-settle 0.9s var(--sig-ease) 420ms forwards;
+  }
+  .signature-hero__line:nth-of-type(2) .signature-hero__line-inner {
+    clip-path: inset(0 100% 0 0);
+    transform: translateY(6px);
+    opacity: 0.7;
+    animation: sigh-line-settle 0.9s var(--sig-ease) 780ms forwards;
+  }
+  /* Final line: only the prefix wipes; "inside" gets its own reveal. */
+  .signature-hero__prefix {
+    display: inline-block;
+    clip-path: inset(0 100% 0 0);
+    transform: translateY(6px);
+    opacity: 0.7;
+    animation: sigh-line-settle 0.85s var(--sig-ease) 1140ms forwards;
+  }
+  .signature-hero__period {
     opacity: 0;
-    white-space: pre;
-    animation: sigh-char-strike 60ms steps(1, end) var(--d, 0ms) forwards;
+    animation: sigh-fade 0.4s var(--sig-ease) 1800ms forwards;
   }
 
-  /* Blinking carriage — signal-red vertical bar at the line's typing
-     edge. Visible only between --caret-start and --caret-end via the
-     scoped on/off keyframes. */
+  /* Blinking carriage caret — signal-red vertical bar at each line's
+     end. Visible during the line's wipe window, hidden afterward. The
+     final-line caret persists past the wipe end and fades on a slow
+     trail so the last keystroke lingers. */
   .signature-hero__caret {
     display: inline-block;
     width: 0.08em;
     height: 0.92em;
-    margin-left: 0.04em;
+    margin-left: 0.06em;
     vertical-align: -0.08em;
     background: var(--color-signal);
     opacity: 0;
-    animation:
-      sigh-caret-show 0ms linear var(--caret-start, 0ms) forwards,
-      sigh-caret-blink 530ms steps(2, end) var(--caret-start, 0ms) infinite,
-      sigh-caret-hide 0ms linear var(--caret-end, 99999ms) forwards;
   }
-  /* Final-line caret persists past --caret-end with 3 trailing blinks
-     before fading. Driven by the same vars; we override the hide
-     timing to run the slow trailing fade instead of a hard cut. */
+  .signature-hero__line:nth-of-type(1) .signature-hero__caret {
+    animation:
+      sigh-caret-show 0ms linear 420ms forwards,
+      sigh-caret-blink 520ms steps(2, end) 420ms 2,
+      sigh-caret-hide 0ms linear 1500ms forwards;
+  }
+  .signature-hero__line:nth-of-type(2) .signature-hero__caret {
+    animation:
+      sigh-caret-show 0ms linear 780ms forwards,
+      sigh-caret-blink 520ms steps(2, end) 780ms 2,
+      sigh-caret-hide 0ms linear 1860ms forwards;
+  }
   .signature-hero__caret--final {
     animation:
-      sigh-caret-show 0ms linear var(--caret-start, 0ms) forwards,
-      sigh-caret-blink 530ms steps(2, end) var(--caret-start, 0ms) infinite,
-      sigh-caret-trail 1.2s ease-out var(--caret-end, 99999ms) forwards;
+      sigh-caret-show 0ms linear 1140ms forwards,
+      sigh-caret-blink 520ms steps(2, end) 1140ms infinite,
+      sigh-caret-trail 1.4s ease-out 2400ms forwards;
   }
 
-  /* Prefix wrapper for "told from " on the final line — its chars
-     animate individually; this is just a layout shim. */
-  .signature-hero__prefix {
-    display: inline;
-  }
-
-  /* "inside" — emerges from behind a vertical signal-red slit, then
-     gets an underline drawn beneath it. */
+  /* "inside" — emerges from behind a vertical signal-red slit */
   .signature-hero__inside {
     display: inline-block;
     position: relative;
     opacity: 0;
     transform: translateX(-10px);
-    animation: sigh-inside-reveal 0.7s var(--sig-ease) var(--inside-reveal, 2200ms) forwards;
+    animation: sigh-inside-reveal 0.7s var(--sig-ease) 1500ms forwards;
   }
   .signature-hero__inside::before {
     content: '';
@@ -114,7 +135,7 @@ body::after {
     width: 3px;
     background: var(--color-signal);
     opacity: 0;
-    animation: sigh-slit 0.6s var(--sig-ease) var(--inside-slit, 2080ms) forwards;
+    animation: sigh-slit 0.6s var(--sig-ease) 1380ms forwards;
   }
   .signature-hero__inside::after {
     content: '';
@@ -126,20 +147,14 @@ body::after {
     background: var(--color-signal);
     transform: scaleX(0);
     transform-origin: left;
-    animation: sigh-underline 0.55s var(--sig-ease) var(--inside-underline, 2600ms) forwards;
-  }
-
-  /* Period — types last, a finished sentence */
-  .signature-hero__period {
-    opacity: 0;
-    animation: sigh-fade 0.25s var(--sig-ease) var(--period, 2800ms) forwards;
+    animation: sigh-underline 0.55s var(--sig-ease) 1900ms forwards;
   }
 
   /* Subhead */
   .signature-hero__subhead {
     opacity: 0;
     transform: translateY(8px);
-    animation: sigh-fade-up 0.8s var(--sig-ease) var(--subhead, 3100ms) forwards;
+    animation: sigh-fade-up 0.8s var(--sig-ease) 1950ms forwards;
   }
 
   /* CTAs — staggered */
@@ -148,24 +163,30 @@ body::after {
     transform: translateY(10px);
   }
   .signature-hero__cta:nth-of-type(1) {
-    animation: sigh-fade-up 0.7s var(--sig-ease) var(--cta-1, 3400ms) forwards;
+    animation: sigh-fade-up 0.7s var(--sig-ease) 2200ms forwards;
   }
   .signature-hero__cta:nth-of-type(2) {
-    animation: sigh-fade-up 0.7s var(--sig-ease) var(--cta-2, 3500ms) forwards;
+    animation: sigh-fade-up 0.7s var(--sig-ease) 2300ms forwards;
   }
 
   /* Hero media — slower top-down wipe */
   .signature-hero__media {
     clip-path: inset(0 0 100% 0);
     will-change: clip-path;
-    animation: sigh-media-wipe 1s var(--sig-ease) var(--media, 3700ms) forwards;
+    animation: sigh-media-wipe 1s var(--sig-ease) 2400ms forwards;
   }
 
-  @keyframes sigh-char-strike {
-    to { opacity: 1; font-size: 100%; }
+  @keyframes sigh-line-settle {
+    to {
+      clip-path: inset(0 0 0 0);
+      transform: translateY(0);
+      opacity: 1;
+    }
   }
-  @keyframes sigh-caret-show  { to { opacity: 1; } }
-  @keyframes sigh-caret-hide  { to { opacity: 0; } }
+  @keyframes sigh-fade-up    { to { opacity: 1; transform: translateY(0); } }
+  @keyframes sigh-fade       { to { opacity: 1; } }
+  @keyframes sigh-caret-show { to { opacity: 1; } }
+  @keyframes sigh-caret-hide { to { opacity: 0; } }
   @keyframes sigh-caret-blink {
     0%, 49%   { opacity: 1; }
     50%, 100% { opacity: 0; }
@@ -174,8 +195,6 @@ body::after {
     0%   { opacity: 1; }
     100% { opacity: 0; }
   }
-  @keyframes sigh-fade-up { to { opacity: 1; transform: translateY(0); } }
-  @keyframes sigh-fade    { to { opacity: 1; } }
   @keyframes sigh-inside-reveal {
     to { opacity: 1; transform: translateX(0); }
   }
@@ -188,18 +207,19 @@ body::after {
   @keyframes sigh-media-wipe { to { clip-path: inset(0 0 0 0); } }
 }
 
-/* Reduced-motion: skip the typewriter, show everything immediately. */
+/* Reduced-motion: skip all animations, show everything immediately. */
 @media (prefers-reduced-motion: reduce) {
-  .signature-hero__char {
-    opacity: 1;
-    font-size: 100%;
-    transform: none;
-  }
+  .signature-hero__line-inner,
+  .signature-hero__prefix,
   .signature-hero__inside,
   .signature-hero__period,
   .signature-hero__eyebrow,
   .signature-hero__subhead,
-  .signature-hero__cta { opacity: 1; transform: none; }
+  .signature-hero__cta {
+    opacity: 1;
+    transform: none;
+    clip-path: none;
+  }
   .signature-hero__caret { display: none; }
   .signature-hero__inside::before { display: none; }
   .signature-hero__inside::after { transform: scaleX(1); }
