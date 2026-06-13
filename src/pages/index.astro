@@ -5,11 +5,16 @@ import SectionHeader from '../components/ui/SectionHeader.astro';
 import heroIvan from '../assets/images/zo-media/hero-ivan.jpg';
 import domesticGenocideCover from '../assets/images/zo-media/domestic-genocide-book-cover-adobe.png';
 import folsomTower from '../assets/images/zo-media/folsom-tower.jpeg';
+import filmCinematographer from '../assets/images/zo-media/film-cinematographer.jpg';
+import stageCapitolMarquee from '../assets/images/zo-media/stage-capitol-marquee.jpg';
+import supportOnSet from '../assets/images/zo-media/support-on-set.jpg';
+import phuckinWireMark from '../assets/images/zo-media/phuckin-wire-mark.jpg';
 
 // WHAT WE MAKE — six fronts of the cooperative, in newspaper TOC order.
-// Two photo tiles (Literature, Special Projects) anchor the grid; the
-// rest run as typographic posters until original photography lands for
-// Film, Stage, Wire, Support. All tiles share the duotone overlay system.
+// Five photo tiles share the duotone treatment (void→bone luminance map);
+// the Wire tile uses the native cream+ink Phuckin' Wire mark as a paste-on
+// sticker so the brand reads at full fidelity — matches the masthead
+// pattern established on /the-wire/.
 const tiles = [
   {
     n: '01',
@@ -23,18 +28,30 @@ const tiles = [
     label: 'Film & Documentary',
     kicker: 'Documentary work built around incarcerated subjects and storytellers.',
     href: '/film-projects/documentaries/',
+    photo: {
+      src: filmCinematographer,
+      alt: "A cinematographer carries a RED camera on a Steadicam rig; a 'Zero Tolerance' enforcement notice hangs on the wall behind him.",
+    },
   },
   {
     n: '03',
     label: 'Stage',
     kicker: 'Theatrical works developed from manuscripts written behind the wall.',
     href: '/film-projects/theatrical-works/',
+    photo: {
+      src: stageCapitolMarquee,
+      alt: 'The art deco Capitol Theatre marquee glows in neon against a black night sky; four figures stand in silhouette at the entrance below.',
+    },
   },
   {
     n: '04',
     label: "The Phuckin' Wire",
     kicker: 'The flagship newsletter — advocacy journalism, unfiltered.',
     href: '/the-wire/',
+    brand: {
+      src: phuckinWireMark,
+      alt: "The Phuckin' Wire logo — a wide-eyed face ringed by barbed wire",
+    },
   },
   {
     n: '05',
@@ -49,6 +66,10 @@ const tiles = [
     kicker: 'Every gift funds the work and the people doing it.',
     href: '/support/',
     cta: true,
+    photo: {
+      src: supportOnSet,
+      alt: 'A film crew member silhouetted on set against warm red backlight; the work behind the work.',
+    },
   },
 ];
 ---
@@ -243,12 +264,14 @@ const tiles = [
             href={t.href}
             class:list={[
               'tile',
-              t.photo ? 'tile--photo' : 'tile--type',
+              t.photo && 'tile--photo',
+              t.brand && 'tile--brand',
+              !t.photo && !t.brand && 'tile--type',
               t.cta && 'tile--cta',
             ]}
             aria-label={`${t.label} — ${t.kicker}`}
           >
-            {t.photo ? (
+            {t.photo && (
               <Image
                 src={t.photo.src}
                 alt={t.photo.alt}
@@ -258,7 +281,19 @@ const tiles = [
                 loading="lazy"
                 format="webp"
               />
-            ) : (
+            )}
+            {t.brand && (
+              <Image
+                src={t.brand.src}
+                alt={t.brand.alt}
+                class="tile__sticker"
+                widths={[280, 420, 560]}
+                sizes="(max-width: 600px) 60vw, (max-width: 1024px) 30vw, 20vw"
+                loading="lazy"
+                format="webp"
+              />
+            )}
+            {!t.photo && !t.brand && (
               <span class="tile__numeral" aria-hidden="true">{t.n}</span>
             )}
             <span class="tile__arrow" aria-hidden="true">↗ View</span>
@@ -489,11 +524,14 @@ const tiles = [
     transform: translateY(0);
   }
 
-  /* CTA mode — Support tile carries red accent energy. */
+  /* CTA mode — Support tile carries red accent energy. Persistent
+     2px signal-red top edge reads as CTA whether the tile is photo or
+     typographic. */
   .tile--cta {
     background:
       radial-gradient(ellipse at 30% 70%, rgba(214,64,69,0.10) 0%, transparent 65%),
       linear-gradient(135deg, var(--color-soot) 0%, var(--color-void) 100%);
+    box-shadow: inset 0 2px 0 0 var(--color-signal);
   }
   .tile--cta .tile__numeral {
     color: rgba(163, 48, 53, 0.55);
@@ -504,6 +542,35 @@ const tiles = [
   }
   .tile--cta .tile__label {
     color: var(--color-bone);
+  }
+
+  /* Brand-sticker mode — Wire tile only. The Phuckin' Wire mark sits
+     centered as a paste-on sticker (slight rotation, drop shadow),
+     preserving its native cream + ink palette. Echoes the existing
+     masthead stamp pattern on /the-wire/ for cross-page consistency. */
+  .tile--brand {
+    background:
+      radial-gradient(ellipse at 50% 35%, rgba(200,168,78,0.06) 0%, transparent 60%),
+      linear-gradient(135deg, var(--color-soot) 0%, var(--color-void) 100%);
+  }
+  .tile__sticker {
+    position: absolute;
+    left: 50%;
+    top: 42%;
+    width: clamp(150px, 55%, 260px);
+    height: auto;
+    transform: translate(-50%, -50%) rotate(-3deg);
+    filter:
+      drop-shadow(0 10px 22px rgba(0, 0, 0, 0.55))
+      drop-shadow(0 2px 0 var(--color-signal-dim));
+    transition: transform 600ms var(--ease-snap);
+    z-index: 1;
+    user-select: none;
+    pointer-events: none;
+  }
+  .tile--brand:hover .tile__sticker,
+  .tile--brand:focus-visible .tile__sticker {
+    transform: translate(-50%, -50%) rotate(-3deg) scale(1.04);
   }
 
   /* Touch-class devices: surface the kicker permanently (no hover). */
@@ -524,9 +591,14 @@ const tiles = [
     .tile__media,
     .tile__numeral,
     .tile__arrow,
-    .tile__kicker { transition: none; }
+    .tile__kicker,
+    .tile__sticker { transition: none; }
     .tile:hover .tile__media,
     .tile:focus-visible .tile__media { transform: scale(1.01); }
+    .tile--brand:hover .tile__sticker,
+    .tile--brand:focus-visible .tile__sticker {
+      transform: translate(-50%, -50%) rotate(-3deg);
+    }
   }
 
   /* Final CTA action row */

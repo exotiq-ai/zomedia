@@ -25,10 +25,20 @@ Per project owner direction, these are kept in place **until the real Ivan video
 
 | File | Best slot | Notes |
 | --- | --- | --- |
-| `folsom-tower.jpeg` (this folder) | About page hero (already in use); atmospheric breaks | Real photograph of Folsom State Prison; editorially appropriate, no portrait implication. Treat with B&W contrast +5–10. |
+| `folsom-tower.jpeg` (this folder) | About page hero (already in use); home WHAT WE MAKE → Special Projects tile | Real photograph of Folsom State Prison; editorially appropriate, no portrait implication. Treat with B&W contrast +5–10. |
 | `public/assets/images/zo-media/zo-tower.001.jpeg` | Brand mark, hero backgrounds (Contact uses it) | Stylized Zo Media tower icon — brand asset, not a photograph |
-| Book covers (`King_frontcover-scaled.jpg`, `domestic-genocide-book-cover-adobe.png`, `mayhem_murder_and_magnificence.jpg`, `socialjusticeautobiographies_cover-scaled.jpg`) | Books page, featured-books grid | Real product imagery, no concerns |
+| Book covers (`King_frontcover-scaled.jpg`, `domestic-genocide-book-cover-adobe.png`, `mayhem_murder_and_magnificence.jpg`, `socialjusticeautobiographies_cover-scaled.jpg`) | Books page; home WHAT WE MAKE → Literature tile uses `domestic-genocide-book-cover-adobe.png` | Real product imagery, no concerns |
 | `zologo.png` | Nav, footer | Logo |
+| `film-cinematographer.jpg` | Home WHAT WE MAKE → Film tile | Black cinematographer with RED + Steadicam on a street; "Zero Tolerance" enforcement sign behind. Owner-provided. Editorially the strongest pick — labor + state surveillance in the same frame. Duotoned at render. |
+| `stage-capitol-marquee.jpg` | Home WHAT WE MAKE → Stage tile | The Capitol Theatre (Singapore) art deco neon marquee at night with silhouetted patrons. Photographer: Saw Sing (Pexels). Already near-B&W; duotone is gentle. |
+| `support-on-set.jpg` | Home WHAT WE MAKE → Support tile | Silhouetted film crew member, warm red backlight. Photographer: Wolrider (Pexels). The orange-red key light ties to `--color-signal` for CTA visual alignment. |
+| `phuckin-wire-mark.jpg` | Home WHAT WE MAKE → Wire tile (sticker mode, not duotoned); also referenced from `/the-wire/` masthead pattern | The Phuckin' Wire mark on its native cream paper — black ink, barbed-wire ring, wide-eyed face. Rendered without the duotone filter to preserve brand fidelity. |
+
+## Alternate / unused
+
+| File | Why kept | Could swap into |
+| --- | --- | --- |
+| `public/assets/images/pexels-keenan-constance-545154-5692026.jpg` | Daytime "THEATER" neon on brick. Photographer: Keenan Constance (Pexels). Was the Stage alternate; we chose the Capitol Theatre night shot instead. | Stage tile, if the Capitol shot needs to retire. |
 
 ## Rule of thumb (also in [`docs/creative-direction.md`](../../../docs/creative-direction.md))
 
