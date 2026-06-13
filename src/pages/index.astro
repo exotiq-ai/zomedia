@@ -223,35 +223,14 @@ const tiles = [
     </div>
   </section>
 
-  <!-- The Wire Promo -->
-  <section class="section section--alt">
-    <div class="container reveal">
-      <span class="eyebrow">The Publication</span>
-      <div class="grid grid--asymmetric wire-promo__grid mt-lg">
-        <div>
-          <h2>The Phuckin' Wire</h2>
-          <p class="text-lg mt-lg">Our flagship newsletter — advocacy journalism written by and for incarcerated people. Unfiltered. Uncensored. Unapologetic.</p>
-          <a href="/the-wire/" class="btn btn--outline mt-xl">Read The Wire</a>
-        </div>
-        <div class="card halftone wire-promo__card">
-          <span class="eyebrow eyebrow--signal">Subscribe</span>
-          <p class="card__title mt-sm">Get every issue delivered.</p>
-          <p class="card__text mt-sm">Stories, investigations, and creative work from inside the system.</p>
-          <form data-netlify="true" name="wire-subscribe" method="POST" class="wire-promo__form mt-lg">
-            <input type="hidden" name="form-name" value="wire-subscribe" />
-            <input type="email" name="email" placeholder="your@email.com" required class="form-control" aria-label="Email for The Wire" />
-            <button type="submit" class="btn btn--primary">Go</button>
-          </form>
-        </div>
-      </div>
-    </div>
-  </section>
-
   <!-- WHAT WE MAKE — six fronts of the cooperative, one editorial wall.
-       Replaces the literature-only Featured Books grid; gives every
-       vertical (lit, film, stage, wire, projects, support) equal weight
-       above the final CTA. -->
-  <section class="section what-we-make">
+       Sits above the Wire promo so visitors get the table of contents
+       (what does Zo do?) BEFORE the subscribe ask — newsletter conversion
+       is higher post-orientation, and the Wire is one tile of six, so
+       leading with it would create a "Wire, then a grid containing Wire"
+       double-take. Soot background gives clean alternating banding
+       (stats:void → grid:soot → wire:void → cta:soot). -->
+  <section class="section section--alt what-we-make">
     <div class="container reveal">
       <SectionHeader
         eyebrow="What We Make"
@@ -303,6 +282,31 @@ const tiles = [
             </div>
           </a>
         ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- The Wire Promo — the deep dive after the grid TOC. Void background
+       so banding alternates cleanly (grid:soot → wire:void → cta:soot). -->
+  <section class="section">
+    <div class="container reveal">
+      <span class="eyebrow">The Publication</span>
+      <div class="grid grid--asymmetric wire-promo__grid mt-lg">
+        <div>
+          <h2>The Phuckin' Wire</h2>
+          <p class="text-lg mt-lg">Our flagship newsletter — advocacy journalism written by and for incarcerated people. Unfiltered. Uncensored. Unapologetic.</p>
+          <a href="/the-wire/" class="btn btn--outline mt-xl">Read The Wire</a>
+        </div>
+        <div class="card halftone wire-promo__card">
+          <span class="eyebrow eyebrow--signal">Subscribe</span>
+          <p class="card__title mt-sm">Get every issue delivered.</p>
+          <p class="card__text mt-sm">Stories, investigations, and creative work from inside the system.</p>
+          <form data-netlify="true" name="wire-subscribe" method="POST" class="wire-promo__form mt-lg">
+            <input type="hidden" name="form-name" value="wire-subscribe" />
+            <input type="email" name="email" placeholder="your@email.com" required class="form-control" aria-label="Email for The Wire" />
+            <button type="submit" class="btn btn--primary">Go</button>
+          </form>
+        </div>
       </div>
     </div>
   </section>
@@ -379,9 +383,8 @@ const tiles = [
    * Hairline gutter (1px on var(--color-border)) gives a broadsheet feel.
    * .tile--cta     : final tile, husk-warm gradient with signal accent
    * ─────────────────────────────────────────────────────────── */
-  .what-we-make {
-    background: var(--color-void);
-  }
+  /* Section bg comes from section--alt (soot) on the parent — see markup.
+     Banding plan: stats(void) → grid(soot) → wire(void) → cta(soot). */
   .what-we-make__grid {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
@@ -401,7 +404,9 @@ const tiles = [
     aspect-ratio: 1 / 1;
     display: block;
     overflow: hidden;
-    background: var(--color-soot);
+    /* Graphite (not soot) so tiles stay distinct from the soot section
+       frame around them. The section--alt background sits behind. */
+    background: var(--color-graphite);
     text-decoration: none;
     color: inherit;
     isolation: isolate;
@@ -428,11 +433,13 @@ const tiles = [
     transform: scale(1.06);
   }
 
-  /* Typographic mode — discipline numeral as the visual hook. */
+  /* Typographic mode — discipline numeral as the visual hook.
+     Gradient starts at graphite (not soot) so the tile reads distinct
+     from the surrounding soot section frame. */
   .tile--type {
     background:
       radial-gradient(ellipse at 70% 30%, rgba(200,168,78,0.06) 0%, transparent 60%),
-      linear-gradient(135deg, var(--color-soot) 0%, var(--color-void) 100%);
+      linear-gradient(135deg, var(--color-graphite) 0%, var(--color-void) 100%);
   }
   .tile__numeral {
     position: absolute;
@@ -530,7 +537,7 @@ const tiles = [
   .tile--cta {
     background:
       radial-gradient(ellipse at 30% 70%, rgba(214,64,69,0.10) 0%, transparent 65%),
-      linear-gradient(135deg, var(--color-soot) 0%, var(--color-void) 100%);
+      linear-gradient(135deg, var(--color-graphite) 0%, var(--color-void) 100%);
     box-shadow: inset 0 2px 0 0 var(--color-signal);
   }
   .tile--cta .tile__numeral {
@@ -551,7 +558,7 @@ const tiles = [
   .tile--brand {
     background:
       radial-gradient(ellipse at 50% 35%, rgba(200,168,78,0.06) 0%, transparent 60%),
-      linear-gradient(135deg, var(--color-soot) 0%, var(--color-void) 100%);
+      linear-gradient(135deg, var(--color-graphite) 0%, var(--color-void) 100%);
   }
   .tile__sticker {
     position: absolute;
