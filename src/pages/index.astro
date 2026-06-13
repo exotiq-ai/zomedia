@@ -4,12 +4,80 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 import SectionHeader from '../components/ui/SectionHeader.astro';
 import heroIvan from '../assets/images/zo-media/hero-ivan.jpg';
 import domesticGenocideCover from '../assets/images/zo-media/domestic-genocide-book-cover-adobe.png';
-import kingCover from '../assets/images/zo-media/King_frontcover-scaled.jpg';
-import mayhemCover from '../assets/images/zo-media/mayhem_murder_and_magnificence.jpg';
-import socialJusticeCover from '../assets/images/zo-media/socialjusticeautobiographies_cover-scaled.jpg';
+import folsomTower from '../assets/images/zo-media/folsom-tower.jpeg';
+
+// WHAT WE MAKE — six fronts of the cooperative, in newspaper TOC order.
+// Two photo tiles (Literature, Special Projects) anchor the grid; the
+// rest run as typographic posters until original photography lands for
+// Film, Stage, Wire, Support. All tiles share the duotone overlay system.
+const tiles = [
+  {
+    n: '01',
+    label: 'Literature',
+    kicker: 'Twelve titles in print — memoir, theory, and fiction from inside.',
+    href: '/books/',
+    photo: { src: domesticGenocideCover, alt: 'Domestic Genocide book cover, by Zo Media' },
+  },
+  {
+    n: '02',
+    label: 'Film & Documentary',
+    kicker: 'Documentary work built around incarcerated subjects and storytellers.',
+    href: '/film-projects/documentaries/',
+  },
+  {
+    n: '03',
+    label: 'Stage',
+    kicker: 'Theatrical works developed from manuscripts written behind the wall.',
+    href: '/film-projects/theatrical-works/',
+  },
+  {
+    n: '04',
+    label: "The Phuckin' Wire",
+    kicker: 'The flagship newsletter — advocacy journalism, unfiltered.',
+    href: '/the-wire/',
+  },
+  {
+    n: '05',
+    label: 'Special Projects',
+    kicker: 'Original work at the intersection of art, policy, and place.',
+    href: '/special-projects/',
+    photo: { src: folsomTower, alt: 'A Folsom State Prison guard tower silhouetted against the sky' },
+  },
+  {
+    n: '06',
+    label: 'Support the Mission',
+    kicker: 'Every gift funds the work and the people doing it.',
+    href: '/support/',
+    cta: true,
+  },
+];
 ---
 
 <BaseLayout title="Amplifying Incarcerated Voices Through Literature, Film & Art">
+  {/*
+    Duotone filter — defined once, referenced by .tile__media on photo
+    tiles. Maps luminance to void→bone with husk-warm midtones so mixed
+    photographic sources read as a single editorial set. SVG must precede
+    any element that consumes it in the DOM order.
+  */}
+  <svg width="0" height="0" class="zo-svg-defs" aria-hidden="true" focusable="false">
+    <defs>
+      <filter id="zo-duotone" color-interpolation-filters="sRGB">
+        <feColorMatrix
+          type="matrix"
+          values="0.299 0.587 0.114 0 0
+                  0.299 0.587 0.114 0 0
+                  0.299 0.587 0.114 0 0
+                  0     0     0     1 0" />
+        <feComponentTransfer>
+          <feFuncR tableValues="0.039 0.910" />
+          <feFuncG tableValues="0.039 0.886" />
+          <feFuncB tableValues="0.043 0.851" />
+        </feComponentTransfer>
+      </filter>
+    </defs>
+  </svg>
+
   <!-- Hero: Split Layout (home-page exception) — signature reveal moment -->
   <section class="hero hero--split signature-hero" data-signature-hero>
     <div class="hero__inner">
@@ -158,55 +226,48 @@ import socialJusticeCover from '../assets/images/zo-media/socialjusticeautobiogr
     </div>
   </section>
 
-  <!-- Featured Books -->
-  <section class="section">
+  <!-- WHAT WE MAKE — six fronts of the cooperative, one editorial wall.
+       Replaces the literature-only Featured Books grid; gives every
+       vertical (lit, film, stage, wire, projects, support) equal weight
+       above the final CTA. -->
+  <section class="section what-we-make">
     <div class="container reveal">
-      <SectionHeader title="Featured Books" align="center" />
-      <div class="grid grid--4 books-grid mt-2xl">
-        <a href="/books/" class="book-feature img-editorial">
-          <Image
-            src={domesticGenocideCover}
-            alt="Domestic Genocide book cover"
-            widths={[200, 400, 600]}
-            sizes="(max-width: 768px) 50vw, 25vw"
-            loading="lazy"
-            format="webp"
-          />
-          <h3 class="book-feature__title">Domestic Genocide</h3>
-        </a>
-        <a href="/books/" class="book-feature img-editorial">
-          <Image
-            src={kingCover}
-            alt="King: The Early Years book cover"
-            widths={[200, 400, 600]}
-            sizes="(max-width: 768px) 50vw, 25vw"
-            loading="lazy"
-            format="webp"
-          />
-          <h3 class="book-feature__title">King: The Early Years</h3>
-        </a>
-        <a href="/books/" class="book-feature img-editorial">
-          <Image
-            src={mayhemCover}
-            alt="Mayhem, Murder & Magnificence book cover"
-            widths={[200, 400, 600]}
-            sizes="(max-width: 768px) 50vw, 25vw"
-            loading="lazy"
-            format="webp"
-          />
-          <h3 class="book-feature__title">Mayhem, Murder & Magnificence</h3>
-        </a>
-        <a href="/books/" class="book-feature img-editorial">
-          <Image
-            src={socialJusticeCover}
-            alt="Social Justice Autobiographies book cover"
-            widths={[200, 400, 600]}
-            sizes="(max-width: 768px) 50vw, 25vw"
-            loading="lazy"
-            format="webp"
-          />
-          <h3 class="book-feature__title">Social Justice Autobiographies</h3>
-        </a>
+      <SectionHeader
+        eyebrow="What We Make"
+        title="Six fronts, one cooperative."
+        align="center"
+      />
+      <div class="what-we-make__grid mt-2xl">
+        {tiles.map((t) => (
+          <a
+            href={t.href}
+            class:list={[
+              'tile',
+              t.photo ? 'tile--photo' : 'tile--type',
+              t.cta && 'tile--cta',
+            ]}
+            aria-label={`${t.label} — ${t.kicker}`}
+          >
+            {t.photo ? (
+              <Image
+                src={t.photo.src}
+                alt={t.photo.alt}
+                class="tile__media"
+                widths={[400, 600, 900]}
+                sizes="(max-width: 600px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                loading="lazy"
+                format="webp"
+              />
+            ) : (
+              <span class="tile__numeral" aria-hidden="true">{t.n}</span>
+            )}
+            <span class="tile__arrow" aria-hidden="true">↗ View</span>
+            <div class="tile__overlay">
+              <span class="tile__label">{t.label}</span>
+              <span class="tile__kicker">{t.kicker}</span>
+            </div>
+          </a>
+        ))}
       </div>
     </div>
   </section>
@@ -274,33 +335,198 @@ import socialJusticeCover from '../assets/images/zo-media/socialjusticeautobiogr
     gap: var(--space-sm);
   }
 
-  /* Featured Books grid */
-  .books-grid {
-    gap: var(--space-xl);
+  /* ───────────────────────────────────────────────────────────
+   * WHAT WE MAKE — six-tile editorial grid (page-scoped).
+   *
+   * 3×2 uniform square grid. Two visual modes share one overlay system:
+   *   .tile--photo : duotoned <Image>, scales on hover
+   *   .tile--type  : giant serif numeral on dark gradient (no photo)
+   * Hairline gutter (1px on var(--color-border)) gives a broadsheet feel.
+   * .tile--cta     : final tile, husk-warm gradient with signal accent
+   * ─────────────────────────────────────────────────────────── */
+  .what-we-make {
+    background: var(--color-void);
   }
-  .book-feature {
+  .what-we-make__grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1px;
+    background: var(--color-border);
+    border: 1px solid var(--color-border);
+  }
+  @media (max-width: 1024px) {
+    .what-we-make__grid { grid-template-columns: repeat(2, 1fr); }
+  }
+  @media (max-width: 600px) {
+    .what-we-make__grid { grid-template-columns: 1fr; }
+  }
+
+  .tile {
     position: relative;
-    overflow: hidden;
+    aspect-ratio: 1 / 1;
     display: block;
+    overflow: hidden;
+    background: var(--color-soot);
     text-decoration: none;
-    aspect-ratio: 2 / 3;
+    color: inherit;
+    isolation: isolate;
   }
-  .book-feature img {
+  .tile:focus-visible {
+    outline: 2px solid var(--color-signal);
+    outline-offset: -4px;
+  }
+
+  /* Photo mode — luminance-mapped duotone via inline SVG filter. */
+  .tile__media {
+    position: absolute;
+    inset: 0;
     width: 100%;
     height: 100%;
     object-fit: cover;
+    filter: url(#zo-duotone) contrast(1.05);
+    transform: scale(1.01); /* hide subpixel filter edges */
+    transition: transform 800ms var(--ease-snap);
+    will-change: transform;
   }
-  .book-feature__title {
+  .tile:hover .tile__media,
+  .tile:focus-visible .tile__media {
+    transform: scale(1.06);
+  }
+
+  /* Typographic mode — discipline numeral as the visual hook. */
+  .tile--type {
+    background:
+      radial-gradient(ellipse at 70% 30%, rgba(200,168,78,0.06) 0%, transparent 60%),
+      linear-gradient(135deg, var(--color-soot) 0%, var(--color-void) 100%);
+  }
+  .tile__numeral {
     position: absolute;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    padding: var(--space-lg) var(--space-md);
-    background: linear-gradient(to top, rgba(10,10,11,0.9) 0%, transparent 100%);
+    top: clamp(var(--space-md), 4vw, var(--space-xl));
+    right: clamp(var(--space-md), 4vw, var(--space-xl));
     font-family: var(--font-headline);
-    font-size: var(--text-h3);
+    font-size: clamp(5rem, 16vw, 11rem);
+    line-height: 0.85;
+    letter-spacing: -0.04em;
+    color: var(--color-husk);
+    user-select: none;
+    pointer-events: none;
+    transition: color 400ms var(--ease-snap), transform 600ms var(--ease-snap);
+    z-index: 1;
+  }
+  .tile--type:hover .tile__numeral,
+  .tile--type:focus-visible .tile__numeral {
+    color: var(--color-wire);
+    transform: translateY(-2px);
+  }
+
+  /* Hover affordance — "↗ View" tab in top-left. */
+  .tile__arrow {
+    position: absolute;
+    top: var(--space-md);
+    left: var(--space-md);
+    z-index: 3;
+    padding: 0.4rem 0.7rem;
+    background: var(--color-void);
     color: var(--color-bone);
-    line-height: var(--leading-tight);
+    font-family: var(--font-mono);
+    font-size: var(--text-micro);
+    letter-spacing: var(--tracking-wide);
+    text-transform: uppercase;
+    opacity: 0;
+    transform: translateY(-6px);
+    transition: opacity 250ms var(--ease-snap), transform 300ms var(--ease-snap);
+    pointer-events: none;
+  }
+  .tile:hover .tile__arrow,
+  .tile:focus-visible .tile__arrow {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  /* Bottom overlay — label always visible, kicker reveals on hover. */
+  .tile__overlay {
+    position: absolute;
+    inset: auto 0 0 0;
+    z-index: 2;
+    padding: var(--space-xl) var(--space-lg) var(--space-lg);
+    background: linear-gradient(
+      to top,
+      rgba(10, 10, 11, 0.95) 0%,
+      rgba(10, 10, 11, 0.75) 55%,
+      rgba(10, 10, 11, 0) 100%
+    );
+    transition: padding-bottom 300ms var(--ease-snap);
+  }
+  .tile__label {
+    display: block;
+    font-family: var(--font-headline);
+    font-size: clamp(1.5rem, 2.4vw, 2rem);
+    line-height: 1.05;
+    color: var(--color-bone);
+    letter-spacing: var(--tracking-tight);
+  }
+  .tile__kicker {
+    display: block;
+    margin-top: var(--space-sm);
+    font-family: var(--font-body);
+    font-size: var(--text-small);
+    line-height: 1.45;
+    color: var(--color-chalk);
+    max-width: 32ch;
+    opacity: 0;
+    max-height: 0;
+    overflow: hidden;
+    transform: translateY(6px);
+    transition:
+      opacity 280ms var(--ease-snap),
+      max-height 360ms var(--ease-snap),
+      transform 320ms var(--ease-snap);
+  }
+  .tile:hover .tile__kicker,
+  .tile:focus-visible .tile__kicker {
+    opacity: 1;
+    max-height: 6em;
+    transform: translateY(0);
+  }
+
+  /* CTA mode — Support tile carries red accent energy. */
+  .tile--cta {
+    background:
+      radial-gradient(ellipse at 30% 70%, rgba(214,64,69,0.10) 0%, transparent 65%),
+      linear-gradient(135deg, var(--color-soot) 0%, var(--color-void) 100%);
+  }
+  .tile--cta .tile__numeral {
+    color: rgba(163, 48, 53, 0.55);
+  }
+  .tile--cta:hover .tile__numeral,
+  .tile--cta:focus-visible .tile__numeral {
+    color: var(--color-signal);
+  }
+  .tile--cta .tile__label {
+    color: var(--color-bone);
+  }
+
+  /* Touch-class devices: surface the kicker permanently (no hover). */
+  @media (hover: none) {
+    .tile__kicker {
+      opacity: 1;
+      max-height: 6em;
+      transform: none;
+    }
+    .tile__arrow {
+      opacity: 0.6;
+      transform: none;
+    }
+  }
+
+  /* Respect reduced motion — kill the inner image zoom + numeral lift. */
+  @media (prefers-reduced-motion: reduce) {
+    .tile__media,
+    .tile__numeral,
+    .tile__arrow,
+    .tile__kicker { transition: none; }
+    .tile:hover .tile__media,
+    .tile:focus-visible .tile__media { transform: scale(1.01); }
   }
 
   /* Final CTA action row */
