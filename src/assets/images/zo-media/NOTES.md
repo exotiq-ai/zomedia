@@ -31,7 +31,7 @@ Per project owner direction, these are kept in place **until the real Ivan video
 | `zologo.png` | Nav, footer | Logo |
 | `film-cinematographer.jpg` | Home WHAT WE MAKE → Film tile | Black cinematographer with RED + Steadicam on a street; "Zero Tolerance" enforcement sign behind. Owner-provided. Editorially the strongest pick — labor + state surveillance in the same frame. Duotoned at render. |
 | `stage-capitol-marquee.jpg` | Home WHAT WE MAKE → Stage tile | The Capitol Theatre (Singapore) art deco neon marquee at night with silhouetted patrons. Photographer: Saw Sing (Pexels). Already near-B&W; duotone is gentle. |
-| `support-on-set.jpg` | Home WHAT WE MAKE → Support tile | Silhouetted film crew member, warm red backlight. Photographer: Wolrider (Pexels). The orange-red key light ties to `--color-signal` for CTA visual alignment. |
+| `support-writing-letter.png` | Home WHAT WE MAKE → Support tile | **AI-generated, hands/objects only — no face, within the allowed AI scope** (see rule of thumb below). Top-down B&W of weathered working-class hands writing a cursive letter on plain paper, folded envelope cropping in. Already near-monochrome with deep blacks; duotone is gentle. Ties Support directly to Zo's letters-from-inside identity. |
 | `phuckin-wire-mark.jpg` | Home WHAT WE MAKE → Wire tile (sticker mode, not duotoned); also referenced from `/the-wire/` masthead pattern | The Phuckin' Wire mark on its native cream paper — black ink, barbed-wire ring, wide-eyed face. Rendered without the duotone filter to preserve brand fidelity. |
 
 ## Alternate / unused
@@ -39,6 +39,7 @@ Per project owner direction, these are kept in place **until the real Ivan video
 | File | Why kept | Could swap into |
 | --- | --- | --- |
 | `public/assets/images/pexels-keenan-constance-545154-5692026.jpg` | Daytime "THEATER" neon on brick. Photographer: Keenan Constance (Pexels). Was the Stage alternate; we chose the Capitol Theatre night shot instead. | Stage tile, if the Capitol shot needs to retire. |
+| `public/assets/images/support-on-set.jpg` | Silhouetted film crew member with warm red backlight. Photographer: Wolrider (Pexels). Was the Support tile before the AI letter image landed; demoted because two cinematographer-adjacent photos (Film + Support) in a 6-tile grid created visual doubling. | Support tile, if the letter image needs to retire. Or any future "behind-the-scenes" surface. |
 
 ## Rule of thumb (also in [`docs/creative-direction.md`](../../../docs/creative-direction.md))
 
