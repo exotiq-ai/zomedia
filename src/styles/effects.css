@@ -49,19 +49,19 @@ body::after {
     position: relative;
   }
 
-  /* Per-character pop — sharp fade-in. Hidden chars collapse to zero
-     width via max-width:0 so the caret (sibling) sits at the active
-     typing edge, not the line's eventual end. Steps timing keeps the
-     strike crisp; chars don't blur in. 1em max-width is enough for
-     any single glyph and locks the natural width once visible. */
+  /* Per-character pop — sharp single-step "key strike". Hidden chars
+     collapse to zero rendered width via font-size:0 (no glyph to draw,
+     so no width), and on strike animate back to font-size:100% (= the
+     parent's natural inherited size). This keeps the caret (sibling)
+     at the active typing edge, with no clipping artifacts on wide
+     glyphs like M, W, m, w — unlike max-width clipping which slices
+     wider letterforms partially off-screen. */
   .signature-hero__char {
     display: inline-block;
-    max-width: 0;
-    overflow: hidden;
+    font-size: 0;
     opacity: 0;
-    vertical-align: bottom;
     white-space: pre;
-    animation: sigh-char-strike 70ms steps(2, end) var(--d, 0ms) forwards;
+    animation: sigh-char-strike 60ms steps(1, end) var(--d, 0ms) forwards;
   }
 
   /* Blinking carriage — signal-red vertical bar at the line's typing
@@ -162,7 +162,7 @@ body::after {
   }
 
   @keyframes sigh-char-strike {
-    to { opacity: 1; max-width: 1em; }
+    to { opacity: 1; font-size: 100%; }
   }
   @keyframes sigh-caret-show  { to { opacity: 1; } }
   @keyframes sigh-caret-hide  { to { opacity: 0; } }
@@ -192,7 +192,7 @@ body::after {
 @media (prefers-reduced-motion: reduce) {
   .signature-hero__char {
     opacity: 1;
-    max-width: none;
+    font-size: 100%;
     transform: none;
   }
   .signature-hero__inside,
