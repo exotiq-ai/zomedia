@@ -60,7 +60,7 @@ const projects = [
               </span>
             </a>
           ) : (
-            <article class="project-card project-card--coming-soon halftone" style={`background: ${project.gradient};`} aria-label={`${project.title} — coming soon`}>
+            <article class="project-card project-card--coming-soon halftone" style={`background: ${project.gradient};`} aria-label={`${project.title} (coming soon)`}>
               <img class="project-card__illustration" src={`/assets/illustrations/${project.illustration}`} alt="" width="140" height="140" loading="lazy" />
               <h2 class="project-card__title">{project.title}</h2>
               <p class="project-card__tagline">{project.tagline}</p>

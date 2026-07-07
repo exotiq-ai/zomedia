@@ -8,8 +8,9 @@ interface Props {
 
 const { currentPath } = Astro.props;
 
-// IA: slimmed to 5 primaries + Donate CTA. Films and About each carry
-// a dropdown for org/subsection pages. The logo is the home link.
+// IA: slimmed to 4 primaries + Donate CTA. Films and About each carry
+// a dropdown for org/subsection pages. The Phuckin' Wire lives in the
+// footer only. The logo is the home link.
 const links = [
   { href: '/books/', label: 'Books' },
   {
@@ -22,7 +23,6 @@ const links = [
       { href: '/film-projects/documentaries/', label: 'Documentaries & Film Shorts' },
     ],
   },
-  { href: '/the-wire/', label: "Phuckin' Wire" },
   {
     href: '/about/',
     label: 'About',
@@ -45,7 +45,7 @@ function isActive(href: string): boolean {
 
 <nav class="nav" aria-label="Main navigation">
   <div class="nav__inner">
-    <a href="/" class="nav__logo" aria-label="Zo Media Productions — home">
+    <a href="/" class="nav__logo" aria-label="Zo Media Productions, home">
       <Image src={zoLogo} alt="Zo Media Productions" widths={[220, 320, 480]} sizes="(max-width: 1024px) 180px, 240px" loading="eager" fetchpriority="high" format="webp" />
     </a>
 
