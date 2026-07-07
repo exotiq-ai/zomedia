@@ -2,11 +2,10 @@
 import { Image } from 'astro:assets';
 import BaseLayout from '../layouts/BaseLayout.astro';
 import SectionHeader from '../components/ui/SectionHeader.astro';
-import heroIvan from '../assets/images/zo-media/hero-ivan.jpg';
 import domesticGenocideCover from '../assets/images/zo-media/domestic-genocide-book-cover-adobe.png';
 import folsomTower from '../assets/images/zo-media/folsom-tower.jpeg';
-import filmCinematographer from '../assets/images/zo-media/film-cinematographer.jpg';
-import stageCapitolMarquee from '../assets/images/zo-media/stage-capitol-marquee.jpg';
+import filmYardCrew from '../assets/images/zo-media/film-yard-crew.jpg';
+import stageTheatreNeon from '../assets/images/zo-media/stage-theatre-neon.jpg';
 import supportWritingLetter from '../assets/images/zo-media/support-writing-letter.png';
 import phuckinWireMark from '../assets/images/zo-media/phuckin-wire-mark.jpg';
 
@@ -29,8 +28,8 @@ const tiles = [
     kicker: 'Documentary work built around incarcerated subjects and storytellers.',
     href: '/film-projects/documentaries/',
     photo: {
-      src: filmCinematographer,
-      alt: "A cinematographer carries a RED camera on a Steadicam rig; a 'Zero Tolerance' enforcement notice hangs on the wall behind him.",
+      src: filmYardCrew,
+      alt: 'A film crew with a cinema camera and boom mic films a group of incarcerated men standing along a razor-wire prison-yard fence.',
     },
   },
   {
@@ -39,8 +38,8 @@ const tiles = [
     kicker: 'Theatrical works developed from manuscripts written behind the wall.',
     href: '/film-projects/theatrical-works/',
     photo: {
-      src: stageCapitolMarquee,
-      alt: 'The art deco Capitol Theatre marquee glows in neon against a black night sky; four figures stand in silhouette at the entrance below.',
+      src: stageTheatreNeon,
+      alt: "A vertical neon 'THEATRE' marquee sign glows white against the dark art-deco facade of a downtown building at night.",
     },
   },
   {
@@ -126,24 +125,27 @@ const tiles = [
           <a href="/support/" class="btn btn--outline signature-hero__cta" data-magnetic>Support the Mission</a>
         </div>
       </div>
-      <div class="hero__media signature-hero__media ken-burns" data-ivan-slot>
+      <div class="hero__media signature-hero__media" data-ivan-slot>
         {/*
-          Placeholder slot — currently using hero-ivan.jpg until Ivan's
-          hosted intro video lands. Per project owner direction this is
-          a deliberate temporary placeholder (see
-          src/assets/images/zo-media/NOTES.md). When the video is ready,
-          swap this <Image> for an autoplay-muted-loop <video> with the
-          same column constraints.
+          Signature hero video — the transparent-typewriter macro clip.
+          Per the owner note (see src/assets/images/zo-media/NOTES.md),
+          the placeholder image is swapped for an autoplay-muted-loop
+          <video> using the same column constraints. Poster paints first
+          for a clean LCP; the clip loops silently behind the copy.
         */}
-        <Image
-          src={heroIvan}
-          alt="An incarcerated writer at work — pen to paper, creating from inside"
-          widths={[640, 960, 1280, 1920]}
-          sizes="(max-width: 1024px) 100vw, 41vw"
-          loading="eager"
-          fetchpriority="high"
-          format="webp"
-        />
+        <video
+          class="signature-hero__video"
+          autoplay
+          muted
+          loop
+          playsinline
+          preload="metadata"
+          poster="/assets/video/hero-typewriter-poster.jpg"
+          aria-label="A Black man's hands typing on a transparent prison typewriter — telling his story from inside"
+        >
+          <source src="/assets/video/hero-typewriter.webm" type="video/webm" />
+          <source src="/assets/video/hero-typewriter.mp4" type="video/mp4" />
+        </video>
       </div>
     </div>
   </section>
@@ -356,12 +358,15 @@ const tiles = [
     display: block;
   }
 
-  /* Ken Burns container in the home hero — the existing hero__media
-   * already constrains aspect ratio; the .ken-burns class adds the
-   * slow drift on the inner <img>. */
-  .signature-hero__media.ken-burns {
-    /* Animation lives on the <img> per effects.css. No container
-     * overrides needed beyond the existing hero__media rules. */
+  /* Hero video fills the 4:5 split slot the same way the placeholder
+   * image did — cover-cropped, focus held slightly high on the hands. */
+  .signature-hero__video {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center 55%;
+    display: block;
+    filter: contrast(1.05);
   }
 
   /* The Wire promo grid alignment */
