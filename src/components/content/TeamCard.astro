@@ -7,47 +7,118 @@ interface Props {
 }
 
 const { name, role, photo, bio } = Astro.props;
+
+// Bios are authored as literal YAML block scalars, so paragraphs are
+// separated by blank lines. Split them out for proper rendering.
+const paragraphs = bio.split(/\n\s*\n/).map((p) => p.trim()).filter(Boolean);
+
+// Placeholder initials when no headshot exists (e.g., staff without a photo).
+const initials = name
+  .replace(/,.*$/, '')
+  .split(/\s+/)
+  .map((w) => w.charAt(0))
+  .filter(Boolean)
+  .slice(0, 2)
+  .join('');
 ---
 
-<article class="card team-card">
-  <div class="team-card__avatar">
+<article class="team-member">
+  <div class="team-member__photo">
     {photo ? (
-      <img src={photo} alt={name} loading="lazy" />
+      <img src={photo} alt={name} width="160" height="160" loading="lazy" decoding="async" />
     ) : (
-      <div class="team-card__placeholder" aria-hidden="true">
-        <span>{name.charAt(0)}</span>
+      <div class="team-member__placeholder" aria-hidden="true">
+        <span>{initials}</span>
       </div>
     )}
   </div>
-  <h3 class="card__title">{name}</h3>
-  <span class="card__meta">{role}</span>
-  <p class="card__text">{bio}</p>
+  <div class="team-member__body">
+    <h3 class="team-member__name">{name}</h3>
+    <span class="team-member__role">{role}</span>
+    <div class="team-member__bio">
+      {paragraphs.map((p) => <p>{p}</p>)}
+    </div>
+  </div>
 </article>
 
 <style>
-  .team-card__avatar {
-    width: 80px;
-    height: 80px;
+  .team-member {
+    display: grid;
+    grid-template-columns: 160px 1fr;
+    gap: var(--space-xl);
+    align-items: start;
+    padding: var(--space-2xl) 0;
+    border-bottom: 1px solid var(--color-border);
+  }
+  .team-member:last-child {
+    border-bottom: none;
+  }
+
+  .team-member__photo {
+    position: sticky;
+    top: var(--space-2xl);
+  }
+  .team-member__photo img,
+  .team-member__placeholder {
+    width: 160px;
+    height: 160px;
     border-radius: 50%;
-    overflow: hidden;
-    margin-bottom: var(--space-sm);
-  }
-  .team-card__avatar img {
-    width: 100%;
-    height: 100%;
     object-fit: cover;
+    display: block;
   }
-  .team-card__placeholder {
-    width: 100%;
-    height: 100%;
+  .team-member__placeholder {
     background: var(--color-graphite);
     border: 1px solid var(--color-border);
-    border-radius: 50%;
     display: flex;
     align-items: center;
     justify-content: center;
     font-family: var(--font-headline);
-    font-size: var(--text-h3);
+    font-size: var(--text-h2);
     color: var(--color-wire);
+  }
+
+  .team-member__name {
+    font-family: var(--font-headline);
+    font-size: var(--text-h3);
+    line-height: var(--leading-tight);
+    color: var(--color-bone);
+    margin: 0;
+  }
+  .team-member__role {
+    display: block;
+    font-family: var(--font-mono);
+    font-size: var(--text-sm);
+    letter-spacing: var(--tracking-wide);
+    text-transform: uppercase;
+    color: var(--color-wire);
+    margin-top: var(--space-xs);
+  }
+  .team-member__bio {
+    margin-top: var(--space-md);
+    color: var(--color-fog);
+  }
+  .team-member__bio p {
+    font-family: var(--font-body);
+    font-size: var(--text-base);
+    line-height: 1.65;
+  }
+  .team-member__bio p + p {
+    margin-top: var(--space-md);
+  }
+
+  @media (max-width: 640px) {
+    .team-member {
+      grid-template-columns: 1fr;
+      gap: var(--space-md);
+      padding: var(--space-xl) 0;
+    }
+    .team-member__photo {
+      position: static;
+    }
+    .team-member__photo img,
+    .team-member__placeholder {
+      width: 120px;
+      height: 120px;
+    }
   }
 </style>

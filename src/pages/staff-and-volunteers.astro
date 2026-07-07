@@ -1,22 +1,16 @@
 ---
+import { getCollection } from 'astro:content';
 import SubpageLayout from '../layouts/SubpageLayout.astro';
 import SectionHeader from '../components/ui/SectionHeader.astro';
+import TeamCard from '../components/content/TeamCard.astro';
 
 const title = "Staff & Volunteers";
 const description = "Meet the team behind Zo Media Productions: a cooperative model where every position is co-held by inside and outside members.";
 const breadcrumbs = [{ label: "Staff & Volunteers" }];
 
-const staff = [
-  { name: "Name TBD", role: "Co-Chair, Inside", bio: "Bio coming soon." },
-  { name: "Name TBD", role: "Co-Chair, Outside", bio: "Bio coming soon." },
-  { name: "Name TBD", role: "Creative Director", bio: "Bio coming soon." },
-];
-
-const volunteers = [
-  { name: "Name TBD", role: "Volunteer Coordinator", bio: "Bio coming soon." },
-  { name: "Name TBD", role: "Production Volunteer", bio: "Bio coming soon." },
-  { name: "Name TBD", role: "Editorial Volunteer", bio: "Bio coming soon." },
-];
+const team = (await getCollection('team'))
+  .filter((m) => m.data.category === 'staff' || m.data.category === 'volunteer')
+  .sort((a, b) => a.data.order - b.data.order);
 ---
 
 <SubpageLayout title={title} description={description} breadcrumbs={breadcrumbs}>
@@ -35,71 +29,27 @@ const volunteers = [
   </section>
 
   <section class="section">
-    <div class="container">
-      <SectionHeader title="Staff" />
-      <div class="grid grid--3 mt-xl">
-        {staff.map((member) => (
-          <div class="card card--quiet text-center">
-            <div class="team-photo-placeholder">
-              <span class="team-photo-placeholder__label">Photo TBD</span>
-            </div>
-            <h3 class="card__title">{member.name}</h3>
-            <p class="card__meta">{member.role}</p>
-            <p class="card__text">{member.bio}</p>
-          </div>
+    <div class="container container--narrow">
+      <SectionHeader title="The Team" />
+      <div class="team-list mt-xl">
+        {team.map((member) => (
+          <TeamCard
+            name={member.data.name}
+            role={member.data.role}
+            photo={member.data.photo}
+            bio={member.data.bio}
+          />
         ))}
       </div>
     </div>
   </section>
 
   <section class="section section--alt">
-    <div class="container">
-      <SectionHeader title="Volunteers" />
-      <div class="grid grid--3 mt-xl">
-        {volunteers.map((member) => (
-          <div class="card card--quiet text-center">
-            <div class="team-photo-placeholder">
-              <span class="team-photo-placeholder__label">Photo TBD</span>
-            </div>
-            <h3 class="card__title">{member.name}</h3>
-            <p class="card__meta">{member.role}</p>
-            <p class="card__text">{member.bio}</p>
-          </div>
-        ))}
-      </div>
-    </div>
-  </section>
-
-  <section class="section">
-    <div class="container container--narrow">
-      <SectionHeader
-        title="Interested in volunteering?"
-        lede="We are always looking for dedicated people who want to support incarcerated creatives. Reach out to learn about current opportunities."
-        align="center"
-      />
-      <div class="text-center mt-lg">
-        <a href="/contact/" class="btn btn--primary btn--lg">Get in Touch</a>
-      </div>
+    <div class="container container--narrow text-center">
+      <p class="text-lg">
+        Want to volunteer your time or expertise? We are always looking for people who believe in second chances.
+      </p>
+      <a href="/contact/" class="btn btn--outline btn--lg mt-lg">Get Involved</a>
     </div>
   </section>
 </SubpageLayout>
-
-<style>
-  .team-photo-placeholder {
-    width: 120px;
-    height: 120px;
-    border-radius: 50%;
-    background: var(--color-graphite);
-    margin: 0 auto var(--space-md);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-  .team-photo-placeholder__label {
-    font-family: var(--font-mono);
-    color: var(--color-fog);
-    font-size: var(--text-tiny);
-    text-transform: uppercase;
-    letter-spacing: var(--tracking-wide);
-  }
-</style>

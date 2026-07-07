@@ -1,16 +1,16 @@
 ---
+import { getCollection } from 'astro:content';
 import SubpageLayout from '../layouts/SubpageLayout.astro';
 import SectionHeader from '../components/ui/SectionHeader.astro';
+import TeamCard from '../components/content/TeamCard.astro';
 
 const title = "Advisory Board";
-const description = "Strategic advisors guiding Zo Media Productions across publishing, film, legal, and justice reform.";
+const description = "Strategic advisors guiding Zo Media Productions across publishing, film, scholarship, and justice reform.";
 const breadcrumbs = [{ label: "Advisory Board" }];
 
-const advisors = [
-  { name: "Name TBD", role: "Advisory Board Member", bio: "Bio coming soon." },
-  { name: "Name TBD", role: "Advisory Board Member", bio: "Bio coming soon." },
-  { name: "Name TBD", role: "Advisory Board Member", bio: "Bio coming soon." },
-];
+const advisors = (await getCollection('team'))
+  .filter((m) => m.data.category === 'advisory')
+  .sort((a, b) => a.data.order - b.data.order);
 ---
 
 <SubpageLayout title={title} description={description} breadcrumbs={breadcrumbs}>
@@ -23,30 +23,28 @@ const advisors = [
   <section class="section">
     <div class="container container--narrow">
       <p class="text-lg">
-        The Advisory Board provides strategic guidance on publishing, film, legal matters, and justice reform. These experienced professionals volunteer their expertise to help Zo Media Productions navigate industry challenges and expand the reach of incarcerated voices.
+        The Advisory Board provides strategic guidance on publishing, scholarship, legal matters, and justice reform. These experienced academics and advocates, including partners at Stony Brook University, volunteer their expertise to help Zo Media Productions expand the reach of incarcerated voices.
       </p>
     </div>
   </section>
 
   <section class="section">
-    <div class="container">
+    <div class="container container--narrow">
       <SectionHeader title="Advisors" />
-      <div class="grid grid--3 mt-xl">
+      <div class="team-list mt-xl">
         {advisors.map((member) => (
-          <div class="card card--quiet text-center">
-            <div class="team-photo-placeholder">
-              <span class="team-photo-placeholder__label">Photo TBD</span>
-            </div>
-            <h3 class="card__title">{member.name}</h3>
-            <p class="card__meta">{member.role}</p>
-            <p class="card__text">{member.bio}</p>
-          </div>
+          <TeamCard
+            name={member.data.name}
+            role={member.data.role}
+            photo={member.data.photo}
+            bio={member.data.bio}
+          />
         ))}
       </div>
     </div>
   </section>
 
-  <section class="section">
+  <section class="section section--alt">
     <div class="container container--narrow text-center">
       <p class="text-lg">
         Interested in supporting our mission in an advisory capacity?
@@ -55,23 +53,3 @@ const advisors = [
     </div>
   </section>
 </SubpageLayout>
-
-<style>
-  .team-photo-placeholder {
-    width: 120px;
-    height: 120px;
-    border-radius: 50%;
-    background: var(--color-graphite);
-    margin: 0 auto var(--space-md);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-  .team-photo-placeholder__label {
-    font-family: var(--font-mono);
-    color: var(--color-fog);
-    font-size: var(--text-tiny);
-    text-transform: uppercase;
-    letter-spacing: var(--tracking-wide);
-  }
-</style>

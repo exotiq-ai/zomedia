@@ -1,16 +1,16 @@
 ---
+import { getCollection } from 'astro:content';
 import SubpageLayout from '../layouts/SubpageLayout.astro';
 import SectionHeader from '../components/ui/SectionHeader.astro';
+import TeamCard from '../components/content/TeamCard.astro';
 
 const title = "Board of Directors";
 const description = "The governing body overseeing Zo Media Productions cooperative and its mission.";
 const breadcrumbs = [{ label: "Board of Directors" }];
 
-const board = [
-  { name: "Name TBD", role: "Board Chair", bio: "Bio coming soon." },
-  { name: "Name TBD", role: "Board Member", bio: "Bio coming soon." },
-  { name: "Name TBD", role: "Board Member", bio: "Bio coming soon." },
-];
+const board = (await getCollection('team'))
+  .filter((m) => m.data.category === 'board')
+  .sort((a, b) => a.data.order - b.data.order);
 ---
 
 <SubpageLayout title={title} description={description} breadcrumbs={breadcrumbs}>
@@ -29,24 +29,22 @@ const board = [
   </section>
 
   <section class="section">
-    <div class="container">
+    <div class="container container--narrow">
       <SectionHeader title="Board Members" />
-      <div class="grid grid--3 mt-xl">
+      <div class="team-list mt-xl">
         {board.map((member) => (
-          <div class="card card--quiet text-center">
-            <div class="team-photo-placeholder">
-              <span class="team-photo-placeholder__label">Photo TBD</span>
-            </div>
-            <h3 class="card__title">{member.name}</h3>
-            <p class="card__meta">{member.role}</p>
-            <p class="card__text">{member.bio}</p>
-          </div>
+          <TeamCard
+            name={member.data.name}
+            role={member.data.role}
+            photo={member.data.photo}
+            bio={member.data.bio}
+          />
         ))}
       </div>
     </div>
   </section>
 
-  <section class="section">
+  <section class="section section--alt">
     <div class="container container--narrow text-center">
       <p class="text-lg">
         Learn more about our cooperative structure and the people who make Zo Media possible.
@@ -55,23 +53,3 @@ const board = [
     </div>
   </section>
 </SubpageLayout>
-
-<style>
-  .team-photo-placeholder {
-    width: 120px;
-    height: 120px;
-    border-radius: 50%;
-    background: var(--color-graphite);
-    margin: 0 auto var(--space-md);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-  .team-photo-placeholder__label {
-    font-family: var(--font-mono);
-    color: var(--color-fog);
-    font-size: var(--text-tiny);
-    text-transform: uppercase;
-    letter-spacing: var(--tracking-wide);
-  }
-</style>
