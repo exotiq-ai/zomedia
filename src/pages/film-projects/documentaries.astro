@@ -2,7 +2,7 @@
 import { Image } from 'astro:assets';
 import SubpageLayout from '../../layouts/SubpageLayout.astro';
 import FilmCTA from '../../components/content/FilmCTA.astro';
-import heroIvan from '../../assets/images/zo-media/hero-ivan.jpg';
+import ivanPortrait from '../../assets/images/zo-media/ivan-portrait.jpg';
 ---
 
 <SubpageLayout title="Documentaries & Film Shorts" description="Documentary films and short works by incarcerated filmmakers." breadcrumbs={[{ label: "Film Projects", href: "/film-projects/" }, { label: "Documentaries & Film Shorts" }]}>
@@ -74,9 +74,9 @@ import heroIvan from '../../assets/images/zo-media/hero-ivan.jpg';
       <div class="grid grid--asymmetric director-bio">
         <div class="director-bio__portrait img-editorial">
           <Image
-            src={heroIvan}
-            alt="Ivan Kilgore, founder of Zo Media Productions"
-            widths={[320, 480, 720, 960]}
+            src={ivanPortrait}
+            alt="Ivan Kilgore, author, activist, and founder of the United Black Family Scholarship Foundation"
+            widths={[320, 480, 720]}
             sizes="(max-width: 768px) 80vw, 32vw"
             loading="lazy"
             format="webp"
@@ -87,13 +87,23 @@ import heroIvan from '../../assets/images/zo-media/hero-ivan.jpg';
           <h2 class="director-bio__name">Ivan Kilgore</h2>
           <div class="director-bio__rule" aria-hidden="true"></div>
           <p class="director-bio__lede">
-            Founder of Zo Media Productions.
+            Author, Activist, and Founder of UBFSF.
           </p>
           <p>
-            Ivan Kilgore is an incarcerated writer, filmmaker, and organizer. His work exposes the institutional machinery of mass incarceration from the inside: on the page, on the screen, on the record.
+            Ivan Kilgore is an author, activist, and the founder of the United Black Family Scholarship Foundation and Zo Media Productions, LLC. Incarcerated in California for more than two decades, serving a life sentence without the possibility of parole, Ivan discovered his voice as a writer behind prison walls and has spent years leading writing workshops inside the system, empowering others through storytelling and self-expression.
+          </p>
+          <p>He is the author of four books:</p>
+          <ul class="director-bio__books">
+            <li><em>Domestic Genocide: The Institutionalization of Society</em></li>
+            <li><em>My Comrades&rsquo; Thoughts on Black Lives Matter: A Collection of Essays &amp; Poetry</em></li>
+            <li><em>Mayhem, Murder &amp; Magnificence: A Memoir</em></li>
+            <li><em>King: The Early Years</em></li>
+          </ul>
+          <p>
+            His writing is required reading at universities across the United States. His story <em>The Zo</em> was adapted into a film by The Marshall Project, winning the 2021 Edward R. Murrow Award for Excellence and Innovation and earning an Emmy nomination in the News &amp; Documentary category.
           </p>
           <p>
-            His books include <em>Domestic Genocide</em> and <em>King: The Early Years</em>.
+            Ivan&rsquo;s reach extends well beyond the page. He regularly lectures at universities in California, New York, New Jersey, Missouri, Florida, Louisiana, and Montreal, and leads internship programs that engage student volunteers in hands-on social justice work.
           </p>
           <div class="director-bio__actions">
             <a href="/books/" class="btn btn--outline">Read the Books</a>
@@ -161,12 +171,17 @@ import heroIvan from '../../assets/images/zo-media/hero-ivan.jpg';
     margin: var(--space-md) 0 var(--space-md);
   }
   .film-feature__deck {
-    font-family: var(--font-headline);
+    font-family: var(--font-body);
+    font-size: clamp(1.3rem, 1rem + 1.15vw, 1.7rem);
+    font-weight: 400;
+    color: var(--color-bone);
+    line-height: 1.5;
+    max-width: 54ch;
+    margin-top: var(--space-sm);
+  }
+  .film-feature__deck em {
     font-style: italic;
-    font-size: var(--text-body-lg);
-    color: var(--color-chalk);
-    line-height: var(--leading-tight);
-    max-width: 50ch;
+    color: var(--color-signal);
   }
 
   /* ───────────────────────────────────────────────────────────
@@ -390,6 +405,15 @@ import heroIvan from '../../assets/images/zo-media/hero-ivan.jpg';
   .director-bio__body p {
     color: var(--color-chalk);
     line-height: var(--leading-loose);
+  }
+  .director-bio__books {
+    margin: var(--space-xs) 0 var(--space-md);
+    padding-left: var(--space-lg);
+    color: var(--color-chalk);
+    line-height: var(--leading-loose);
+  }
+  .director-bio__books li {
+    margin-bottom: var(--space-2xs, 0.25rem);
   }
   .director-bio__actions {
     margin-top: var(--space-xl);
