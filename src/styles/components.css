@@ -378,6 +378,60 @@ select.form-control {
 .hero--split .hero__media img {
   object-position: center 65%; /* crop the top — focus the person, not the ceiling */
 }
+
+/* Home signature hero — the existing 16:9 typewriter footage becomes the
+ * full stage. The copy stays in normal flow above it so its choreographed
+ * reveal remains completely independent from the moving image. */
+.hero--split.signature-hero {
+  min-height: clamp(43rem, calc(100svh - 80px), 58rem);
+  isolation: isolate;
+  background: var(--color-void);
+}
+.hero--split.signature-hero::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  background:
+    linear-gradient(
+      to right,
+      rgba(10, 10, 11, 0.96) 0%,
+      rgba(10, 10, 11, 0.91) 30%,
+      rgba(10, 10, 11, 0.66) 48%,
+      rgba(10, 10, 11, 0.28) 68%,
+      rgba(10, 10, 11, 0.06) 100%
+    ),
+    linear-gradient(to top, rgba(10, 10, 11, 0.36), transparent 42%);
+}
+.hero--split.signature-hero .hero__inner {
+  position: relative;
+  display: flex;
+  align-items: center;
+  max-width: none;
+  min-height: inherit;
+}
+.signature-hero__copy {
+  position: relative;
+  z-index: 2;
+  width: min(100%, 48rem);
+}
+.hero--split.signature-hero .signature-hero__media {
+  position: absolute;
+  z-index: 0;
+  inset: 0;
+  align-self: auto;
+  width: 100%;
+  max-height: none;
+  aspect-ratio: auto;
+}
+.hero--split.signature-hero .signature-hero__media video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  /* Preserve the hands and keys as the frame's visual anchor. */
+  object-position: center 55%;
+}
 /* Lift the text column ~24px above true center so the second CTA
  * ("Support the Mission") has comfortable breathing room above the fold.
  * Desktop-only — mobile already stacks single-column without the issue. */
@@ -385,12 +439,21 @@ select.form-control {
   .signature-hero__copy {
     margin-top: calc(-1 * var(--space-lg));
   }
+  /* The hero stage is wider than 16:9. Preserve the full original frame on
+   * desktop rather than cover-cropping the hands and the typewriter. */
+  .hero--split.signature-hero .signature-hero__media video {
+    object-fit: contain;
+    background: var(--color-void);
+  }
 }
 
 @media (max-width: 1024px) {
   .hero--split .hero__inner { grid-template-columns: 1fr; }
   .hero__media { max-height: 400px; }
   .hero { min-height: auto; }
+  .hero--split.signature-hero {
+    min-height: clamp(42rem, calc(100svh - 72px), 52rem);
+  }
 }
 
 @media (max-width: 768px) {
@@ -401,6 +464,21 @@ select.form-control {
   .hero__inner { padding: var(--space-2xl) var(--grid-margin); }
   .hero--full { min-height: 40vh; }
   .hero__ctas { flex-direction: column; align-items: stretch; }
+  .hero--split.signature-hero {
+    min-height: max(43rem, calc(100svh - 72px));
+  }
+  .hero--split.signature-hero::before {
+    background: linear-gradient(
+      to bottom,
+      rgba(10, 10, 11, 0.38) 0%,
+      rgba(10, 10, 11, 0.66) 40%,
+      rgba(10, 10, 11, 0.95) 100%
+    );
+  }
+  .signature-hero__copy { width: 100%; }
+  .hero--split.signature-hero .signature-hero__media video {
+    object-position: 58% center;
+  }
   .stats { gap: var(--space-xl); }
   .stat { min-width: 40%; }
   .stat__number { font-size: var(--text-h2); }
