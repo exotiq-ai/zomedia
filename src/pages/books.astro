@@ -10,14 +10,28 @@ const books = bookEntries
 
 <SubpageLayout title="Books" description="Literature by incarcerated voices: memoir, essays, poetry, and anthologies." breadcrumbs={[{ label: "Books" }]}>
 
-  <section class="hero hero--editorial hero--editorial-compact">
-    <div class="hero__inner">
+  <section class="hero books-hero">
+    <video
+      class="books-hero__video"
+      autoplay
+      muted
+      loop
+      playsinline
+      preload="metadata"
+      poster="/assets/images/bookshelves-hero-poster.jpg"
+      aria-hidden="true"
+    >
+      <source src="/assets/video/bookshelves-hero.webm" type="video/webm" />
+    </video>
+    <div class="books-hero__scrim" aria-hidden="true"></div>
+    <div class="hero__inner books-hero__inner">
+      <span class="hero__eyebrow eyebrow--bone">Literature from inside</span>
       <h1 class="hero__headline">Books</h1>
-      <p class="hero__subhead">Literature by incarcerated voices: memoir, essays, poetry, and anthologies.</p>
+      <p class="hero__subhead">Memoir, essays, poetry, and anthologies that carry incarcerated voices beyond the wall.</p>
     </div>
   </section>
 
-  <section class="section">
+  <section id="book-collection" class="section">
     <div class="container">
       <div class="filter-bar" role="group" aria-label="Filter books by category">
         <button class="filter-pill active" data-filter="all" aria-pressed="true">All</button>
@@ -72,6 +86,44 @@ const books = bookEntries
 </SubpageLayout>
 
 <style>
+  .books-hero {
+    min-height: clamp(19rem, calc(42svh - 48px), 24rem);
+    isolation: isolate;
+    background: var(--color-void) url('/assets/images/bookshelves-hero-poster.jpg') center / cover no-repeat;
+  }
+  .books-hero__video,
+  .books-hero__scrim {
+    position: absolute;
+    inset: 0;
+  }
+  .books-hero__video {
+    z-index: -2;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center 58%;
+  }
+  .books-hero__scrim {
+    z-index: -1;
+    background:
+      linear-gradient(90deg, rgba(10, 10, 11, 0.94) 0%, rgba(10, 10, 11, 0.72) 37%, rgba(10, 10, 11, 0.22) 72%, rgba(10, 10, 11, 0.1) 100%),
+      linear-gradient(0deg, rgba(10, 10, 11, 0.48), transparent 52%);
+  }
+  .books-hero__inner {
+    position: relative;
+    z-index: 1;
+    padding-block: var(--space-2xl);
+  }
+  .books-hero .hero__eyebrow { margin-bottom: var(--space-sm); }
+  .books-hero .hero__headline {
+    margin-bottom: var(--space-md);
+    font-size: clamp(3.5rem, 7vw, 6.25rem);
+  }
+  .books-hero .hero__subhead {
+    max-width: 48ch;
+    margin-bottom: 0;
+  }
+
   .filter-bar {
     display: flex;
     flex-wrap: wrap;
@@ -156,6 +208,15 @@ const books = bookEntries
   }
 
   @media (max-width: 768px) {
+    .books-hero {
+      min-height: 20rem;
+      align-items: flex-end;
+    }
+    .books-hero__video { display: none; }
+    .books-hero__scrim {
+      background: linear-gradient(0deg, rgba(10, 10, 11, 0.95) 0%, rgba(10, 10, 11, 0.7) 58%, rgba(10, 10, 11, 0.18) 100%);
+    }
+    .books-hero__inner { padding-bottom: var(--space-xl); }
     .grid--3 { grid-template-columns: repeat(2, 1fr); }
   }
   @media (max-width: 480px) {
