@@ -1,9 +1,9 @@
 ---
 name: "Gianna Madden"
-role: "Co-Project Manager, Hundred Stories Project"
+role: "Co-Project Manager"
 category: "staff"
 photo: "/assets/images/team/gianna-madden.jpg"
-order: 14
+order: 2
 bio: |
   Gianna is a junior at Santa Clara University, double-majoring in Political Science and French with a minor in International Business. Her goal is to pursue a career in law or diplomacy. Motivated to learn new perspectives and connect with those passionate about human rights causes, Gianna joined UBFSF in Summer 2025 as an intern to assist with the organization's Hundred Stories Project, which amplifies the individual voices of people in prison through various media.
 

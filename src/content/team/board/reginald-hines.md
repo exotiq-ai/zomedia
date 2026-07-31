@@ -1,9 +1,9 @@
 ---
-name: "Reginald Hines Langton"
-role: "Vice Chairman"
-category: "board"
+name: "Reginald Hines"
+role: "Advisory Board Member"
+category: "advisory"
 photo: "/assets/images/team/reginald-hines.jpg"
-order: 3
+order: 1
 bio: |
   Reginald retired from the Oklahoma Department of Corrections after thirty-eight years. A Langston University alumnus, he served in numerous positions during his tenure, including warden and Deputy Director over the Division of Community Corrections. After retiring, he began working with juveniles as a facility administrator supervising detention centers.
 

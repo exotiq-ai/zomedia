@@ -8,8 +8,9 @@ const title = "Staff & Volunteers";
 const description = "Meet the team behind Zo Media Productions: a cooperative model where every position is co-held by inside and outside members.";
 const breadcrumbs = [{ label: "Staff & Volunteers" }];
 
+const roster = new Set(['Erena Daniel', 'Gianna Madden', 'Gregory Ringler']);
 const team = (await getCollection('team'))
-  .filter((m) => m.data.category === 'staff' || m.data.category === 'volunteer')
+  .filter((m) => (m.data.category === 'staff' || m.data.category === 'volunteer') && roster.has(m.data.name))
   .sort((a, b) => a.data.order - b.data.order);
 ---
 

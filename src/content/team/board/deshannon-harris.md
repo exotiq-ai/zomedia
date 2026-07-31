@@ -3,7 +3,7 @@ name: "DeShannon Harris"
 role: "Board Member"
 category: "board"
 photo: "/assets/images/team/deshannon-harris.jpg"
-order: 5
+order: 3
 bio: |
   DeShannon (De) Harris is a Certified Executive Coach, Certified Leadership Coach, Gallup-Certified Strengths Coach, Emergenetics Certified Associate, and Certified Coach of Excellence. She holds a Master's in Business Administration and is pursuing a Doctorate in Business Administration, Leadership. Her doctoral research centers on organizational leadership behavior and employee engagement.
 

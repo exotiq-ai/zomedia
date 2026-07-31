@@ -1,9 +1,9 @@
 ---
 name: "Robert T. Chase"
-role: "Associate Professor of History, Stony Brook University"
+role: "Advisory Board Member"
 category: "advisory"
 photo: "/assets/images/team/robert-chase.jpg"
-order: 1
+order: 2
 bio: |
   Robert T. Chase is an associate professor of history. He is the author of "We Are Not Slaves: State Violence, Coerced Labor, and Prisoners' Rights in Postwar America," a national book award winner for Best Book from the Division of Critical Criminology and Social Justice of the American Society of Criminology. He is the co-director of the national organization Historians Against Slavery and editor of "Caging Borders and the Carceral States: Incarcerations, Immigration Detentions, and Resistance."
 

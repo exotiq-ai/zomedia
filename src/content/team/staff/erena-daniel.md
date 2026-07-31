@@ -1,9 +1,9 @@
 ---
 name: "Erena Daniel"
-role: "Co-Project Manager, Hundred Stories Project"
+role: "Co-Project Manager"
 category: "staff"
 photo: "/assets/images/team/erena-daniel.jpg"
-order: 13
+order: 1
 bio: |
   Erena Daniel is a student at Santa Clara University majoring in Engineering Physics. Always passionate about law and advocacy work, she has worked with organizations prioritizing environmental justice and combating climate change, such as Grassroots Ecology, whose mission is to preserve local ecologies within the Bay Area.
 

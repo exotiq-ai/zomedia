@@ -1,6 +1,6 @@
 ---
 name: "Willie Mack"
-role: "Ph.D. Candidate & Visiting Assistant Professor, Stony Brook University"
+role: "Advisory Board Member"
 category: "advisory"
 photo: "/assets/images/team/willie-mack.jpg"
 order: 3

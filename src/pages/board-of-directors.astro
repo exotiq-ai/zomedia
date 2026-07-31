@@ -8,8 +8,15 @@ const title = "Board of Directors";
 const description = "The governing body overseeing Zo Media Productions cooperative and its mission.";
 const breadcrumbs = [{ label: "Board of Directors" }];
 
+const roster = new Set([
+  'Glenn E. Martin',
+  'Timothy D. Young, M.Ed.',
+  'DeShannon Harris',
+  'Dr. Zebulon Miletsky',
+  'Dr. Kexiah Poole',
+]);
 const board = (await getCollection('team'))
-  .filter((m) => m.data.category === 'board')
+  .filter((m) => m.data.category === 'board' && roster.has(m.data.name))
   .sort((a, b) => a.data.order - b.data.order);
 ---
 

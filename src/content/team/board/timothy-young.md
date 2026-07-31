@@ -3,7 +3,7 @@ name: "Timothy D. Young, M.Ed."
 role: "Board Member"
 category: "board"
 photo: "/assets/images/team/timothy-young.jpg"
-order: 4
+order: 2
 bio: |
   Timothy D. Young, M.Ed., is a dedicated educator, entrepreneur, and community leader with over 30 years of experience. A proud U.S. Army veteran who served through ROTC and the Oklahoma National Guard, he holds a Master's degree in Public-School Administration and a Bachelor of Arts in Criminal Justice, with a minor in Military Science.
 

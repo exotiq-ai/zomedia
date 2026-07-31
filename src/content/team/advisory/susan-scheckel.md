@@ -1,6 +1,6 @@
 ---
 name: "Susan Scheckel"
-role: "Associate Professor of English, Stony Brook University"
+role: "Advisory Board Member"
 category: "advisory"
 photo: "/assets/images/team/susan-scheckel.jpg"
 order: 4

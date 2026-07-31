@@ -1,9 +1,9 @@
 ---
 name: "Gregory Ringler"
-role: "Full-stack Developer"
-category: "staff"
+role: "Web Development Volunteer"
+category: "volunteer"
 photo: "/assets/images/team/gregory-ringler.jpg"
-order: 9
+order: 3
 bio: |
   Gregory Ringler is a startup founder and full-stack developer based in Denver, Colorado. He is the founder of Exotiq, an AI-powered fleet management platform for exotic car rental operators. His technical background spans UI/UX design, frontend and backend development, AI integration, and automation architecture, with deployment experience across WordPress, React, Next.js, Netlify, and Vercel.
 
