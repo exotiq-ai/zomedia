@@ -11,15 +11,29 @@ const projects = [
 
 <SubpageLayout title="Film Projects" description="Screenplays, theatrical works, and documentaries produced by incarcerated filmmakers." breadcrumbs={[{ label: "Film Projects" }]}>
 
-  <section class="hero hero--editorial hero--editorial-compact">
-    <div class="hero__inner">
-      <span class="hero__eyebrow">Film & Documentary</span>
+  <section class="hero film-hero">
+    <video
+      class="film-hero__video"
+      autoplay
+      muted
+      loop
+      playsinline
+      preload="metadata"
+      poster="/assets/images/film-projects-hero-poster.jpg"
+      aria-hidden="true"
+    >
+      <source src="/assets/video/video produiction hero.mp4" type="video/mp4" />
+    </video>
+    <div class="film-hero__scrim" aria-hidden="true"></div>
+    <div class="hero__inner film-hero__inner">
+      <span class="hero__eyebrow eyebrow--bone">Film & Documentary</span>
       <h1 class="hero__headline">Film Projects</h1>
-      <p class="hero__subhead">Screenplays, theatrical works, and documentaries produced by incarcerated filmmakers.</p>
+      <p class="hero__subhead">Stories made from inside the system, brought to the screen with the power to move people beyond it.</p>
+      <a href="#film-categories" class="film-hero__explore">Explore the work <span aria-hidden="true">&darr;</span></a>
     </div>
   </section>
 
-  <section class="section">
+  <section id="film-categories" class="section">
     <div class="container">
       <div class="grid grid--3">
         {projects.map((project) => (
@@ -38,6 +52,62 @@ const projects = [
 </SubpageLayout>
 
 <style>
+  .film-hero {
+    min-height: clamp(34rem, calc(82svh - 80px), 48rem);
+    isolation: isolate;
+    background: var(--color-void) url('/assets/images/film-projects-hero-poster.jpg') center / cover no-repeat;
+  }
+  .film-hero__video,
+  .film-hero__scrim {
+    position: absolute;
+    inset: 0;
+  }
+  .film-hero__video {
+    z-index: -2;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center center;
+    background: var(--color-void);
+  }
+  .film-hero__scrim {
+    z-index: -1;
+    background:
+      linear-gradient(90deg, rgba(10, 10, 11, 0.95) 0%, rgba(10, 10, 11, 0.82) 32%, rgba(10, 10, 11, 0.42) 58%, rgba(10, 10, 11, 0.08) 100%),
+      linear-gradient(0deg, rgba(10, 10, 11, 0.52) 0%, transparent 48%);
+  }
+  .film-hero__inner {
+    position: relative;
+    z-index: 1;
+    max-width: min(var(--container-max), 78rem);
+  }
+  .film-hero .hero__headline {
+    max-width: 8ch;
+    margin-bottom: var(--space-lg);
+  }
+  .film-hero .hero__subhead {
+    max-width: 40ch;
+    margin-bottom: var(--space-xl);
+  }
+  .film-hero__explore {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-sm);
+    color: var(--color-bone);
+    font-family: var(--font-mono);
+    font-size: var(--text-micro);
+    font-weight: 700;
+    letter-spacing: var(--tracking-wide);
+    text-decoration: none;
+    text-transform: uppercase;
+  }
+  .film-hero__explore span {
+    color: var(--color-signal);
+    font-size: 1.25em;
+    transition: transform var(--duration-fast) var(--ease-snap);
+  }
+  .film-hero__explore:hover span { transform: translateY(0.2rem); }
+
   .film-card {
     border-top: 3px solid var(--color-signal);
     display: flex;
@@ -61,5 +131,22 @@ const projects = [
   }
   .film-card:hover .film-card__link {
     color: var(--color-bone);
+  }
+
+  @media (max-width: 768px) {
+    .film-hero {
+      min-height: clamp(35rem, calc(100svh - 72px), 44rem);
+      align-items: flex-end;
+    }
+    .film-hero__video { object-position: 58% center; }
+    .film-hero__scrim {
+      background: linear-gradient(0deg, rgba(10, 10, 11, 0.97) 0%, rgba(10, 10, 11, 0.83) 45%, rgba(10, 10, 11, 0.2) 100%);
+    }
+    .film-hero .hero__headline { max-width: none; }
+    .film-hero .hero__subhead { margin-bottom: var(--space-lg); }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .film-hero__video { display: none; }
   }
 </style>
