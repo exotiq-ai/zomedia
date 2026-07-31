@@ -130,11 +130,11 @@ body::after {
     animation: sigh-fade-up 0.7s var(--sig-ease) 2300ms forwards;
   }
 
-  /* Hero media — slower top-down wipe */
+  /* The typewriter video is the hero's visual foundation. It paints
+   * immediately (poster first, then video) so the copy never animates over
+   * a blank stage. */
   .signature-hero__media {
-    clip-path: inset(0 0 100% 0);
-    will-change: clip-path;
-    animation: sigh-media-wipe 1s var(--sig-ease) 2400ms forwards;
+    clip-path: none;
   }
 
   @keyframes sigh-line-settle {
@@ -155,7 +155,6 @@ body::after {
     100% { opacity: 0; transform: scaleY(1); transform-origin: bottom; }
   }
   @keyframes sigh-underline  { to { transform: scaleX(1); } }
-  @keyframes sigh-media-wipe { to { clip-path: inset(0 0 0 0); } }
 }
 
 /* Reduced-motion: skip animations, show everything immediately. */

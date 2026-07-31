@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630" role="img" aria-labelledby="title desc">
+  <title id="title">Zo Media Productions</title>
+  <desc id="desc">Amplifying incarcerated voices through literature, film, and art.</desc>
+  <rect width="1200" height="630" fill="#0A0A0B"/>
+  <rect x="72" y="92" width="8" height="404" fill="#D64045"/>
+  <text x="120" y="182" fill="#C8A84E" font-family="monospace" font-size="24" font-weight="700" letter-spacing="7">A UBFSF 501(c)(3) COOPERATIVE</text>
+  <text x="120" y="312" fill="#E8E2D9" font-family="Georgia, serif" font-size="88">ZO MEDIA</text>
+  <text x="120" y="402" fill="#E8E2D9" font-family="Georgia, serif" font-size="88">PRODUCTIONS</text>
+  <text x="120" y="480" fill="#D0CCC4" font-family="Arial, sans-serif" font-size="31">Amplifying incarcerated voices through</text>
+  <text x="120" y="523" fill="#D0CCC4" font-family="Arial, sans-serif" font-size="31">literature, film, and art.</text>
+  <path d="M840 82h278v458H840z" fill="#141416"/>
+  <path d="M870 122h218v378H870z" fill="none" stroke="#C8A84E" stroke-width="2"/>
+  <path d="M900 153v316M960 153v316M1020 153v316" stroke="#D64045" stroke-width="7" opacity=".9"/>
+  <circle cx="960" cy="306" r="65" fill="#E8E2D9" opacity=".12"/>
+</svg>

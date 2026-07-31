@@ -23,10 +23,12 @@ interface Props {
 const {
   title,
   description = 'A media cooperative publishing literature, film, and art by incarcerated creators. A subsidiary of UBFSF.',
-  ogImage = '/assets/images/og-image.jpg',
+  ogImage = '/assets/images/og-image.png',
 } = Astro.props;
 
 const currentPath = Astro.url.pathname;
+const canonicalUrl = new URL(currentPath, Astro.site ?? Astro.url);
+const ogImageUrl = new URL(ogImage, canonicalUrl).href;
 ---
 
 <!DOCTYPE html>
@@ -36,13 +38,21 @@ const currentPath = Astro.url.pathname;
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>{title} | Zo Media Productions</title>
   <meta name="description" content={description} />
+  <link rel="canonical" href={canonicalUrl.href} />
 
   <meta property="og:title" content={title} />
   <meta property="og:description" content={description} />
-  <meta property="og:image" content={ogImage} />
-  <meta property="og:url" content={Astro.url.href} />
+  <meta property="og:image" content={ogImageUrl} />
+  <meta property="og:url" content={canonicalUrl.href} />
   <meta property="og:type" content="website" />
   <meta name="twitter:card" content="summary_large_image" />
+
+  {currentPath === '/' && (
+    <>
+      <link rel="preload" href="/assets/video/hero-typewriter-poster.jpg" as="image" />
+      <link rel="preload" href="/assets/video/hero-typewriter.webm" as="video" type="video/webm" />
+    </>
+  )}
 
   <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
   <link rel="alternate icon" type="image/x-icon" href="/favicon.ico" />

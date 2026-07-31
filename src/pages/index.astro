@@ -142,7 +142,7 @@ const tiles = [
           muted
           loop
           playsinline
-          preload="metadata"
+          preload="auto"
           poster="/assets/video/hero-typewriter-poster.jpg"
           aria-label="A Black man's hands typing on a transparent prison typewriter, telling his story from inside"
         >
@@ -280,9 +280,6 @@ const tiles = [
                 format="webp"
               />
             )}
-            {!t.photo && !t.brand && (
-              <span class="tile__numeral" aria-hidden="true">{t.n}</span>
-            )}
             <span class="tile__arrow" aria-hidden="true">↗ View</span>
             <div class="tile__overlay">
               <span class="tile__label">{t.label}</span>
@@ -306,13 +303,13 @@ const tiles = [
           <a href="/the-wire/" class="btn btn--outline mt-xl">Read The Wire</a>
         </div>
         <div class="card halftone wire-promo__card">
-          <span class="eyebrow eyebrow--signal">Subscribe</span>
-          <p class="card__title mt-sm">Get every issue delivered.</p>
-          <p class="card__text mt-sm">Stories, investigations, and creative work from inside the system.</p>
-          <form data-netlify="true" name="wire-subscribe" method="POST" class="wire-promo__form mt-lg">
-            <input type="hidden" name="form-name" value="wire-subscribe" />
+          <span class="eyebrow eyebrow--signal">Request Updates</span>
+          <p class="card__title mt-sm">Hear when new work is published.</p>
+          <p class="card__text mt-sm">Request publication updates while The Wire's mailing-list service is being finalized.</p>
+          <form data-netlify="true" name="wire-updates-interest" method="POST" class="wire-promo__form mt-lg">
+            <input type="hidden" name="form-name" value="wire-updates-interest" />
             <input type="email" name="email" placeholder="your@email.com" required class="form-control" aria-label="Email for The Wire" />
-            <button type="submit" class="btn btn--primary">Go</button>
+            <button type="submit" class="btn btn--primary">Request</button>
           </form>
         </div>
       </div>
@@ -322,9 +319,9 @@ const tiles = [
   <!-- Final CTA -->
   <section class="section section--alt">
     <div class="container text-center reveal">
-      <SectionHeader eyebrow="Get Involved" title="Support the movement." align="center" lede="Every donation fuels creative work by incarcerated artists and funds the UBFSF Community Grant Fund." />
+      <SectionHeader eyebrow="Get Involved" title="Support the movement." align="center" lede="Help advance creator-led literature, film, and art from inside the system." />
       <div class="final-cta__actions mt-xl">
-        <a href="/support/" class="btn btn--primary btn--lg">Donate Now</a>
+        <a href="/support/" class="btn btn--primary btn--lg">Explore Support Options</a>
         <a href="/contact/" class="btn btn--outline btn--lg">Get In Touch</a>
       </div>
     </div>

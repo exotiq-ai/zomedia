@@ -7,9 +7,10 @@ interface Props {
   priceEbook: string;
   category: string;
   description: string;
+  purchaseUrl?: string;
 }
 
-const { title, author, coverImage, priceHardcover, priceEbook, category, description } = Astro.props;
+const { title, author, coverImage, priceHardcover, priceEbook, category, description, purchaseUrl } = Astro.props;
 ---
 
 <article class="card book-card">
@@ -24,7 +25,11 @@ const { title, author, coverImage, priceHardcover, priceEbook, category, descrip
     <span class="book-card__price">Hardcover: {priceHardcover}</span>
     <span class="book-card__price">eBook: {priceEbook}</span>
   </div>
-  <a href="#" class="btn btn--primary btn--sm">Add to Cart</a>
+  {purchaseUrl ? (
+    <a href={purchaseUrl} class="btn btn--primary btn--sm" rel="noopener">Buy the Book</a>
+  ) : (
+    <span class="book-card__availability">Purchase details coming soon</span>
+  )}
 </article>
 
 <style>
@@ -54,5 +59,12 @@ const { title, author, coverImage, priceHardcover, priceEbook, category, descrip
   }
   .book-card__price {
     white-space: nowrap;
+  }
+  .book-card__availability {
+    font-family: var(--font-mono);
+    font-size: var(--text-tiny);
+    letter-spacing: var(--tracking-wide);
+    text-transform: uppercase;
+    color: var(--color-fog);
   }
 </style>

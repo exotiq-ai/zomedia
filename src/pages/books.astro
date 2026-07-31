@@ -58,9 +58,9 @@ const books = bookEntries
                   {book.isForthcoming ? 'Pre-Order' : 'Add to Cart'}
                 </a>
               ) : (
-                <button class="btn btn--primary btn--sm" type="button" disabled={book.isForthcoming}>
-                  {book.isForthcoming ? 'Coming Soon' : 'Add to Cart'}
-                </button>
+                <span class="book-card__availability">
+                  {book.isForthcoming ? 'Pre-order details coming soon' : 'Purchase details coming soon'}
+                </span>
               )}
             </div>
           </article>
@@ -142,6 +142,14 @@ const books = bookEntries
   .book-card .btn {
     margin-top: var(--space-sm);
     align-self: flex-start;
+  }
+  .book-card__availability {
+    margin-top: var(--space-sm);
+    font-family: var(--font-mono);
+    font-size: var(--text-tiny);
+    letter-spacing: var(--tracking-wide);
+    text-transform: uppercase;
+    color: var(--color-fog);
   }
   .book-card.hidden {
     display: none;

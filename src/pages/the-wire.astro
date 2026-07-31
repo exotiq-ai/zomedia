@@ -34,24 +34,24 @@ import phuckinWireMark from '../assets/images/zo-media/phuckin-wire-mark.jpg';
     </div>
   </section>
 
-  <div class="divider"><span class="divider__label">Subscribe</span></div>
+  <div class="divider"><span class="divider__label">Request Updates</span></div>
 
   <section class="section section--alt">
     <div class="container container--narrow text-center">
       <SectionHeader
-        eyebrow="Get Every Issue"
-        title="Never miss a story from inside."
+        eyebrow="Request Updates"
+        title="Stay close to stories from inside."
         align="center"
         eyebrowTone="signal"
       />
-      <p class="text-lg mt-lg">The Wire is available free, with a paid tier for those who want to directly fund incarcerated journalists.</p>
-      <form data-netlify="true" name="wire-subscribe" method="POST" class="wire-form">
-        <input type="hidden" name="form-name" value="wire-subscribe" />
+      <p class="text-lg mt-lg">The Wire is available free. Share your email to request publication updates while our mailing-list service is being finalized.</p>
+      <form data-netlify="true" name="wire-updates-interest" method="POST" class="wire-form">
+        <input type="hidden" name="form-name" value="wire-updates-interest" />
         <div class="wire-form__row">
           <input type="email" name="email" placeholder="your@email.com" required class="form-control" aria-label="Email address" />
-          <button type="submit" class="btn btn--primary btn--lg">Subscribe</button>
+          <button type="submit" class="btn btn--primary btn--lg">Request Updates</button>
         </div>
-        <p class="wire-form__note">Free to read. Paid subscriptions fund the writers.</p>
+        <p class="wire-form__note">This form records your request for updates; it does not create a paid subscription.</p>
       </form>
     </div>
   </section>
@@ -68,21 +68,10 @@ import phuckinWireMark from '../assets/images/zo-media/phuckin-wire-mark.jpg';
   <div class="divider"><span class="divider__label">Latest</span></div>
 
   <section class="section section--alt">
-    <div class="container">
-      <SectionHeader eyebrow="Recent Issues" title="Latest from The Wire" />
-      <div class="grid grid--3 mt-2xl">
-        <div class="card card--quiet wire-placeholder">
-          <span class="eyebrow">Coming Soon</span>
-          <p class="card__text mt-sm">Issues will appear here as they are published.</p>
-        </div>
-        <div class="card card--quiet wire-placeholder">
-          <span class="eyebrow">Coming Soon</span>
-          <p class="card__text mt-sm">Subscribe above to get notified when new issues drop.</p>
-        </div>
-        <div class="card card--quiet wire-placeholder">
-          <span class="eyebrow">Coming Soon</span>
-          <p class="card__text mt-sm">The Wire publishes on a rolling basis.</p>
-        </div>
+    <div class="container container--narrow text-center">
+      <SectionHeader eyebrow="Publication Archive" title="The first issues are in development." align="center" />
+      <div class="wire-archive-status">
+        <p class="card__text">The archive will open here when The Phuckin' Wire publishes its first issue. Request updates above to hear when new work is released.</p>
       </div>
     </div>
   </section>
@@ -122,6 +111,10 @@ import phuckinWireMark from '../assets/images/zo-media/phuckin-wire-mark.jpg';
       0 14px 30px rgba(0, 0, 0, 0.45),
       0 2px 0 rgba(214, 64, 69, 0.18);
     transition: transform var(--duration-normal) var(--ease-snap);
+  }
+  .wire-archive-status {
+    border-top: 1px solid var(--color-border-emphasis);
+    padding-top: var(--space-xl);
   }
   .wire-mark:hover img {
     transform: rotate(-1deg) scale(1.02);

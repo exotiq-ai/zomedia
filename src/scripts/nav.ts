@@ -14,10 +14,10 @@ function closeMenu() {
 
 if (toggle && menu) {
   toggle.addEventListener('click', () => {
-    const expanded = toggle.getAttribute('aria-expanded') === 'true';
-    toggle.setAttribute('aria-expanded', String(!expanded));
-    menu.classList.toggle('is-open');
-    document.body.style.overflow = expanded ? '' : 'hidden';
+    const willOpen = !menu.classList.contains('is-open');
+    toggle.setAttribute('aria-expanded', String(willOpen));
+    menu.classList.toggle('is-open', willOpen);
+    document.body.style.overflow = willOpen ? 'hidden' : '';
   });
 
   menu.querySelectorAll('a').forEach((link) => {

@@ -3,7 +3,7 @@ import SubpageLayout from '../layouts/SubpageLayout.astro';
 import SectionHeader from '../components/ui/SectionHeader.astro';
 ---
 
-<SubpageLayout title="Support" breadcrumbs={[{ label: "Support" }]}>
+<SubpageLayout title="Support" description="Explore ways to support creator-led literature, film, and art from incarcerated voices through Zo Media Productions." breadcrumbs={[{ label: "Support" }]}>
   <section
     class="hero hero--editorial hero--editorial-left"
     style="--hero-image: url('/assets/images/support-cellblock.jpg'); --hero-image-position: center center;"
@@ -11,54 +11,50 @@ import SectionHeader from '../components/ui/SectionHeader.astro';
     <div class="hero__inner">
       <span class="hero__eyebrow">Make an Impact</span>
       <h1 class="hero__headline">Support the<br />Movement</h1>
-      <p class="hero__subhead">Every dollar fuels creative work by incarcerated artists, funds new publications, and contributes to the UBFSF Community Grant Fund, building pathways to economic independence and justice reform.</p>
+      <p class="hero__subhead">Support creative work by incarcerated artists, new publications, and the community work that builds pathways to economic independence and justice reform.</p>
     </div>
   </section>
 
-  <!-- Donation Tiers -->
+  <!-- Support pathways -->
   <section class="section section--alt">
     <div class="container reveal">
-      <SectionHeader eyebrow="Give Today" title="Choose Your Impact" align="center" />
+      <SectionHeader eyebrow="Support the Work" title="Choose How You Can Help" align="center" />
+      <p class="support-intro">We are finalizing a secure online giving option. For now, contact us to discuss the kind of support that best fits your goals.</p>
       <div class="grid grid--3 mt-2xl">
         <div class="card support-tier">
           <div class="signal-line"></div>
-          <span class="stat__number support-tier__amount">$25</span>
-          <h3 class="card__title mt-sm">Sustainer</h3>
-          <p class="card__text">Covers one book's production costs: editing, layout, and printing for a single title by an incarcerated author.</p>
-          <a href="/contact/?intent=donate" class="btn btn--outline support-tier__cta">Donate $25</a>
+          <h3 class="card__title">Fund a Publication</h3>
+          <p class="card__text">Help bring an incarcerated author's work from manuscript through editing, design, and print.</p>
+          <a href="/contact/?intent=donate" class="btn btn--outline support-tier__cta">Talk With Us</a>
         </div>
         <div class="card support-tier support-tier--recommended">
           <div class="signal-line"></div>
-          <span class="stat__number support-tier__amount text-signal">$50</span>
-          <h3 class="card__title mt-sm">Champion</h3>
-          <p class="card__text">Sponsors a creator's materials: paper, postage, and supplies needed to draft manuscripts from inside the facility.</p>
-          <a href="/contact/?intent=donate" class="btn btn--primary support-tier__cta">Donate $50</a>
+          <h3 class="card__title">Back a Creator</h3>
+          <p class="card__text">Support the materials, correspondence, and creative infrastructure that help writers and artists develop their work.</p>
+          <a href="/contact/?intent=donate" class="btn btn--primary support-tier__cta">Talk With Us</a>
         </div>
         <div class="card support-tier">
           <div class="signal-line"></div>
-          <span class="stat__number support-tier__amount">$100</span>
-          <h3 class="card__title mt-sm">Patron</h3>
-          <p class="card__text">Funds a full publication cycle, from manuscript to marketplace, putting a finished book into readers' hands.</p>
-          <a href="/contact/?intent=donate" class="btn btn--outline support-tier__cta">Donate $100</a>
+          <h3 class="card__title">Partner With Zo</h3>
+          <p class="card__text">Explore institutional, sponsorship, and project-based support for the cooperative's next chapter.</p>
+          <a href="/contact/?intent=donate" class="btn btn--outline support-tier__cta">Talk With Us</a>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- Impact / Distribution -->
+  <!-- Impact -->
   <section class="section">
     <div class="container reveal">
-      <SectionHeader eyebrow="Where It Goes" title="How Funds Are Distributed" align="center" />
+      <SectionHeader eyebrow="Where It Goes" title="How Support Builds Power" align="center" />
       <div class="grid grid--2 mt-2xl">
         <div class="card support-distribution">
-          <span class="stat__number support-distribution__pct text-wire">50%</span>
-          <h3 class="card__title mt-sm">UBFSF Community Grant Fund</h3>
-          <p class="card__text">Half of all revenue goes directly to the United Black Family Scholarship Foundation's Community Grant Fund, supporting education, reentry programs, and family assistance for incarcerated individuals.</p>
+          <h3 class="card__title">Community Support</h3>
+          <p class="card__text">Zo Media works alongside the United Black Family Scholarship Foundation to expand education, reentry, and family-support opportunities for incarcerated people and their communities.</p>
         </div>
         <div class="card support-distribution">
-          <span class="stat__number support-distribution__pct support-distribution__pct--alt">50%</span>
-          <h3 class="card__title mt-sm">Cooperative Revenue Share</h3>
-          <p class="card__text">The other half is shared among creators and reinvested into new projects, paying incarcerated authors, artists, and filmmakers for their work and funding the next wave of publications.</p>
+          <h3 class="card__title">Creative Opportunity</h3>
+          <p class="card__text">Support helps sustain creator-led publishing, film, and art projects while the cooperative builds new pathways for incarcerated authors, artists, and filmmakers.</p>
         </div>
       </div>
     </div>
@@ -93,13 +89,16 @@ import SectionHeader from '../components/ui/SectionHeader.astro';
 </SubpageLayout>
 
 <style>
-  /* Donation tier cards: roomy padding + centered content */
+  .support-intro {
+    max-width: 58ch;
+    margin: var(--space-lg) auto 0;
+    color: var(--color-fog);
+    text-align: center;
+  }
+  /* Support pathway cards: roomy padding + centered content */
   .support-tier {
     padding: var(--space-xl);
     text-align: center;
-  }
-  .support-tier__amount {
-    font-size: var(--text-3xl);
   }
   .support-tier__cta {
     margin-top: var(--space-lg);
@@ -110,17 +109,10 @@ import SectionHeader from '../components/ui/SectionHeader.astro';
     border-color: var(--color-signal);
   }
 
-  /* Fund-distribution showcase cards */
+  /* Impact showcase cards */
   .support-distribution {
     padding: var(--space-xl);
   }
-  .support-distribution__pct {
-    font-size: var(--text-3xl);
-  }
-  .support-distribution__pct--alt {
-    color: var(--color-phosphor);
-  }
-
   /* "Other Ways to Help" — quiet cards, consistent padding */
   .support-help {
     padding: var(--space-xl);
