@@ -1,8 +1,22 @@
-import { defineCollection, z } from 'astro:content';
+import { defineCollection } from 'astro:content';
+import { z } from 'astro/zod';
 import { glob } from 'astro/loaders';
+import { SANITY_ENABLED, sanityLoader, queries, mappers } from './lib/sanity';
+
+/**
+ * Content source switch: with PUBLIC_SANITY_PROJECT_ID set, collections load from Sanity
+ * (editors manage them in the Studio — see docs/SANITY.md). Otherwise they load from the
+ * Markdown files in src/content, so local dev and CI never depend on the CMS.
+ */
+const source = (
+  name: string,
+  markdownDir: string,
+  query: string,
+  map: (d: any) => { id: string; data: Record<string, unknown>; body?: string }
+) => (SANITY_ENABLED ? sanityLoader({ name, query, map }) : glob({ pattern: '**/*.md', base: markdownDir }));
 
 const books = defineCollection({
-  loader: glob({ pattern: '**/*.md', base: './src/content/books' }),
+  loader: source('books', './src/content/books', queries.books, mappers.book),
   schema: z.object({
     title: z.string(),
     author: z.string(),
@@ -18,7 +32,7 @@ const books = defineCollection({
 });
 
 const team = defineCollection({
-  loader: glob({ pattern: '**/*.md', base: './src/content/team' }),
+  loader: source('team', './src/content/team', queries.team, mappers.team),
   schema: z.object({
     name: z.string(),
     role: z.string(),
@@ -30,7 +44,7 @@ const team = defineCollection({
 });
 
 const projects = defineCollection({
-  loader: glob({ pattern: '**/*.md', base: './src/content/projects' }),
+  loader: source('projects', './src/content/projects', queries.projects, mappers.project),
   schema: z.object({
     title: z.string(),
     slug: z.string(),

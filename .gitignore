@@ -5,3 +5,8 @@ dist/
 debug/
 .astro/
 _legacy/
+
+# Local environment — never commit secrets
+.env
+.env.*
+!.env.example
