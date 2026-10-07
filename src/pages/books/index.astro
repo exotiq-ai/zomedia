@@ -1,0 +1,283 @@
+---
+import { getCollection } from 'astro:content';
+import SubpageLayout from '../../layouts/SubpageLayout.astro';
+
+const bookEntries = await getCollection('books');
+const books = bookEntries
+  .map((entry) => ({ slug: entry.id, ...entry.data }))
+  .sort((a, b) => (a.order ?? 999) - (b.order ?? 999));
+
+const SITE_URL = 'https://zomediaproductions.com';
+const bookListLd = {
+  '@type': 'ItemList',
+  name: 'Zo Media Productions books',
+  itemListElement: books.map((b, i) => ({
+    '@type': 'ListItem',
+    position: i + 1,
+    url: `${SITE_URL}/books/${b.slug}/`,
+    name: b.title,
+  })),
+};
+---
+
+<SubpageLayout ogImage="/assets/og/books.jpg" jsonLd={[bookListLd]} title="Books" description="Literature by incarcerated voices: memoir, essays, poetry, and anthologies." breadcrumbs={[{ label: "Books" }]}>
+
+  <section class="hero books-hero">
+    <video
+      class="books-hero__video"
+      data-parallax="0.08"
+      autoplay
+      muted
+      loop
+      playsinline
+      preload="none"
+      poster="/assets/images/bookshelves-hero-poster.jpg"
+      data-src="/assets/video/bookshelves-hero.webm"
+      data-src-type="video/webm"
+      data-min-width="769"
+      aria-hidden="true"
+    ></video>
+    <div class="books-hero__scrim" aria-hidden="true"></div>
+    <div class="hero__inner books-hero__inner">
+      <span class="hero__eyebrow eyebrow--bone">Literature from inside</span>
+      <h1 class="hero__headline">Books</h1>
+      <p class="hero__subhead">Memoir, essays, poetry, and anthologies that carry incarcerated voices beyond the wall.</p>
+    </div>
+  </section>
+
+  <section id="book-collection" class="section">
+    <div class="container">
+      <div class="filter-bar" role="group" aria-label="Filter books by category">
+        <button class="filter-pill active" data-filter="all" aria-pressed="true">All</button>
+        <button class="filter-pill" data-filter="memoir" aria-pressed="false">Memoir</button>
+        <button class="filter-pill" data-filter="essays" aria-pressed="false">Essays</button>
+        <button class="filter-pill" data-filter="poetry" aria-pressed="false">Poetry</button>
+        <button class="filter-pill" data-filter="anthology" aria-pressed="false">Anthology</button>
+      </div>
+      <div id="book-filter-status" class="sr-only" aria-live="polite" aria-atomic="true"></div>
+
+      <h2 class="sr-only">All books</h2>
+      <div class="grid grid--3 book-grid">
+        {books.map((book) => (
+          <article class="card card--feature book-card" data-category={book.category}>
+            <a href={`/books/${book.slug}/`} class="book-card__cover img-editorial reveal--mask" tabindex="-1" aria-hidden="true">
+              <img
+                src={book.coverImage}
+                alt=""
+                loading="lazy"
+                decoding="async"
+                width="400"
+                height="600"
+              />
+            </a>
+            <div class="book-card__body">
+              <span class="eyebrow">
+                {book.category}
+                {book.isForthcoming && <> &middot; Forthcoming</>}
+              </span>
+              <h3 class="card__title"><a href={`/books/${book.slug}/`} class="book-card__title-link">{book.title}</a></h3>
+              <p class="book-card__author">{book.author}</p>
+              <p class="card__text">{book.description}</p>
+              <div class="book-card__prices">
+                {book.priceHardcover && <span class="book-card__price">Print: {book.priceHardcover}</span>}
+                {book.priceEbook && <span class="book-card__price">eBook: {book.priceEbook}</span>}
+              </div>
+              {book.purchaseUrl ? (
+                <a class="btn btn--primary btn--sm" href={book.purchaseUrl} rel="noopener">
+                  {book.isForthcoming ? 'Pre-Order' : 'Buy Now'}
+                </a>
+              ) : (
+                <a class="book-card__availability" href={`/books/${book.slug}/`}>
+                  {book.isForthcoming ? 'Pre-order details coming soon' : 'Purchase details coming soon'}
+                </a>
+              )}
+            </div>
+          </article>
+        ))}
+      </div>
+    </div>
+  </section>
+
+</SubpageLayout>
+
+<style>
+  .books-hero {
+    overflow: hidden;
+    min-height: clamp(19rem, calc(42svh - 48px), 24rem);
+    isolation: isolate;
+    background: var(--color-void) url('/assets/images/bookshelves-hero-poster.jpg') center / cover no-repeat;
+  }
+  .books-hero__video,
+  .books-hero__scrim {
+    position: absolute;
+    inset: 0;
+  }
+  .books-hero__video {
+    z-index: -2;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center 58%;
+  }
+  .books-hero__scrim {
+    z-index: -1;
+    background:
+      linear-gradient(90deg, rgba(10, 10, 11, 0.94) 0%, rgba(10, 10, 11, 0.72) 37%, rgba(10, 10, 11, 0.22) 72%, rgba(10, 10, 11, 0.1) 100%),
+      linear-gradient(0deg, rgba(10, 10, 11, 0.48), transparent 52%);
+  }
+  .books-hero__inner {
+    position: relative;
+    z-index: 1;
+    padding-block: var(--space-2xl);
+  }
+  .books-hero .hero__eyebrow { margin-bottom: var(--space-sm); }
+  .books-hero .hero__headline {
+    margin-bottom: var(--space-md);
+    font-size: clamp(3.5rem, 7vw, 6.25rem);
+  }
+  .books-hero .hero__subhead {
+    max-width: 48ch;
+    margin-bottom: 0;
+  }
+
+  .filter-bar {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-sm);
+    margin-bottom: var(--space-2xl);
+  }
+  .filter-pill {
+    font-family: var(--font-mono);
+    font-size: var(--text-micro);
+    letter-spacing: var(--tracking-wide);
+    text-transform: uppercase;
+    padding: var(--space-xs) var(--space-md);
+    border: 1px solid var(--color-ash);
+    border-radius: 2px;
+    background: transparent;
+    color: var(--color-fog);
+    cursor: pointer;
+    transition: all var(--duration-fast);
+  }
+  .filter-pill:hover {
+    border-color: var(--color-wire);
+    color: var(--color-wire);
+  }
+  .filter-pill.active {
+    background: var(--color-wire);
+    border-color: var(--color-wire);
+    color: var(--color-void);
+  }
+  .book-grid {
+    row-gap: var(--space-3xl);
+  }
+  .book-card {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-md);
+  }
+  .book-card__cover {
+    aspect-ratio: 2 / 3;
+    overflow: hidden;
+    border-radius: 2px;
+  }
+  .book-card__cover img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  .book-card__body {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-xs);
+  }
+  .book-card__author {
+    font-family: var(--font-mono);
+    font-size: var(--text-sm);
+    color: var(--color-fog);
+  }
+  .book-card__prices {
+    display: flex;
+    gap: var(--space-md);
+    font-family: var(--font-mono);
+    font-size: var(--text-sm);
+    color: var(--color-chalk);
+    margin-top: var(--space-xs);
+  }
+  .book-card__price {
+    white-space: nowrap;
+  }
+  .book-card .btn {
+    margin-top: var(--space-sm);
+    align-self: flex-start;
+  }
+  .book-card__title-link {
+    color: inherit;
+  }
+  .book-card__title-link:hover { color: var(--color-signal-hot); }
+  .book-card__cover { display: block; }
+  .book-card__availability {
+    margin-top: var(--space-sm);
+    font-family: var(--font-mono);
+    font-size: var(--text-tiny);
+    letter-spacing: var(--tracking-wide);
+    text-transform: uppercase;
+    color: var(--color-fog);
+  }
+  .book-card.hidden {
+    display: none;
+  }
+
+  @media (max-width: 768px) {
+    .books-hero {
+      min-height: 20rem;
+      align-items: flex-end;
+    }
+    .books-hero__video { display: none; }
+    .books-hero__scrim {
+      background: linear-gradient(0deg, rgba(10, 10, 11, 0.95) 0%, rgba(10, 10, 11, 0.7) 58%, rgba(10, 10, 11, 0.18) 100%);
+    }
+    .books-hero__inner { padding-bottom: var(--space-xl); }
+  }
+  /* Keep two book columns down to large phones; stack only on small phones. */
+  @media (min-width: 561px) and (max-width: 768px) {
+    .book-grid.grid--3 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  }
+</style>
+
+<script>
+  import '../../scripts/hero-video';
+
+  // `astro:page-load` fires on first load AND after every View Transitions
+  // navigation; DOMContentLoaded only fires once, which left the filters dead
+  // after navigating here from another page.
+  document.addEventListener('astro:page-load', () => {
+    const pills = document.querySelectorAll<HTMLButtonElement>('.filter-pill');
+    const cards = document.querySelectorAll<HTMLElement>('.book-card');
+    const liveRegion = document.getElementById('book-filter-status');
+
+    pills.forEach(pill => {
+      pill.addEventListener('click', () => {
+        pills.forEach(p => {
+          p.classList.remove('active');
+          p.setAttribute('aria-pressed', 'false');
+        });
+        pill.classList.add('active');
+        pill.setAttribute('aria-pressed', 'true');
+
+        const filter = pill.dataset.filter;
+        let visible = 0;
+        cards.forEach(card => {
+          const match = filter === 'all' || card.dataset.category === filter;
+          card.classList.toggle('hidden', !match);
+          if (match) visible++;
+        });
+
+        if (liveRegion) {
+          const label = filter === 'all' ? 'all books' : `${filter} books`;
+          liveRegion.textContent = `Showing ${visible} ${label}.`;
+        }
+      });
+    });
+  });
+</script>

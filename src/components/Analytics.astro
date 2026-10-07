@@ -1,0 +1,27 @@
+---
+import { ANALYTICS } from '../config/analytics';
+const { plausibleDomain, ga4Id } = ANALYTICS;
+---
+
+{plausibleDomain && (
+  <>
+    <script is:inline defer data-domain={plausibleDomain} src="https://plausible.io/js/script.js"></script>
+    <script is:inline>window.plausible = window.plausible || function () { (window.plausible.q = window.plausible.q || []).push(arguments); };</script>
+  </>
+)}
+
+{ga4Id && (
+  <>
+    <script is:inline async src={`https://www.googletagmanager.com/gtag/js?id=${ga4Id}`}></script>
+    <script is:inline define:vars={{ ga4Id }}>
+      window.dataLayer = window.dataLayer || [];
+      function gtag() { dataLayer.push(arguments); }
+      window.gtag = gtag;
+      gtag('js', new Date());
+      // Advertising signals stay off: we measure the site, we don't build ad audiences.
+      gtag('consent', 'default', { ad_storage: 'denied', ad_user_data: 'denied', ad_personalization: 'denied', analytics_storage: 'granted' });
+      // View Transitions: page views are sent manually on every navigation (see analytics-events.ts).
+      gtag('config', ga4Id, { send_page_view: false, allow_google_signals: false });
+    </script>
+  </>
+)}

@@ -1,0 +1,4 @@
+migration/
+.env.local
+dist/
+.sanity/

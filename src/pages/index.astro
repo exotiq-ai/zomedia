@@ -2,12 +2,28 @@
 import { Image } from 'astro:assets';
 import BaseLayout from '../layouts/BaseLayout.astro';
 import SectionHeader from '../components/ui/SectionHeader.astro';
+import SubscribeForm from '../components/forms/SubscribeForm.astro';
+import { getCollection } from 'astro:content';
+import { getSiteSettings } from '../lib/sanity';
 import literatureReading from '../assets/images/zo-media/literature-reading.jpg';
 import folsomTower from '../assets/images/zo-media/folsom-tower.jpeg';
 import filmYardCrew from '../assets/images/zo-media/film-yard-crew.jpg';
 import stageTheatreNeon from '../assets/images/zo-media/stage-theatre-neon.jpg';
 import supportWritingSlats from '../assets/images/zo-media/support-writing-slats.jpg';
 import phuckinWireMark from '../assets/images/zo-media/phuckin-wire-mark.jpg';
+
+const shelfBooks = (await getCollection('books'))
+  .map((e) => ({ slug: e.id, ...e.data }))
+  .sort((a, b) => a.order - b.order);
+
+// Editable in the CMS (Site settings → Homepage numbers); these are the fallbacks.
+const settings = await getSiteSettings();
+const stats = {
+  booksPublished: settings?.stats?.booksPublished ?? 12,
+  profitsToCommunity: settings?.stats?.profitsToCommunity ?? 50,
+  creators: settings?.stats?.creators ?? 100,
+  projects: settings?.stats?.projects ?? 4,
+};
 
 // WHAT WE MAKE — six fronts of the cooperative, in newspaper TOC order.
 // Five photo tiles share the duotone treatment (void→bone luminance map);
@@ -157,7 +173,7 @@ const tiles = [
   <section class="section section--alt">
     <div class="container container--narrow text-center reveal">
       <span class="eyebrow">Our Mission</span>
-      <blockquote class="pullquote pullquote--center">
+      <blockquote class="pullquote pullquote--center" data-scrub-words>
         We provide the platform for incarcerated talent to produce literature, film, and visual art that drives systemic justice reform. Every story published, every piece exhibited, and every film produced creates both economic opportunity for the creator and a window into a system most Americans never see.
       </blockquote>
     </div>
@@ -212,22 +228,53 @@ const tiles = [
       <SectionHeader eyebrow="Impact" title="By The Numbers" align="center" />
       <div class="stats mt-2xl">
         <div class="stat">
-          <span class="stat__number" data-counter data-target="12">0</span>
+          <span class="stat__number" data-counter data-target={stats.booksPublished}>0</span>
           <span class="stat__label">Books Published</span>
         </div>
         <div class="stat">
-          <span class="stat__number" data-counter data-target="50" data-suffix="%">0%</span>
+          <span class="stat__number" data-counter data-target={stats.profitsToCommunity} data-suffix="%">0%</span>
           <span class="stat__label">Profits to Community</span>
         </div>
         <div class="stat">
-          <span class="stat__number" data-counter data-target="100" data-suffix="+">0+</span>
+          <span class="stat__number" data-counter data-target={stats.creators} data-suffix="+">0+</span>
           <span class="stat__label">Incarcerated Creators</span>
         </div>
         <div class="stat">
-          <span class="stat__number" data-counter data-target="4">0</span>
+          <span class="stat__number" data-counter data-target={stats.projects}>0</span>
           <span class="stat__label">Special Projects</span>
         </div>
       </div>
+    </div>
+  </section>
+
+  <!-- FROM THE PRESS — horizontal bookshelf (scroll-snap; arrow buttons are progressive enhancement) -->
+  <section class="section bookshelf" aria-labelledby="bookshelf-title">
+    <div class="container reveal">
+      <div class="bookshelf__head">
+        <div>
+          <span class="eyebrow">From the Press</span>
+          <h2 id="bookshelf-title" class="mt-sm">Read the books</h2>
+        </div>
+        <div class="bookshelf__nav" aria-hidden="true">
+          <button type="button" class="bookshelf__btn" data-shelf-prev aria-label="Scroll books left" tabindex="-1">&larr;</button>
+          <button type="button" class="bookshelf__btn" data-shelf-next aria-label="Scroll books right" tabindex="-1">&rarr;</button>
+        </div>
+      </div>
+    </div>
+    <div class="bookshelf__track" data-shelf tabindex="0" role="region" aria-label="Books by Zo Media Productions. Scroll horizontally.">
+      {shelfBooks.map((b) => (
+        <a href={`/books/${b.slug}/`} class="bookshelf__item">
+          <span class="bookshelf__cover img-editorial reveal--mask">
+            <img src={b.coverImage} alt="" width="300" height="450" loading="lazy" decoding="async" />
+          </span>
+          <span class="eyebrow">{b.category}{b.isForthcoming ? ' · forthcoming' : ''}</span>
+          <span class="bookshelf__title">{b.title}</span>
+          <span class="bookshelf__author">{b.author}</span>
+        </a>
+      ))}
+    </div>
+    <div class="container mt-xl">
+      <a href="/books/" class="btn btn--outline">Browse all books</a>
     </div>
   </section>
 
@@ -303,14 +350,10 @@ const tiles = [
           <a href="/the-wire/" class="btn btn--outline mt-xl">Read The Wire</a>
         </div>
         <div class="card halftone wire-promo__card">
-          <span class="eyebrow eyebrow--signal">Request Updates</span>
+          <span class="eyebrow eyebrow--signal">Stay Updated</span>
           <p class="card__title mt-sm">Hear when new work is published.</p>
-          <p class="card__text mt-sm">Request publication updates while The Wire's mailing-list service is being finalized.</p>
-          <form data-netlify="true" name="wire-updates-interest" method="POST" class="wire-promo__form mt-lg">
-            <input type="hidden" name="form-name" value="wire-updates-interest" />
-            <input type="email" name="email" placeholder="your@email.com" required class="form-control" aria-label="Email for The Wire" />
-            <button type="submit" class="btn btn--primary">Request</button>
-          </form>
+          <p class="card__text mt-sm">Get new issues of The Wire and announcements from Zo Media by email.</p>
+          <div class="mt-lg"><SubscribeForm source="home" /></div>
         </div>
       </div>
     </div>
@@ -331,6 +374,28 @@ const tiles = [
 <script>
   import '../scripts/counter';
   import '../scripts/magnetic';
+
+  // Bookshelf arrows: scroll by roughly two covers; disable at the ends.
+  function initShelf() {
+    const track = document.querySelector<HTMLElement>('[data-shelf]');
+    const prev = document.querySelector<HTMLButtonElement>('[data-shelf-prev]');
+    const next = document.querySelector<HTMLButtonElement>('[data-shelf-next]');
+    if (!track || !prev || !next || track.dataset.shelfInit) return;
+    track.dataset.shelfInit = 'true';
+    const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const step = () => (track.querySelector<HTMLElement>('.bookshelf__item')?.offsetWidth ?? 240) * 2;
+    const sync = () => {
+      prev.disabled = track.scrollLeft <= 4;
+      next.disabled = track.scrollLeft + track.clientWidth >= track.scrollWidth - 4;
+    };
+    prev.addEventListener('click', () => track.scrollBy({ left: -step(), behavior: reduce ? 'auto' : 'smooth' }));
+    next.addEventListener('click', () => track.scrollBy({ left: step(), behavior: reduce ? 'auto' : 'smooth' }));
+    track.addEventListener('scroll', sync, { passive: true });
+    window.addEventListener('resize', sync, { passive: true });
+    sync();
+  }
+  initShelf();
+  document.addEventListener('astro:page-load', initShelf);
 </script>
 
 <style>
@@ -369,6 +434,80 @@ const tiles = [
     filter: contrast(1.05);
   }
 
+  /* ───────────────────────────────────────────────────────────
+   * BOOKSHELF — horizontal scroll-snap strip of covers.
+   * ─────────────────────────────────────────────────────────── */
+  .bookshelf__head {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: var(--space-lg);
+    margin-bottom: var(--space-xl);
+  }
+  .bookshelf__nav { display: none; gap: var(--space-sm); }
+  .bookshelf__btn {
+    width: 44px;
+    height: 44px;
+    display: grid;
+    place-items: center;
+    border: 1px solid var(--color-border-emphasis);
+    border-radius: var(--radius-sm);
+    background: transparent;
+    color: var(--color-bone);
+    font-size: 1.25rem;
+    cursor: pointer;
+    transition: border-color var(--duration-fast), color var(--duration-fast), opacity var(--duration-fast);
+  }
+  .bookshelf__btn:hover:not(:disabled) { border-color: var(--color-signal); color: var(--color-signal-hot); }
+  .bookshelf__btn:disabled { opacity: 0.3; cursor: default; }
+  @media (hover: hover) and (pointer: fine) { .bookshelf__nav { display: flex; } }
+
+  .bookshelf__track {
+    display: flex;
+    gap: var(--space-lg);
+    overflow-x: auto;
+    overscroll-behavior-x: contain;
+    scroll-snap-type: x proximity;
+    /* Align the first cover with the page container; snap positions use the same inset. */
+    --shelf-inset: max(var(--grid-margin), calc((100vw - var(--container-max)) / 2 + var(--grid-margin)));
+    scroll-padding-inline: var(--shelf-inset);
+    padding: var(--space-sm) var(--shelf-inset) var(--space-lg);
+    scrollbar-width: thin;
+    scrollbar-color: var(--color-slate) transparent;
+  }
+  .bookshelf__track:focus-visible { outline: 2px solid var(--color-signal); outline-offset: -2px; }
+  .bookshelf__item {
+    flex: 0 0 clamp(11rem, 24vw, 15rem);
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-xs);
+    scroll-snap-align: start;
+    color: inherit;
+    text-decoration: none;
+  }
+  .bookshelf__cover {
+    display: block;
+    aspect-ratio: 2 / 3;
+    background: #fff;
+    margin-bottom: var(--space-sm);
+    box-shadow: 0 18px 36px rgba(0, 0, 0, 0.45);
+  }
+  .bookshelf__cover img { width: 100%; height: 100%; object-fit: cover; display: block; }
+  .bookshelf__title {
+    font-family: var(--font-headline);
+    font-size: var(--text-h3);
+    line-height: 1.1;
+    color: var(--color-bone);
+    transition: color var(--duration-fast);
+  }
+  .bookshelf__item:hover .bookshelf__title,
+  .bookshelf__item:focus-visible .bookshelf__title { color: var(--color-signal-hot); }
+  .bookshelf__author {
+    font-family: var(--font-mono);
+    font-size: var(--text-tiny);
+    color: var(--color-fog);
+  }
+
   /* The Wire promo grid alignment */
   .wire-promo__grid {
     align-items: center;
@@ -377,11 +516,6 @@ const tiles = [
     text-align: center;
     padding: var(--space-2xl) var(--space-xl);
   }
-  .wire-promo__form {
-    display: flex;
-    gap: var(--space-sm);
-  }
-
   /* ───────────────────────────────────────────────────────────
    * WHAT WE MAKE — six-tile editorial grid (page-scoped).
    *

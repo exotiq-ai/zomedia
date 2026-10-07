@@ -1,0 +1,256 @@
+---
+import fs from 'node:fs';
+import path from 'node:path';
+import { getCollection, render } from 'astro:content';
+import SubpageLayout from '../../layouts/SubpageLayout.astro';
+import { SITE } from '../../config/site';
+
+export async function getStaticPaths() {
+  const entries = await getCollection('books');
+  return entries.map((entry) => ({ params: { slug: entry.id }, props: { entry } }));
+}
+
+const { entry } = Astro.props;
+const book = entry.data;
+const { Content } = await render(entry);
+
+const all = (await getCollection('books'))
+  .map((e) => ({ slug: e.id, ...e.data }))
+  .sort((a, b) => (a.order ?? 999) - (b.order ?? 999));
+const related = all.filter((b) => b.slug !== entry.id).slice(0, 3);
+
+const url = `${SITE.url}/books/${entry.id}/`;
+
+// A branded card is generated for books that existed at design time (tools/generate-brand-assets.mjs).
+// Books added later through the CMS fall back to their own cover image.
+const cardPath = `/assets/og/book-${entry.id}.jpg`;
+const hasCard = fs.existsSync(path.join(process.cwd(), 'public', cardPath));
+const socialImage = hasCard ? cardPath : book.coverImage;
+const hasAuthor = !/to be announced/i.test(book.author);
+const price = (v: string) => Number(v.replace(/[^0-9.]/g, ''));
+
+const bookLd = {
+  '@type': 'Book',
+  '@id': `${url}#book`,
+  name: book.title,
+  url,
+  description: book.description,
+  image: new URL(book.coverImage, SITE.url).href,
+  genre: book.category,
+  inLanguage: 'en',
+  publisher: { '@id': `${SITE.url}/#organization` },
+  ...(hasAuthor ? { author: { '@type': 'Person', name: book.author } } : {}),
+  // Offers are only published once a real purchase link exists.
+  ...(book.purchaseUrl
+    ? {
+        offers: [
+          book.priceHardcover && {
+            '@type': 'Offer',
+            url: book.purchaseUrl,
+            price: price(book.priceHardcover),
+            priceCurrency: 'USD',
+            itemCondition: 'https://schema.org/NewCondition',
+            availability: book.isForthcoming ? 'https://schema.org/PreOrder' : 'https://schema.org/InStock',
+          },
+        ].filter(Boolean),
+      }
+    : {}),
+};
+
+const body = (entry.body ?? '').trim();
+const showBody = body && body !== book.description.trim();
+---
+
+<SubpageLayout
+  title={book.title}
+  description={`${book.description}${hasAuthor ? ` By ${book.author}.` : ''}`.slice(0, 300)}
+  ogImage={socialImage}
+  ogImageAlt={`${book.title}${hasAuthor ? `, by ${book.author}` : ''}: book cover`}
+  ogType="book"
+  jsonLd={[bookLd]}
+  breadcrumbs={[{ label: 'Books', href: '/books/' }, { label: book.title }]}
+>
+  <section class="section book-detail">
+    <div class="container">
+      <a href="/books/" class="book-detail__back">&larr; All books</a>
+
+      <div class="grid grid--asymmetric book-detail__grid">
+        <div class="book-detail__cover reveal">
+          <img
+            src={book.coverImage}
+            alt={`Cover of ${book.title}${hasAuthor ? `, by ${book.author}` : ''}`}
+            width="600"
+            height="900"
+            decoding="async"
+            fetchpriority="high"
+          />
+        </div>
+
+        <div class="book-detail__info reveal">
+          <span class="eyebrow">
+            {book.category}
+            {book.isForthcoming && <> &middot; Forthcoming</>}
+          </span>
+          <h1 class="book-detail__title">{book.title}</h1>
+          <p class="book-detail__author">{hasAuthor ? `By ${book.author}` : book.author}</p>
+
+          <p class="book-detail__lede">{book.description}</p>
+          {showBody && (
+            <div class="book-detail__body">
+              <Content />
+            </div>
+          )}
+
+          <dl class="book-detail__facts">
+            {book.priceHardcover && (
+              <div><dt>Print</dt><dd>{book.priceHardcover}</dd></div>
+            )}
+            {book.priceEbook && (
+              <div><dt>eBook</dt><dd>{book.priceEbook}</dd></div>
+            )}
+            <div><dt>Publisher</dt><dd>{SITE.name}</dd></div>
+          </dl>
+
+          <div class="book-detail__actions">
+            {book.purchaseUrl ? (
+              <a href={book.purchaseUrl} class="btn btn--primary btn--lg" rel="noopener">
+                {book.isForthcoming ? 'Pre-Order This Book' : 'Buy This Book'}
+              </a>
+            ) : (
+              <a href={`/contact/?intent=book&book=${encodeURIComponent(book.title)}`} class="btn btn--primary btn--lg">
+                {book.isForthcoming ? 'Ask About Pre-Orders' : 'Ask About Ordering'}
+              </a>
+            )}
+            <a href="/support/" class="btn btn--outline btn--lg">Support the Press</a>
+          </div>
+          {!book.purchaseUrl && (
+            <p class="book-detail__note">Direct purchase links are coming soon. Send us a note and we'll make sure you get a copy.</p>
+          )}
+        </div>
+      </div>
+    </div>
+  </section>
+
+  {related.length > 0 && (
+    <section class="section section--alt">
+      <div class="container">
+        <span class="eyebrow">Keep Reading</span>
+        <h2 class="mt-sm">More from the press</h2>
+        <div class="grid grid--3 mt-xl">
+          {related.map((b) => (
+            <a href={`/books/${b.slug}/`} class="card book-related">
+              <img src={b.coverImage} alt="" width="200" height="300" loading="lazy" decoding="async" />
+              <span class="eyebrow">{b.category}</span>
+              <span class="card__title">{b.title}</span>
+              <span class="book-related__author">{b.author}</span>
+            </a>
+          ))}
+        </div>
+      </div>
+    </section>
+  )}
+</SubpageLayout>
+
+<style>
+  .book-detail__back {
+    display: inline-block;
+    margin-bottom: var(--space-xl);
+    font-family: var(--font-mono);
+    font-size: var(--text-tiny);
+    letter-spacing: var(--tracking-wide);
+    text-transform: uppercase;
+    color: var(--color-fog);
+    padding-block: var(--space-xs);
+  }
+  .book-detail__back:hover { color: var(--color-bone); }
+
+  .book-detail__grid { align-items: start; gap: var(--space-3xl); }
+  .book-detail__cover {
+    position: sticky;
+    top: calc(var(--space-3xl) + var(--space-xl));
+    max-width: 380px;
+    width: 100%;
+    margin-inline: auto;
+    background: #fff;
+    box-shadow: 0 30px 60px rgba(0, 0, 0, 0.55);
+  }
+  .book-detail__cover img { width: 100%; height: auto; display: block; }
+
+  .book-detail__title {
+    font-size: var(--text-display);
+    line-height: var(--leading-crush);
+    margin-top: var(--space-sm);
+  }
+  .book-detail__author {
+    margin-top: var(--space-md);
+    font-family: var(--font-mono);
+    font-size: var(--text-small);
+    letter-spacing: var(--tracking-wide);
+    text-transform: uppercase;
+    color: var(--color-wire);
+  }
+  .book-detail__lede {
+    margin-top: var(--space-xl);
+    font-size: var(--text-body-lg);
+    line-height: var(--leading-loose);
+    color: var(--color-bone);
+  }
+  .book-detail__body { margin-top: var(--space-lg); color: var(--color-chalk); }
+  .book-detail__body :global(p + p) { margin-top: var(--space-md); }
+
+  .book-detail__facts {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-xl);
+    margin-top: var(--space-2xl);
+    padding-block: var(--space-lg);
+    border-block: 1px solid var(--color-border);
+  }
+  .book-detail__facts dt {
+    font-family: var(--font-mono);
+    font-size: var(--text-micro);
+    letter-spacing: var(--tracking-wide);
+    text-transform: uppercase;
+    color: var(--color-fog);
+  }
+  .book-detail__facts dd { margin-top: 2px; color: var(--color-bone); font-size: var(--text-body); }
+
+  .book-detail__actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-md);
+    margin-top: var(--space-2xl);
+  }
+  .book-detail__note {
+    margin-top: var(--space-md);
+    font-size: var(--text-small);
+    color: var(--color-fog);
+  }
+
+  .book-related {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-xs);
+    color: inherit;
+    text-decoration: none;
+  }
+  .book-related img {
+    width: 100%;
+    max-width: 180px;
+    height: auto;
+    aspect-ratio: 2 / 3;
+    object-fit: cover;
+    margin-bottom: var(--space-sm);
+  }
+  .book-related:hover .card__title { color: var(--color-signal-hot); }
+  .book-related__author {
+    font-family: var(--font-mono);
+    font-size: var(--text-tiny);
+    color: var(--color-fog);
+  }
+
+  @media (max-width: 1024px) {
+    .book-detail__cover { position: static; max-width: 320px; }
+    .book-detail__grid { gap: var(--space-2xl); }
+  }
+</style>

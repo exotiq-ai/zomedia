@@ -1,0 +1,40 @@
+---
+import SubpageLayout from './SubpageLayout.astro';
+
+interface Props {
+  title: string;
+  description: string;
+  updated: string;
+  breadcrumbs?: Array<{ label: string; href?: string }>;
+}
+const { title, description, updated, breadcrumbs } = Astro.props;
+---
+
+<SubpageLayout title={title} description={description} breadcrumbs={breadcrumbs ?? [{ label: title }]} ogImage="/assets/og/default.jpg">
+  <section class="hero hero--editorial hero--editorial-compact">
+    <div class="hero__inner">
+      <h1 class="hero__headline">{title}</h1>
+      <p class="hero__subhead">Last updated {updated}</p>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container container--narrow legal">
+      <slot />
+    </div>
+  </section>
+</SubpageLayout>
+
+<style is:global>
+  .legal { max-width: 46rem; }
+  .legal h2 {
+    font-size: var(--text-h3);
+    margin-top: var(--space-2xl);
+    margin-bottom: var(--space-md);
+  }
+  .legal h2:first-child { margin-top: 0; }
+  .legal p, .legal li { color: var(--color-chalk); line-height: var(--leading-loose); max-width: none; }
+  .legal ul { margin: var(--space-md) 0 0 var(--space-lg); list-style: disc; }
+  .legal li + li { margin-top: var(--space-xs); }
+  .legal a { text-decoration: underline; text-underline-offset: 3px; }
+</style>

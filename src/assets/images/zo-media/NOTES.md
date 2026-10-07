@@ -1,5 +1,11 @@
 # Image asset audit notes
 
+> ## 🚫 HOUSE RULE (2026-10-06, set by the project owner): NO AI images of Ivan Kilgore — anywhere.
+> The **only** approved photograph of Ivan is his **original** photo. Until it is supplied, every Ivan slot
+> (team card, documentary director bio) is text/monogram-led. The former AI portraits were removed from the
+> build and archived outside the repo (`_legacy/ai-ivan/`). The "temporary placeholder" exceptions described
+> below are **revoked**.
+
 > Audit conducted during the photo/video next-level pass. Treat this file as the asset rulebook — read before adding/swapping images from `public/assets/images/zo-media/`.
 
 ## ⚠️ AI-generated assets currently in use as deliberate placeholders

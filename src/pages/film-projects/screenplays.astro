@@ -3,7 +3,7 @@ import SubpageLayout from '../../layouts/SubpageLayout.astro';
 import FilmCTA from '../../components/content/FilmCTA.astro';
 ---
 
-<SubpageLayout title="Screenplays" description="Original screenplays written by incarcerated creators." breadcrumbs={[{ label: "Film Projects", href: "/film-projects/" }, { label: "Screenplays" }]}>
+<SubpageLayout ogImage="/assets/og/screenplays.jpg" title="Screenplays" description="Original screenplays written by incarcerated creators." breadcrumbs={[{ label: "Film Projects", href: "/film-projects/" }, { label: "Screenplays" }]}>
 
   <section class="proof">
     <div class="proof__numeral" aria-hidden="true">02</div>
@@ -110,7 +110,7 @@ import FilmCTA from '../../components/content/FilmCTA.astro';
     font-size: var(--text-micro);
     letter-spacing: var(--tracking-mega);
     text-transform: uppercase;
-    color: var(--color-signal);
+    color: var(--color-signal-text);
     background: transparent;
     border: 1.5px solid var(--color-signal);
     padding: 0.45rem 0.85rem;

@@ -1,3 +1,5 @@
+> **Superseded (2026-10-06):** this May roadmap is out of date. The current status, remaining work and human to-do list live in [`docs/LAUNCH-PLAN.md`](docs/LAUNCH-PLAN.md). `.planning/QA-PUNCH-LIST.md` is likewise historical.
+
 # Zo Media Productions — Improvement Roadmap
 
 **Current Rating: 7.5/10**

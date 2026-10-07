@@ -2,20 +2,30 @@
   "name": "zomediaproductions-web",
   "version": "2.0.0",
   "type": "module",
-  "description": "Zo Media Productions — a media cooperative publishing literature, film, and art by incarcerated creators.",
+  "description": "Zo Media Productions \u2014 a media cooperative publishing literature, film, and art by incarcerated creators.",
   "scripts": {
     "dev": "astro dev",
     "build": "astro build",
     "preview": "astro preview",
     "check": "astro check",
-    "validate": "npm run check && npm run build"
+    "validate": "npm run check && npm run build",
+    "test": "node --test netlify/tests/forms.test.mjs",
+    "audit": "node tools/audit.mjs",
+    "brand-assets": "node tools/generate-brand-assets.mjs",
+    "cms:export": "node tools/export-markdown-to-ndjson.mjs"
   },
   "dependencies": {
     "@astrojs/check": "^0.9.9",
     "@astrojs/sitemap": "^3.7.2",
     "@fontsource/instrument-serif": "^5.2.8",
     "@fontsource/space-mono": "^5.2.9",
+    "@sanity/client": "^8.9.0",
+    "@sanity/image-url": "^2.1.1",
     "astro": "^6.3.1",
     "typescript": "^6.0.3"
+  },
+  "devDependencies": {
+    "axe-core": "^4.14.0",
+    "playwright": "^1.61.1"
   }
 }

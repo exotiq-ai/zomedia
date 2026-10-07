@@ -24,12 +24,15 @@
 
 .btn--primary {
   background: var(--color-signal);
-  color: var(--color-bone);
+  /* Pure white: bone on signal red is only 3.5:1; white clears WCAG AA (4.5:1) for button text. */
+  color: #fff;
   border-color: var(--color-signal);
 }
 .btn--primary:hover {
-  background: var(--color-signal-hot);
-  border-color: var(--color-signal-hot);
+  /* Darken (not lighten) on hover so white text keeps ≥4.5:1 contrast. */
+  background: var(--color-signal-dim);
+  border-color: var(--color-signal-dim);
+  color: #fff;
 }
 
 .btn--outline {
@@ -110,7 +113,7 @@
   margin-bottom: var(--space-md);
   line-height: 1.4;
 }
-.eyebrow--signal { color: var(--color-signal); }
+.eyebrow--signal { color: var(--color-signal-text); }
 .eyebrow--bone   { color: var(--color-bone); }
 .eyebrow--fog    { color: var(--color-fog); }
 
@@ -283,6 +286,13 @@
 }
 .form-control::placeholder { color: var(--color-ash); /* placeholder text — ash is OK here */ }
 
+/* Inline form feedback (see src/scripts/forms.ts) */
+.form-status { font-family: var(--font-mono); font-size: var(--text-tiny); line-height: 1.5; }
+.form-status--success { color: var(--color-success); }
+.form-status--error { color: var(--color-signal-hot); }
+.form-status--info { color: var(--color-fog); }
+.form-control:user-invalid { border-color: var(--color-signal); }
+
 textarea.form-control {
   min-height: 150px;
   resize: vertical;
@@ -303,7 +313,7 @@ select.form-control {
   /* Fit one fold below the nav — nav is ~80px tall so the hero owns the
    * remaining viewport. The min-height ensures the hero is a deliberate
    * stage, not an overflowing wall of type. */
-  min-height: calc(100vh - 80px);
+  min-height: calc(100svh - 80px);
   display: flex;
   align-items: center;
 }
@@ -372,7 +382,7 @@ select.form-control {
 .hero--split .hero__media {
   align-self: center;
   aspect-ratio: 4 / 5;
-  max-height: calc(100vh - 220px); /* nav + hero padding budget */
+  max-height: calc(100svh - 220px); /* nav + hero padding budget */
   width: 100%;
 }
 .hero--split .hero__media img {
@@ -457,7 +467,10 @@ select.form-control {
 }
 
 @media (max-width: 768px) {
-  .hero__headline { font-size: var(--text-h2); }
+  /* Headline must dominate the 20px subhead: h1 floor (40px) for subpages,
+     display-ish (44–56px) for the home signature hero. */
+  .hero__headline { font-size: var(--text-h1); }
+  .signature-hero .hero__headline { font-size: clamp(2.75rem, 13vw, 3.5rem); }
   /* Keep the hero subhead at body-lg on mobile for readability —
    * the rest of mobile body got bumped too, this stays distinct. */
   .hero__subhead { font-size: var(--text-body-lg); }
@@ -502,6 +515,8 @@ select.form-control {
 
 @media (max-width: 480px) {
   .btn--lg { padding: 0.875rem 1.5rem; font-size: var(--text-small); width: 100%; justify-content: center; }
+  /* Long labels ("Inquire About Sponsorship") must wrap rather than overflow the screen. */
+  .btn { white-space: normal; text-align: center; max-width: 100%; }
 }
 
 /* ───────────────────────────────────────────────────────────
@@ -586,8 +601,10 @@ select.form-control {
 }
 .hero--editorial-compact .hero__headline {
   font-size: var(--text-h1);
-  margin-bottom: 0;
+  margin-bottom: var(--space-md);
 }
+.hero--editorial-compact .hero__headline:last-child,
+.hero--editorial-compact .hero__subhead:last-child { margin-bottom: 0; }
 /* A small signal-red mark at the start of compact heroes (text-only).
  * Subtle editorial accent — gives the lone headline grounding without
  * adding a redundant eyebrow. */
@@ -633,6 +650,8 @@ select.form-control {
   .hero--editorial {
     min-height: 50vh;
   }
+  /* Compact heroes stay compact on phones (declared after the rule above on purpose). */
+  .hero--editorial.hero--editorial-compact { min-height: auto; }
   /* On mobile, side-darkened hero collapses to bottom-darkening for legibility */
   .hero--editorial-left::before {
     background: linear-gradient(
@@ -642,3 +661,44 @@ select.form-control {
     );
   }
 }
+
+/* ───────────────────────────────────────────────────────────
+ * TOUCH TARGETS — 44×44px minimum on touch / tablet layouts.
+ * Visual size on desktop is untouched. The `html body` prefix plus a doubled class lifts
+ * specificity above component-scoped styles ([data-astro-cid] adds an attribute).
+ * ─────────────────────────────────────────────────────────── */
+@media (pointer: coarse), (max-width: 1024px) {
+  html body .footer__link.footer__link,
+  html body .nav__dropdown-link.nav__dropdown-link {
+    display: flex;
+    align-items: center;
+    min-height: 44px;
+  }
+  html body .footer__social-link.footer__social-link {
+    width: 44px;
+    height: 44px;
+  }
+  html body .nav__toggle.nav__toggle {
+    min-width: 44px;
+    min-height: 44px;
+    align-items: center;
+    justify-content: center;
+  }
+  html body .filter-pill.filter-pill {
+    min-height: 44px;
+    padding-inline: var(--space-lg);
+  }
+  html body a.contact-info__link.contact-info__link {
+    display: inline-block;
+    padding-block: 0.7rem;
+  }
+}
+
+/* Consent / helper line under forms */
+.form-consent {
+  font-family: var(--font-mono);
+  font-size: var(--text-micro);
+  color: var(--color-fog);
+  line-height: 1.5;
+}
+.form-consent a { color: var(--color-chalk); text-decoration: underline; text-underline-offset: 2px; }

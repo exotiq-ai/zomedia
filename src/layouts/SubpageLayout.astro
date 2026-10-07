@@ -4,16 +4,29 @@ import BaseLayout from './BaseLayout.astro';
 interface Props {
   title: string;
   description?: string;
-  /**
-   * Breadcrumbs are accepted for forward-compat (every page passes them today)
-   * but not yet rendered. When a breadcrumb component is added, wire it in here.
-   */
+  /** Breadcrumb trail (Home is added automatically). Feeds BreadcrumbList structured data. */
   breadcrumbs?: Array<{ label: string; href?: string }>;
+  ogImage?: string;
+  ogImageAlt?: string;
+  ogType?: 'website' | 'article' | 'book';
+  noindex?: boolean;
+  preloadImage?: string;
+  jsonLd?: Array<Record<string, unknown>>;
 }
 
-const { title, description } = Astro.props;
+const { title, description, breadcrumbs, ogImage, ogImageAlt, ogType, noindex, preloadImage, jsonLd } = Astro.props;
 ---
 
-<BaseLayout title={title} description={description}>
+<BaseLayout
+  title={title}
+  description={description}
+  breadcrumbs={breadcrumbs}
+  ogImage={ogImage}
+  ogImageAlt={ogImageAlt}
+  ogType={ogType}
+  noindex={noindex}
+  preloadImage={preloadImage}
+  jsonLd={jsonLd}
+>
   <slot />
 </BaseLayout>

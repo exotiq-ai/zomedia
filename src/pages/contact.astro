@@ -3,11 +3,9 @@ import SubpageLayout from '../layouts/SubpageLayout.astro';
 import SectionHeader from '../components/ui/SectionHeader.astro';
 ---
 
-<SubpageLayout title="Contact Us" description="Contact Zo Media Productions about partnerships, press, projects, and opportunities to support incarcerated creators." breadcrumbs={[{ label: "Contact Us" }]}>
-  <section
-    class="hero hero--editorial hero--editorial-compact"
-    style="--hero-image: url('/assets/images/zo-media/zo-tower.001.jpeg'); --hero-overlay: 0.7;"
-  >
+<SubpageLayout ogImage="/assets/og/contact.jpg" title="Contact Us" description="Contact Zo Media Productions about partnerships, press, projects, and opportunities to support incarcerated creators." breadcrumbs={[{ label: "Contact Us" }]}>
+  <!-- Text-only header: the form is the point of this page, so no photo competes with it. -->
+  <section class="hero hero--editorial hero--editorial-compact contact-hero">
     <div class="hero__inner">
       <h1 class="hero__headline">Get In Touch</h1>
       <p class="hero__subhead">Questions, partnerships, press inquiries, or just want to say what's up? We're here.</p>
@@ -27,20 +25,20 @@ import SectionHeader from '../components/ui/SectionHeader.astro';
             inquiry-type value to the right inbox — no routing logic needed in
             code here.
           -->
-          <form data-netlify="true" netlify-honeypot="bot-field" name="contact" method="POST" class="contact-form mt-xl">
+          <form data-netlify="true" netlify-honeypot="bot-field" name="contact" method="POST" action="/thanks/?form=contact" class="contact-form mt-xl" data-enhance data-astro-reload data-form-label="contact">
             <input type="hidden" name="form-name" value="contact" />
-            <p class="sr-only"><label>Don't fill this out: <input name="bot-field" /></label></p>
+            <p class="sr-only" aria-hidden="true"><label>Leave this field empty <input name="bot-field" tabindex="-1" autocomplete="off" /></label></p>
             <div class="form-group">
               <label for="name" class="form-label">Name</label>
-              <input type="text" id="name" name="name" required class="form-control" placeholder="Your name" />
+              <input type="text" id="name" name="name" required class="form-control" placeholder="Your name" autocomplete="name" />
             </div>
             <div class="form-group">
               <label for="email" class="form-label">Email</label>
-              <input type="email" id="email" name="email" required class="form-control" placeholder="your@email.com" />
+              <input type="email" id="email" name="email" required class="form-control" placeholder="your@email.com" autocomplete="email" inputmode="email" />
             </div>
             <div class="form-group">
               <label for="organization" class="form-label">Organization <span class="form-label__optional">(optional)</span></label>
-              <input type="text" id="organization" name="organization" class="form-control" placeholder="Company, studio, or affiliation" />
+              <input type="text" id="organization" name="organization" autocomplete="organization" class="form-control" placeholder="Company, studio, or affiliation" />
             </div>
             <div class="form-group">
               <label for="inquiry-type" class="form-label">Inquiry Type</label>
@@ -51,6 +49,8 @@ import SectionHeader from '../components/ui/SectionHeader.astro';
                 <option value="book">Book / Publishing Inquiry</option>
                 <option value="donation">Donation / Sponsorship</option>
                 <option value="press">Press / Media</option>
+                <option value="volunteer">Volunteering / Getting Involved</option>
+                <option value="other">Something Else</option>
               </select>
             </div>
             <div class="form-group">
@@ -62,6 +62,8 @@ import SectionHeader from '../components/ui/SectionHeader.astro';
               <textarea id="message" name="message" required class="form-control" rows="6" placeholder="What's on your mind?"></textarea>
             </div>
             <button type="submit" class="btn btn--primary btn--lg mt-md">Send Message</button>
+            <p class="form-consent mt-md">By sending this message you agree to our <a href="/privacy/">Privacy Policy</a>.</p>
+            <p class="form-status-wrap" id="contact-status" role="status" aria-live="polite" tabindex="-1"></p>
           </form>
         </div>
 
@@ -100,6 +102,9 @@ import SectionHeader from '../components/ui/SectionHeader.astro';
 </SubpageLayout>
 
 <style>
+  /* Tighter than other compact heroes: the form should be in view without scrolling. */
+  .contact-hero { padding-block: var(--space-xl); }
+  .contact-hero .hero__inner { padding-block: var(--space-lg); }
   .contact-info-card {
     padding: var(--space-2xl);
   }
@@ -137,6 +142,12 @@ import SectionHeader from '../components/ui/SectionHeader.astro';
     if (!select) return;
     const params = new URLSearchParams(window.location.search);
     const raw = (params.get('type') || params.get('intent') || '').toLowerCase().trim();
+
+    // ?book=Title (from a book page) pre-fills the subject line.
+    const book = params.get('book');
+    const subject = document.getElementById('subject') as HTMLInputElement | null;
+    if (book && subject && !subject.value) subject.value = `Question about "${book.slice(0, 120)}"`;
+
     if (!raw) return;
 
     const alias: Record<string, string> = {
@@ -155,6 +166,9 @@ import SectionHeader from '../components/ui/SectionHeader.astro';
       press: 'press',
       media: 'press',
       general: 'general',
+      volunteer: 'volunteer',
+      volunteering: 'volunteer',
+      involved: 'volunteer',
     };
 
     const target = alias[raw];

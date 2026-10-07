@@ -1,5 +1,5 @@
 /**
- * Scroll-reveal system — three variants (default lift, --unmask, --stagger).
+ * Scroll-reveal system — four variants (default lift, --unmask, --stagger, --mask).
  * Re-binds on every Astro page-load so it survives View Transitions.
  */
 
@@ -10,7 +10,8 @@ document.documentElement.classList.add('js');
 const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
 function initReveals() {
-  const selector = '.reveal:not(.is-visible), .reveal--unmask:not(.is-visible), .reveal--stagger:not(.is-visible)';
+  const selector =
+    '.reveal:not(.is-visible), .reveal--unmask:not(.is-visible), .reveal--stagger:not(.is-visible), .reveal--mask:not(.is-visible)';
   const targets = document.querySelectorAll(selector);
   if (targets.length === 0) return;
 

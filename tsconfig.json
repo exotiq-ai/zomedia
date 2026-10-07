@@ -3,11 +3,28 @@
   "compilerOptions": {
     "baseUrl": ".",
     "paths": {
-      "@layouts/*": ["src/layouts/*"],
-      "@components/*": ["src/components/*"],
-      "@styles/*": ["src/styles/*"],
-      "@scripts/*": ["src/scripts/*"],
-      "@content/*": ["src/content/*"]
+      "@layouts/*": [
+        "src/layouts/*"
+      ],
+      "@components/*": [
+        "src/components/*"
+      ],
+      "@styles/*": [
+        "src/styles/*"
+      ],
+      "@scripts/*": [
+        "src/scripts/*"
+      ],
+      "@content/*": [
+        "src/content/*"
+      ]
     }
-  }
+  },
+  "exclude": [
+    "dist",
+    "_legacy",
+    "studio",
+    "node_modules",
+    "netlify"
+  ]
 }

@@ -9,11 +9,12 @@ const projects = [
 ];
 ---
 
-<SubpageLayout title="Film Projects" description="Screenplays, theatrical works, and documentaries produced by incarcerated filmmakers." breadcrumbs={[{ label: "Film Projects" }]}>
+<SubpageLayout ogImage="/assets/og/film-projects.jpg" title="Film Projects" description="Screenplays, theatrical works, and documentaries produced by incarcerated filmmakers." breadcrumbs={[{ label: "Film Projects" }]}>
 
   <section class="hero film-hero">
     <video
       class="film-hero__video"
+      data-parallax="0.08"
       autoplay
       muted
       loop
@@ -35,6 +36,7 @@ const projects = [
 
   <section id="film-categories" class="section">
     <div class="container">
+      <h2 class="sr-only">Film project categories</h2>
       <div class="grid grid--3">
         {projects.map((project) => (
           <a href={project.href} class="card film-card">
@@ -53,6 +55,7 @@ const projects = [
 
 <style>
   .film-hero {
+    overflow: hidden;
     min-height: clamp(34rem, calc(82svh - 80px), 48rem);
     isolation: isolate;
     background: var(--color-void) url('/assets/images/film-projects-hero-poster.jpg') center / cover no-repeat;
@@ -102,7 +105,7 @@ const projects = [
     text-transform: uppercase;
   }
   .film-hero__explore span {
-    color: var(--color-signal);
+    color: var(--color-signal-text);
     font-size: 1.25em;
     transition: transform var(--duration-fast) var(--ease-snap);
   }
@@ -125,7 +128,7 @@ const projects = [
     font-size: var(--text-sm);
     letter-spacing: var(--tracking-wide);
     text-transform: uppercase;
-    color: var(--color-signal);
+    color: var(--color-signal-text);
     margin-top: auto;
     transition: color var(--duration-fast);
   }

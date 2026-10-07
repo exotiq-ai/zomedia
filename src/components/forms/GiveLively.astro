@@ -1,0 +1,73 @@
+---
+/**
+ * Give Lively donation widget. Renders the official embed container and loads the
+ * vendor script on demand. Give Lively allows ONE widget per page, so use this
+ * component once (the Support page). When unconfigured it renders nothing in
+ * production, and a dashed placeholder under `astro dev` so the layout can be
+ * tested before credentials arrive. Config: src/config/givelively.ts.
+ */
+import { GIVELIVELY } from '../../config/givelively';
+
+const { type, scriptSrc, widgetSrc, enabled } = GIVELIVELY;
+const showPlaceholder = !enabled && import.meta.env.DEV;
+---
+
+{enabled && (
+  <div class="give-lively" data-give-lively data-script-src={scriptSrc ?? ''}>
+    {type === 'branded' ? (
+      <div id="give-lively-widget" class="gl-branded-donation-widget" data-widget-src={widgetSrc}></div>
+    ) : (
+      <div id="give-lively-widget" class="gl-simple-donation-widget"></div>
+    )}
+    <noscript>
+      <p class="give-lively__noscript">
+        Online giving needs JavaScript. You can also <a href="/contact/?intent=donate">contact us</a> to give.
+      </p>
+    </noscript>
+  </div>
+)}
+
+{showPlaceholder && (
+  <div class="give-lively give-lively--placeholder" role="note">
+    <p>Give Lively widget goes here (dev placeholder).</p>
+    <p>Set <code>PUBLIC_GIVELIVELY_SCRIPT_SRC</code> in <code>.env</code> to render the real one.</p>
+  </div>
+)}
+
+<style>
+  .give-lively {
+    width: 100%;
+    max-width: 34rem;
+    margin-inline: auto;
+    min-height: 272px; /* Give Lively's recommended container height — avoids layout shift when it loads */
+  }
+  .give-lively--placeholder {
+    display: grid;
+    place-content: center;
+    gap: var(--space-xs);
+    text-align: center;
+    border: 1px dashed var(--color-border-emphasis);
+    color: var(--color-fog);
+    font-family: var(--font-mono);
+    font-size: var(--text-tiny);
+  }
+  .give-lively--placeholder code { color: var(--color-wire); }
+  .give-lively__noscript { color: var(--color-fog); }
+</style>
+
+<script>
+  // Re-inject the vendor script on every page-load: Astro's View Transitions
+  // replace <body>, and the widget script only looks for its container once.
+  function loadGiveLively() {
+    const holder = document.querySelector<HTMLElement>('[data-give-lively]');
+    const src = holder?.dataset.scriptSrc;
+    if (!holder || !src) return;
+    document.querySelectorAll('script[data-give-lively-script]').forEach((el) => el.remove());
+    const s = document.createElement('script');
+    s.src = src;
+    s.async = true;
+    s.dataset.giveLivelyScript = 'true';
+    document.head.appendChild(s);
+  }
+  document.addEventListener('astro:page-load', loadGiveLively);
+</script>

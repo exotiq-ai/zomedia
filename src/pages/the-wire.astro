@@ -2,10 +2,11 @@
 import { Image } from 'astro:assets';
 import SubpageLayout from '../layouts/SubpageLayout.astro';
 import SectionHeader from '../components/ui/SectionHeader.astro';
+import SubscribeForm from '../components/forms/SubscribeForm.astro';
 import phuckinWireMark from '../assets/images/zo-media/phuckin-wire-mark.jpg';
 ---
 
-<SubpageLayout title="The Phuckin' Wire" description="Advocacy journalism written by and for incarcerated people. Unfiltered. Uncensored. Unapologetic." breadcrumbs={[{ label: "The Phuckin' Wire" }]}>
+<SubpageLayout ogImage="/assets/og/the-wire.jpg" title="The Phuckin' Wire" description="Advocacy journalism written by and for incarcerated people. Unfiltered. Uncensored. Unapologetic." breadcrumbs={[{ label: "The Phuckin' Wire" }]}>
 
   <section class="hero hero--editorial hero--editorial-center section--dark wire-hero">
     <div class="hero__inner">
@@ -34,25 +35,18 @@ import phuckinWireMark from '../assets/images/zo-media/phuckin-wire-mark.jpg';
     </div>
   </section>
 
-  <div class="divider"><span class="divider__label">Request Updates</span></div>
+  <div class="divider"><span class="divider__label">Stay Updated</span></div>
 
   <section class="section section--alt">
     <div class="container container--narrow text-center">
       <SectionHeader
-        eyebrow="Request Updates"
+        eyebrow="Stay Updated"
         title="Stay close to stories from inside."
         align="center"
         eyebrowTone="signal"
       />
-      <p class="text-lg mt-lg">The Wire is available free. Share your email to request publication updates while our mailing-list service is being finalized.</p>
-      <form data-netlify="true" name="wire-updates-interest" method="POST" class="wire-form">
-        <input type="hidden" name="form-name" value="wire-updates-interest" />
-        <div class="wire-form__row">
-          <input type="email" name="email" placeholder="your@email.com" required class="form-control" aria-label="Email address" />
-          <button type="submit" class="btn btn--primary btn--lg">Request Updates</button>
-        </div>
-        <p class="wire-form__note">This form records your request for updates; it does not create a paid subscription.</p>
-      </form>
+      <p class="text-lg mt-lg">The Wire is free. Share your email and we'll send new issues and announcements as they're published.</p>
+      <div class="wire-form"><SubscribeForm source="wire" buttonLabel="Subscribe" /></div>
     </div>
   </section>
 
@@ -62,17 +56,6 @@ import phuckinWireMark from '../assets/images/zo-media/phuckin-wire-mark.jpg';
       <p class="text-lg mt-lg">The Wire is supported by institutional sponsors committed to amplifying incarcerated voices. Johns Hopkins University is a confirmed sponsor.</p>
       <p class="text-fog mt-md">Interested in sponsoring The Wire? Institutional and organizational sponsorships are available. Reach out to discuss how your institution can support independent journalism from inside the system.</p>
       <a href="/contact/" class="btn btn--outline mt-xl">Inquire About Sponsorship</a>
-    </div>
-  </section>
-
-  <div class="divider"><span class="divider__label">Latest</span></div>
-
-  <section class="section section--alt">
-    <div class="container container--narrow text-center">
-      <SectionHeader eyebrow="Publication Archive" title="The first issues are in development." align="center" />
-      <div class="wire-archive-status">
-        <p class="card__text">The archive will open here when The Phuckin' Wire publishes its first issue. Request updates above to hear when new work is released.</p>
-      </div>
     </div>
   </section>
 
@@ -112,10 +95,6 @@ import phuckinWireMark from '../assets/images/zo-media/phuckin-wire-mark.jpg';
       0 2px 0 rgba(214, 64, 69, 0.18);
     transition: transform var(--duration-normal) var(--ease-snap);
   }
-  .wire-archive-status {
-    border-top: 1px solid var(--color-border-emphasis);
-    padding-top: var(--space-xl);
-  }
   .wire-mark:hover img {
     transform: rotate(-1deg) scale(1.02);
   }
@@ -128,35 +107,8 @@ import phuckinWireMark from '../assets/images/zo-media/phuckin-wire-mark.jpg';
     font-size: clamp(2.25rem, 6vw, 4rem);
   }
   .wire-form {
-    margin-top: var(--space-2xl);
-  }
-  .wire-form__row {
-    display: flex;
-    gap: var(--space-sm);
+    margin: var(--space-2xl) auto 0;
     max-width: 500px;
-    margin-inline: auto;
-  }
-  .wire-form__row .form-control {
-    flex: 1;
-  }
-  .wire-form__note {
-    font-family: var(--font-mono);
-    font-size: var(--text-sm);
-    color: var(--color-fog);
-    margin-top: var(--space-md);
-  }
-
-  /* Placeholder issue cards — centered, roomy */
-  .wire-placeholder {
-    text-align: center;
-    padding: var(--space-2xl);
-  }
-
-  @media (max-width: 600px) {
-    .wire-form__row {
-      flex-direction: column;
-    }
+    text-align: left;
   }
 </style>
-</content>
-</invoke>
