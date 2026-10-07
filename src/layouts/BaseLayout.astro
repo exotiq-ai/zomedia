@@ -2,7 +2,7 @@
 import { ClientRouter } from 'astro:transitions';
 import Nav from '../components/nav/Nav.astro';
 import Footer from '../components/footer/Footer.astro';
-import { SITE, SOCIAL_LINKS } from '../config/site';
+import { SITE, SOCIAL_LINKS, SUBSTACK } from '../config/site';
 import { ANALYTICS } from '../config/analytics';
 import Analytics from '../components/Analytics.astro';
 
@@ -75,7 +75,7 @@ const breadcrumbLd = currentPath === '/' ? null : {
   })),
 };
 
-const sameAs = SOCIAL_LINKS.filter((l) => l.href).map((l) => l.href);
+const sameAs = [...SOCIAL_LINKS.filter((l) => l.href).map((l) => l.href), SUBSTACK.url];
 
 const structuredData = {
   '@context': 'https://schema.org',

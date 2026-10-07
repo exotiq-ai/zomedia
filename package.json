@@ -9,7 +9,7 @@
     "preview": "astro preview",
     "check": "astro check",
     "validate": "npm run check && npm run build",
-    "test": "node --test netlify/tests/forms.test.mjs",
+    "test": "node --test netlify/tests/*.test.mjs",
     "audit": "node tools/audit.mjs",
     "brand-assets": "node tools/generate-brand-assets.mjs",
     "cms:export": "node tools/export-markdown-to-ndjson.mjs"

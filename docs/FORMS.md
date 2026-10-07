@@ -33,6 +33,8 @@ Netlify → *Site configuration → Forms → Form notifications → Add notific
 3. Redeploy. Replies to the email go straight to the visitor (`reply_to` is set).
 
 ### C. Mailing list
+> **The Phuckin' Wire is on Substack**, which owns the list — signups are captured here and handed to Substack to confirm (see `docs/WIRE-SUBSTACK.md`). The provider options below are only for a *separate* list (e.g. general Zo Media news); leave them unset to use Substack alone.
+
 Pick one provider, then set `NEWSLETTER_PROVIDER` and `NEWSLETTER_API_KEY` plus:
 
 | Provider | `NEWSLETTER_PROVIDER` | Extra variables |

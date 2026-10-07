@@ -3,10 +3,37 @@ import { Image } from 'astro:assets';
 import SubpageLayout from '../layouts/SubpageLayout.astro';
 import SectionHeader from '../components/ui/SectionHeader.astro';
 import SubscribeForm from '../components/forms/SubscribeForm.astro';
+import { getWirePosts, formatIssueDate } from '../lib/substack';
+import { SITE, SUBSTACK } from '../config/site';
 import phuckinWireMark from '../assets/images/zo-media/phuckin-wire-mark.jpg';
+
+const posts = await getWirePosts(6);
+
+// Structured data: the Wire as a Blog whose posts live (canonically) on Substack.
+const blogLd = posts.length
+  ? [{
+      '@type': 'Blog',
+      '@id': `${SITE.url}/the-wire/#blog`,
+      name: "The Phuckin' Wire",
+      url: `${SITE.url}/the-wire/`,
+      sameAs: SUBSTACK.url,
+      publisher: { '@id': `${SITE.url}/#organization` },
+      blogPost: posts.map((p) => ({
+        '@type': 'BlogPosting',
+        headline: p.title,
+        description: p.summary,
+        datePublished: p.date.toISOString(),
+        url: p.url,
+        mainEntityOfPage: p.url,
+        ...(p.image ? { image: p.image } : {}),
+        author: { '@type': 'Organization', name: p.author ?? "The Phuckin' Wire" },
+        publisher: { '@id': `${SITE.url}/#organization` },
+      })),
+    }]
+  : [];
 ---
 
-<SubpageLayout ogImage="/assets/og/the-wire.jpg" title="The Phuckin' Wire" description="Advocacy journalism written by and for incarcerated people. Unfiltered. Uncensored. Unapologetic." breadcrumbs={[{ label: "The Phuckin' Wire" }]}>
+<SubpageLayout jsonLd={blogLd} ogImage="/assets/og/the-wire.jpg" title="The Phuckin' Wire" description="Advocacy journalism written by and for incarcerated people. Unfiltered. Uncensored. Unapologetic." breadcrumbs={[{ label: "The Phuckin' Wire" }]}>
 
   <section class="hero hero--editorial hero--editorial-center section--dark wire-hero">
     <div class="hero__inner">
@@ -24,8 +51,46 @@ import phuckinWireMark from '../assets/images/zo-media/phuckin-wire-mark.jpg';
       <span class="hero__eyebrow">The Publication</span>
       <h1 class="hero__headline wire-headline">The Phuckin' Wire</h1>
       <p class="hero__subhead">Advocacy journalism written by and for incarcerated people. Unfiltered. Uncensored. Unapologetic.</p>
+      <div class="hero__ctas wire-hero__ctas">
+        <a href={SUBSTACK.url} class="btn btn--primary" target="_blank" rel="noopener">Read on Substack <span aria-hidden="true">&nearr;</span></a>
+        <a href="#subscribe" class="btn btn--outline">Get new issues by email</a>
+      </div>
     </div>
   </section>
+
+  {posts.length > 0 && (
+    <section class="section" id="latest" aria-labelledby="latest-title">
+      <div class="container">
+        <div class="wire-latest__head">
+          <div>
+            <span class="eyebrow">Latest Issues</span>
+            <h2 id="latest-title" class="mt-sm">Fresh from the Wire</h2>
+          </div>
+          <a href={SUBSTACK.url} class="wire-latest__all" target="_blank" rel="noopener">All issues on Substack <span aria-hidden="true">&nearr;</span></a>
+        </div>
+        <div class="grid grid--3 wire-latest__grid mt-xl">
+          {posts.slice(0, 3).map((post) => (
+            <a href={post.url} class="card wire-issue" target="_blank" rel="noopener">
+              {post.image ? (
+                <span class="wire-issue__media img-editorial">
+                  <Image src={post.image} alt="" width={640} height={480} loading="lazy" format="webp" />
+                </span>
+              ) : (
+                /* Issues without cover art get the Wire's own mark so the cards stay aligned. */
+                <span class="wire-issue__media wire-issue__media--mark">
+                  <Image src={phuckinWireMark} alt="" width={240} height={240} loading="lazy" format="webp" />
+                </span>
+              )}
+              <time class="wire-issue__date" datetime={post.date.toISOString().slice(0, 10)}>{formatIssueDate(post.date)}</time>
+              <h3 class="wire-issue__title">{post.title}</h3>
+              {post.summary && <p class="wire-issue__summary">{post.summary}</p>}
+              <span class="wire-issue__cta">Read on Substack <span aria-hidden="true">&nearr;</span><span class="sr-only"> (opens in a new tab)</span></span>
+            </a>
+          ))}
+        </div>
+      </div>
+    </section>
+  )}
 
   <section class="section">
     <div class="container container--narrow">
@@ -37,7 +102,7 @@ import phuckinWireMark from '../assets/images/zo-media/phuckin-wire-mark.jpg';
 
   <div class="divider"><span class="divider__label">Stay Updated</span></div>
 
-  <section class="section section--alt">
+  <section class="section section--alt" id="subscribe">
     <div class="container container--narrow text-center">
       <SectionHeader
         eyebrow="Stay Updated"
@@ -45,7 +110,7 @@ import phuckinWireMark from '../assets/images/zo-media/phuckin-wire-mark.jpg';
         align="center"
         eyebrowTone="signal"
       />
-      <p class="text-lg mt-lg">The Wire is free. Share your email and we'll send new issues and announcements as they're published.</p>
+      <p class="text-lg mt-lg">The Wire is free. Share your email and we'll send you to Substack to confirm, then new issues arrive in your inbox.</p>
       <div class="wire-form"><SubscribeForm source="wire" buttonLabel="Subscribe" /></div>
     </div>
   </section>
@@ -111,4 +176,70 @@ import phuckinWireMark from '../assets/images/zo-media/phuckin-wire-mark.jpg';
     max-width: 500px;
     text-align: left;
   }
+  /* Latest issues — preview cards that link out to Substack */
+  .wire-latest__head {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: var(--space-lg);
+    flex-wrap: wrap;
+  }
+  .wire-latest__all {
+    font-family: var(--font-mono);
+    font-size: var(--text-tiny);
+    letter-spacing: var(--tracking-wide);
+    text-transform: uppercase;
+    color: var(--color-chalk);
+    padding-block: var(--space-sm);
+  }
+  .wire-latest__all:hover { color: var(--color-signal-text); }
+  .wire-issue {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-sm);
+    color: inherit;
+    text-decoration: none;
+    padding: 0 0 var(--space-lg);
+    overflow: hidden;
+  }
+  .wire-issue > :not(.wire-issue__media) { padding-inline: var(--space-lg); }
+  .wire-issue__media {
+    display: block;
+    aspect-ratio: 4 / 3;
+    overflow: hidden;
+    margin-bottom: var(--space-sm);
+    background: var(--color-graphite);
+  }
+  .wire-issue__media :global(img) { width: 100%; height: 100%; object-fit: cover; display: block; }
+  .wire-issue__media--mark {
+    display: grid;
+    place-items: center;
+    background: #E8DCC4; /* the mark's native cream paper */
+  }
+  .wire-issue__media--mark :global(img) { width: auto; height: 82%; object-fit: contain; transform: rotate(-2deg); }
+  .wire-issue__date {
+    font-family: var(--font-mono);
+    font-size: var(--text-micro);
+    letter-spacing: var(--tracking-wide);
+    text-transform: uppercase;
+    color: var(--color-wire);
+  }
+  .wire-issue__title {
+    font-size: var(--text-h3);
+    line-height: 1.12;
+    transition: color var(--duration-fast);
+  }
+  .wire-issue:hover .wire-issue__title,
+  .wire-issue:focus-visible .wire-issue__title { color: var(--color-signal-text); }
+  .wire-issue__summary { color: var(--color-fog); font-size: var(--text-small); line-height: 1.55; }
+  .wire-issue__cta {
+    margin-top: auto;
+    padding-top: var(--space-sm);
+    font-family: var(--font-mono);
+    font-size: var(--text-tiny);
+    letter-spacing: var(--tracking-wide);
+    text-transform: uppercase;
+    color: var(--color-chalk);
+  }
+  .wire-hero__ctas { justify-content: center; margin-top: var(--space-xl); }
 </style>

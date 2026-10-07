@@ -33,6 +33,18 @@ export const SITE = {
   themeColor: '#0A0A0B',
 } as const;
 
+/**
+ * The Phuckin' Wire newsletter is published on Substack — the list of record for email subscribers.
+ * Our signup forms capture the address here (Netlify Forms) and hand the reader to Substack to confirm.
+ */
+export const SUBSTACK = {
+  url: 'https://zomediaproductions.substack.com',
+  feedUrl: 'https://zomediaproductions.substack.com/feed',
+  /** Substack's subscribe page, with the visitor's address prefilled when we have one. */
+  subscribeUrl: (email?: string) =>
+    `https://zomediaproductions.substack.com/subscribe${email ? `?email=${encodeURIComponent(email)}` : ''}`,
+} as const;
+
 /** `href: null` renders a disabled "coming soon" icon instead of a link. */
 export const SOCIAL_LINKS: Array<{ label: string; icon: string; href: string | null }> = [
   { label: 'Facebook', icon: 'fb', href: 'https://www.facebook.com/unitedblack.familyscholarshipfoundation' },
