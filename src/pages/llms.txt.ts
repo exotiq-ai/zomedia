@@ -1,6 +1,7 @@
 import type { APIRoute } from 'astro';
 import { getCollection } from 'astro:content';
-import { SITE } from '../config/site';
+import { SITE, SUBSTACK } from '../config/site';
+import { getWirePosts } from '../lib/substack';
 
 /**
  * /llms.txt — a concise, Markdown summary of the site for language models and
@@ -10,6 +11,7 @@ import { SITE } from '../config/site';
 export const GET: APIRoute = async () => {
   const books = (await getCollection('books')).sort((a, b) => a.data.order - b.data.order);
   const u = (p: string) => `${SITE.url}${p}`;
+  const issues = await getWirePosts(5);
 
   const out = [
     `# ${SITE.name}`,
@@ -29,6 +31,10 @@ export const GET: APIRoute = async () => {
     '',
     '## Books',
     ...books.map((b) => `- [${b.data.title}](${u(`/books/${b.id}/`)}): ${b.data.author}. ${b.data.description}`),
+    '',
+    "## The Phuckin' Wire (newsletter on Substack)",
+    `- [Read and subscribe](${SUBSTACK.url}): free newsletter of advocacy journalism written by and for incarcerated people.`,
+    ...issues.map((i) => `- [${i.title}](${i.url}): ${i.summary}`),
     '',
     '## People',
     `- [Staff & Volunteers](${u('/staff-and-volunteers/')})`,

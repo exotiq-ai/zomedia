@@ -5,6 +5,7 @@ import SectionHeader from '../components/ui/SectionHeader.astro';
 import SubscribeForm from '../components/forms/SubscribeForm.astro';
 import { getCollection } from 'astro:content';
 import { getSiteSettings } from '../lib/sanity';
+import { getWirePosts, formatIssueDate } from '../lib/substack';
 import literatureReading from '../assets/images/zo-media/literature-reading.jpg';
 import folsomTower from '../assets/images/zo-media/folsom-tower.jpeg';
 import filmYardCrew from '../assets/images/zo-media/film-yard-crew.jpg';
@@ -12,6 +13,7 @@ import stageTheatreNeon from '../assets/images/zo-media/stage-theatre-neon.jpg';
 import supportWritingSlats from '../assets/images/zo-media/support-writing-slats.jpg';
 import phuckinWireMark from '../assets/images/zo-media/phuckin-wire-mark.jpg';
 
+const [latestIssue] = await getWirePosts(1);
 const shelfBooks = (await getCollection('books'))
   .map((e) => ({ slug: e.id, ...e.data }))
   .sort((a, b) => a.order - b.order);
@@ -347,7 +349,13 @@ const tiles = [
         <div>
           <h2>The Phuckin' Wire</h2>
           <p class="text-lg mt-lg">Our flagship newsletter: advocacy journalism written by and for incarcerated people. Unfiltered. Uncensored. Unapologetic.</p>
-          <a href="/the-wire/" class="btn btn--outline mt-xl">Read The Wire</a>
+          {latestIssue && (
+            <a href={latestIssue.url} class="wire-latest-teaser mt-xl" target="_blank" rel="noopener">
+              <span class="wire-latest-teaser__label">Latest issue &middot; {formatIssueDate(latestIssue.date)}</span>
+              <span class="wire-latest-teaser__title">{latestIssue.title} <span aria-hidden="true">&nearr;</span><span class="sr-only"> (opens in a new tab)</span></span>
+            </a>
+          )}
+          <a href="/the-wire/" class="btn btn--outline mt-lg">Read The Wire</a>
         </div>
         <div class="card halftone wire-promo__card">
           <span class="eyebrow eyebrow--signal">Stay Updated</span>
@@ -507,6 +515,35 @@ const tiles = [
     font-size: var(--text-tiny);
     color: var(--color-fog);
   }
+
+  .wire-latest-teaser {
+    display: block;
+    max-width: 34rem;
+    padding: var(--space-md) var(--space-lg);
+    border-left: 2px solid var(--color-signal);
+    background: var(--color-graphite);
+    color: inherit;
+    text-decoration: none;
+  }
+  .wire-latest-teaser__label {
+    display: block;
+    font-family: var(--font-mono);
+    font-size: var(--text-micro);
+    letter-spacing: var(--tracking-wide);
+    text-transform: uppercase;
+    color: var(--color-wire);
+  }
+  .wire-latest-teaser__title {
+    display: block;
+    margin-top: var(--space-xs);
+    font-family: var(--font-headline);
+    font-size: var(--text-h3);
+    line-height: 1.15;
+    color: var(--color-bone);
+    transition: color var(--duration-fast);
+  }
+  .wire-latest-teaser:hover .wire-latest-teaser__title,
+  .wire-latest-teaser:focus-visible .wire-latest-teaser__title { color: var(--color-signal-text); }
 
   /* The Wire promo grid alignment */
   .wire-promo__grid {

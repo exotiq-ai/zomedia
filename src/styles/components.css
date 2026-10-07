@@ -291,6 +291,17 @@
 .form-status--success { color: var(--color-success); }
 .form-status--error { color: var(--color-signal-hot); }
 .form-status--info { color: var(--color-fog); }
+.form-status__link {
+  display: inline-block;
+  margin-top: var(--space-xs);
+  padding: var(--space-xs) var(--space-md);
+  background: var(--color-signal);
+  color: #fff;
+  border-radius: var(--radius-sm);
+  font-weight: 700;
+  text-decoration: none;
+}
+.form-status__link:hover { background: var(--color-signal-dim); color: #fff; }
 .form-control:user-invalid { border-color: var(--color-signal); }
 
 textarea.form-control {

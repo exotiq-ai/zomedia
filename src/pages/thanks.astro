@@ -1,5 +1,6 @@
 ---
 import SubpageLayout from '../layouts/SubpageLayout.astro';
+import { SUBSTACK } from '../config/site';
 ---
 
 <SubpageLayout
@@ -14,8 +15,8 @@ import SubpageLayout from '../layouts/SubpageLayout.astro';
       <h1 class="hero__headline">Thank you.</h1>
       <p class="hero__subhead" id="thanks-copy">Your submission reached us. We'll be in touch if a reply is needed.</p>
       <div class="hero__ctas">
-        <a href="/" class="btn btn--primary">Back to Home</a>
-        <a href="/books/" class="btn btn--outline">Browse Books</a>
+        <a id="thanks-substack" href={SUBSTACK.subscribeUrl()} class="btn btn--primary" target="_blank" rel="noopener" hidden>Confirm on Substack &rarr;</a>
+        <a href="/" class="btn btn--outline">Back to Home</a>
       </div>
     </div>
   </section>
@@ -27,7 +28,10 @@ import SubpageLayout from '../layouts/SubpageLayout.astro';
     const el = document.getElementById('thanks-copy');
     const form = new URLSearchParams(location.search).get('form');
     if (!el) return;
-    if (form === 'newsletter') el.textContent = "You're on the list. Watch your inbox for the next update.";
+    if (form === 'newsletter') {
+      el.textContent = 'Thanks! One last step: confirm your subscription on Substack so new issues reach your inbox.';
+      document.getElementById('thanks-substack')?.removeAttribute('hidden');
+    }
     if (form === 'contact') el.textContent = "Your message is on its way to our team. We'll reply as soon as we can.";
   }
   document.addEventListener('astro:page-load', tailor);

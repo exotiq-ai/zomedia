@@ -8,6 +8,10 @@ export default defineConfig({
   site: 'https://zomediaproductions.com',
   output: 'static',
   trailingSlash: 'always',
+  // Remote images we're allowed to download + optimise at build time (Wire cover art from Substack).
+  image: {
+    domains: ['substackcdn.com', 'substack-post-media.s3.amazonaws.com'],
+  },
   build: {
     assets: '_astro',
     format: 'directory',

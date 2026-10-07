@@ -14,7 +14,7 @@ const FALLBACK_EMAIL = 'info@zomediaproductions.com';
 
 const MESSAGES = {
   sending: 'Sending…',
-  newsletter: "You're on the list. Thank you — watch your inbox.",
+  newsletter: 'Thanks! One last step: confirm your subscription on Substack.',
   contact: "Message sent. Thank you — we'll be in touch soon.",
   generic: 'Thank you — your submission was received.',
   invalid: 'Please check the highlighted fields and try again.',
@@ -31,6 +31,22 @@ function setStatus(form: HTMLFormElement, kind: 'success' | 'error' | 'info', te
   el.textContent = text;
   el.className = `${el.className.replace(/\bform-status--\w+\b/g, '').trim()} form-status form-status--${kind}`.trim();
   if (focus) el.focus();
+}
+
+/** Success state with a follow-up link (used to hand newsletter signups to Substack). */
+function setStatusLink(form: HTMLFormElement, text: string, linkText: string, href: string) {
+  const el = statusEl(form);
+  if (!el) return;
+  el.textContent = `${text} `;
+  el.className = `${el.className.replace(/\bform-status--\w+\b/g, '').trim()} form-status form-status--success`.trim();
+  const a = document.createElement('a');
+  a.href = href;
+  a.target = '_blank';
+  a.rel = 'noopener';
+  a.className = 'form-status__link';
+  a.textContent = `${linkText} →`;
+  el.appendChild(a);
+  el.focus();
 }
 
 function setBusy(form: HTMLFormElement, busy: boolean) {
@@ -91,11 +107,19 @@ document.addEventListener('submit', async (event) => {
 
   setBusy(form, true);
   setStatus(form, 'info', MESSAGES.sending);
+  const email = form.querySelector<HTMLInputElement>('input[name="email"]')?.value.trim() ?? '';
   try {
     await send(form);
     form.reset();
-    const msg = label === 'newsletter' ? MESSAGES.newsletter : label === 'contact' ? MESSAGES.contact : MESSAGES.generic;
-    setStatus(form, 'success', msg, label === 'contact');
+    if (label === 'newsletter' && form.dataset.handoff) {
+      // Captured on our side; now send the reader to Substack (email prefilled) to confirm.
+      const url = new URL(form.dataset.handoff);
+      if (email) url.searchParams.set('email', email);
+      setStatusLink(form, MESSAGES.newsletter, 'Confirm on Substack', url.href);
+    } else {
+      const msg = label === 'newsletter' ? MESSAGES.newsletter : label === 'contact' ? MESSAGES.contact : MESSAGES.generic;
+      setStatus(form, 'success', msg, label === 'contact');
+    }
     window.dispatchEvent(new CustomEvent('zo:form-success', { detail: { form: label } }));
   } catch (err) {
     console.error(err);

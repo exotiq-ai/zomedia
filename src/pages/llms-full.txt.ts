@@ -1,6 +1,7 @@
 import type { APIRoute } from 'astro';
 import { getCollection } from 'astro:content';
-import { SITE } from '../config/site';
+import { SITE, SUBSTACK } from '../config/site';
+import { getWirePosts } from '../lib/substack';
 
 /** /llms-full.txt — the same facts as /llms.txt with full book and people details inline. */
 export const GET: APIRoute = async () => {
@@ -8,6 +9,7 @@ export const GET: APIRoute = async () => {
   const team = await getCollection('team');
   const projects = (await getCollection('projects')).sort((a, b) => a.data.order - b.data.order);
   const u = (p: string) => `${SITE.url}${p}`;
+  const issues = await getWirePosts(10);
   const clean = (s: string) => s.replace(/\s+/g, ' ').trim();
 
   const people = (cat: string) =>
@@ -40,6 +42,10 @@ export const GET: APIRoute = async () => {
       `- Print: ${b.data.priceHardcover}; eBook: ${b.data.priceEbook}`,
       `- ${clean(b.data.description)}`,
     ]),
+    '',
+    "## The Phuckin' Wire issues",
+    `Published on Substack (${SUBSTACK.url}); preview and signup at ${u('/the-wire/')}.`,
+    ...issues.map((i) => `- **${i.title}** (${i.date.toISOString().slice(0, 10)}): ${i.summary} ${i.url}`),
     '',
     '## Special projects',
     ...projects.map((p) => `- **${p.data.title}**: ${clean(p.data.tagline)}. ${clean(p.data.description)}${p.data.status === 'placeholder' ? ' (coming soon)' : ''}`),

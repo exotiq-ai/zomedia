@@ -1,13 +1,18 @@
 ---
 /**
- * Newsletter / updates signup. One component for every placement (footer,
+ * Newsletter / updates signup for The Phuckin' Wire (published on Substack). One component for every placement (footer,
  * home promo, The Wire page) so markup, spam protection, consent copy and
  * submit behaviour stay identical. All placements post to the single Netlify
  * form `newsletter`; `source` records where the signup came from.
  *
+ * After the address is captured here (Netlify Forms), the reader is handed to Substack with the
+ * address prefilled to confirm — see docs/WIRE-SUBSTACK.md.
+ *
  * Works without JavaScript (native POST → /thanks/) and is upgraded to an
  * inline, accessible AJAX submit by src/scripts/forms.ts.
  */
+import { SUBSTACK } from '../../config/site';
+
 interface Props {
   /** Where this instance lives — stored with the submission. */
   source: 'footer' | 'home' | 'wire';
@@ -19,6 +24,7 @@ interface Props {
 }
 
 const { source, variant = 'default', buttonLabel = 'Subscribe', hideNote = false } = Astro.props;
+const handoffUrl = SUBSTACK.subscribeUrl();
 const inputId = `subscribe-email-${source}`;
 ---
 
@@ -32,6 +38,7 @@ const inputId = `subscribe-email-${source}`;
   data-enhance
   data-astro-reload
   data-form-label="newsletter"
+  data-handoff={handoffUrl}
 >
   <input type="hidden" name="form-name" value="newsletter" />
   <input type="hidden" name="source" value={source} />
@@ -56,7 +63,7 @@ const inputId = `subscribe-email-${source}`;
     <button type="submit" class={`btn btn--primary ${variant === 'compact' ? 'btn--sm' : ''}`}>{buttonLabel}</button>
   </div>
   {!hideNote && (
-    <p class="subscribe__note">By subscribing you agree to our <a href="/privacy/">Privacy Policy</a>. Unsubscribe any time.</p>
+    <p class="subscribe__note">Issues are delivered by Substack. By subscribing you agree to our <a href="/privacy/">Privacy Policy</a>. Unsubscribe any time.</p>
   )}
   <p class="subscribe__status" id={`${inputId}-status`} role="status" aria-live="polite" tabindex="-1"></p>
 </form>
