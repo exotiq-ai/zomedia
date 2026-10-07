@@ -2,7 +2,6 @@
 name: "Ivan Kilgore"
 role: "Author, Activist, and Founder of UBFSF"
 category: "board"
-photo: "/assets/images/team/ivan-kilgore.jpg"
 order: 1
 bio: |
   Ivan Kilgore is an author, activist, and the founder of the United Black Family Scholarship Foundation and Zo Media Productions, LLC. Incarcerated in California for more than two decades, serving a life sentence without the possibility of parole, Ivan discovered his voice as a writer behind prison walls and has spent years leading writing workshops inside the system, empowering others through storytelling and self-expression.
