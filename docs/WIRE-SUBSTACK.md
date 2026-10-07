@@ -28,11 +28,11 @@ Substack has **no official public API** for adding subscribers, and a third-part
 | **Our form + Substack handoff (chosen)** | On-brand, we keep a backup list, always works | One extra click on Substack |
 | Substack's official embed iframe (`/embed`) | One step, officially supported | White Substack-styled box on a dark site; no backup list on our side |
 | Plain "Subscribe on Substack" button | Simplest | Leaks every visitor to another site, no capture |
-| Direct POST to Substack's endpoint | One step | Unofficial, blocked cross-site, can break any day |
+| Direct POST to Substack's endpoint | One step | **Tested: rejected by Substack** when posted from another site |
 
 ## Optional upgrades
 - **Custom domain for the publication** (Substack → Settings → Domain, a one-time fee): e.g. `wire.zomediaproductions.com`. Links and the subscribe page then feel like part of the site. Update `SUBSTACK` in `src/config/site.ts` after.
-- **One-step signup (if Substack allows it):** Substack's own embed form posts to `/api/v1/free?nojs=true`. A real browser test with a real address would show whether a form on our domain is accepted; if it is, the "Confirm on Substack" step can be skipped. (Not tested — needs a live address; see the open question in the PR.)
+- **One-step signup — tested 2026-10-07, not possible.** A form on our live domain posting to Substack's own embed endpoint (`/api/v1/free?nojs=true`) with a real address is rejected by Substack ("Something has gone terribly wrong"), so a third-party site can't add subscribers directly. The handoff *does* work: `…/subscribe?email=…` opens Substack's subscribe page with the address prefilled, one click from done. That is why the site uses the handoff.
 - **Weekly digest / more issues on the home page:** change `getWirePosts(…)` limits.
 
 ## Config
