@@ -2,10 +2,9 @@
 import { Image } from 'astro:assets';
 import SubpageLayout from '../../layouts/SubpageLayout.astro';
 import FilmCTA from '../../components/content/FilmCTA.astro';
-import ivanPortrait from '../../assets/images/zo-media/ivan-portrait.jpg';
 ---
 
-<SubpageLayout title="Documentaries & Film Shorts" description="Documentary films and short works by incarcerated filmmakers." breadcrumbs={[{ label: "Film Projects", href: "/film-projects/" }, { label: "Documentaries & Film Shorts" }]}>
+<SubpageLayout ogImage="/assets/og/documentaries.jpg" title="Documentaries & Film Shorts" description="Documentary films and short works by incarcerated filmmakers." breadcrumbs={[{ label: "Film Projects", href: "/film-projects/" }, { label: "Documentaries & Film Shorts" }]}>
 
   <section class="hero hero--editorial hero--editorial-compact">
     <div class="hero__inner">
@@ -72,15 +71,10 @@ import ivanPortrait from '../../assets/images/zo-media/ivan-portrait.jpg';
   <section class="section">
     <div class="container reveal">
       <div class="grid grid--asymmetric director-bio">
-        <div class="director-bio__portrait img-editorial">
-          <Image
-            src={ivanPortrait}
-            alt="Ivan Kilgore, author, activist, and founder of the United Black Family Scholarship Foundation"
-            widths={[320, 480, 720]}
-            sizes="(max-width: 768px) 80vw, 32vw"
-            loading="lazy"
-            format="webp"
-          />
+        {/* House rule: no AI-generated images of Ivan. The only approved photo is his original;
+            until it is supplied this slot is a typographic monogram. Swap in <Image> when ready. */}
+        <div class="director-bio__portrait director-bio__portrait--monogram" role="img" aria-label="Ivan Kilgore">
+          <span aria-hidden="true">IK</span>
         </div>
         <div class="director-bio__body">
           <span class="eyebrow">About the Director</span>
@@ -181,7 +175,7 @@ import ivanPortrait from '../../assets/images/zo-media/ivan-portrait.jpg';
   }
   .film-feature__deck em {
     font-style: italic;
-    color: var(--color-signal);
+    color: var(--color-signal-text);
   }
 
   /* ───────────────────────────────────────────────────────────
@@ -371,6 +365,21 @@ import ivanPortrait from '../../assets/images/zo-media/ivan-portrait.jpg';
     border-radius: var(--radius-md);
     border: 1px solid var(--color-border-emphasis);
   }
+  .director-bio__portrait--monogram {
+    display: grid;
+    place-items: center;
+    background:
+      radial-gradient(ellipse at 30% 80%, rgba(214, 64, 69, 0.14), transparent 60%),
+      var(--color-graphite);
+  }
+  .director-bio__portrait--monogram span {
+    font-family: var(--font-headline);
+    font-size: clamp(5rem, 14vw, 9rem);
+    line-height: 1;
+    letter-spacing: -0.04em;
+    color: var(--color-bone);
+    opacity: 0.85;
+  }
   .director-bio__portrait :global(img) {
     width: 100%;
     height: 100%;
@@ -480,7 +489,7 @@ import ivanPortrait from '../../assets/images/zo-media/ivan-portrait.jpg';
     font-size: var(--text-micro);
     letter-spacing: var(--tracking-mega);
     text-transform: uppercase;
-    color: var(--color-signal);
+    color: var(--color-signal-text);
     background: transparent;
     border: 1.5px solid var(--color-signal);
     padding: 0.45rem 0.85rem;

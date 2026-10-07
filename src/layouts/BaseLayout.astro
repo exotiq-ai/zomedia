@@ -2,6 +2,9 @@
 import { ClientRouter } from 'astro:transitions';
 import Nav from '../components/nav/Nav.astro';
 import Footer from '../components/footer/Footer.astro';
+import { SITE, SOCIAL_LINKS } from '../config/site';
+import { ANALYTICS } from '../config/analytics';
+import Analytics from '../components/Analytics.astro';
 
 // Self-hosted fonts via @fontsource — no cross-origin requests
 import '@fontsource/instrument-serif/400.css';
@@ -17,52 +20,165 @@ import '../styles/components.css';
 interface Props {
   title: string;
   description?: string;
+  /** Path (or absolute URL) of the 1200×630 social card. Defaults to the site card. */
   ogImage?: string;
+  ogImageAlt?: string;
+  /** `article` for editorial pages (Wire issues, news); `book` for book pages. */
+  ogType?: 'website' | 'article' | 'book';
+  /** Keep out of search results (thank-you pages, drafts). Also dropped from the sitemap. */
+  noindex?: boolean;
+  /** Visible trail used for BreadcrumbList structured data. Home is added automatically. */
+  breadcrumbs?: Array<{ label: string; href?: string }>;
+  /** Hero/LCP image to preload with high priority (CSS background images are otherwise discovered late). */
+  preloadImage?: string;
+  /** Extra schema.org nodes for this page, merged into the page's @graph. */
+  jsonLd?: Array<Record<string, unknown>>;
 }
 
 const {
   title,
-  description = 'A media cooperative publishing literature, film, and art by incarcerated creators. A subsidiary of UBFSF.',
-  ogImage = '/assets/images/og-image.png',
+  description = SITE.description,
+  ogImage = SITE.ogImage,
+  ogImageAlt = 'Zo Media Productions: literature, film, and art by incarcerated creators',
+  ogType = 'website',
+  noindex = false,
+  breadcrumbs = [],
+  jsonLd = [],
+  preloadImage,
 } = Astro.props;
 
 const currentPath = Astro.url.pathname;
 const canonicalUrl = new URL(currentPath, Astro.site ?? Astro.url);
 const ogImageUrl = new URL(ogImage, canonicalUrl).href;
+const fullTitle = `${title} | ${SITE.name}`;
+const siteUrl = SITE.url;
+const orgId = `${siteUrl}/#organization`;
+const websiteId = `${siteUrl}/#website`;
+const pageId = `${canonicalUrl.href}#webpage`;
+
+// BreadcrumbList — Home › … › current page.
+const crumbs = [
+  { label: 'Home', href: '/' },
+  ...breadcrumbs.map((c, i) => ({
+    label: c.label,
+    href: c.href ?? (i === breadcrumbs.length - 1 ? currentPath : undefined),
+  })),
+].filter((c) => c.href);
+const breadcrumbLd = currentPath === '/' ? null : {
+  '@type': 'BreadcrumbList',
+  '@id': `${canonicalUrl.href}#breadcrumb`,
+  itemListElement: crumbs.map((c, i) => ({
+    '@type': 'ListItem',
+    position: i + 1,
+    name: c.label,
+    item: new URL(c.href!, siteUrl).href,
+  })),
+};
+
+const sameAs = SOCIAL_LINKS.filter((l) => l.href).map((l) => l.href);
+
+const structuredData = {
+  '@context': 'https://schema.org',
+  '@graph': [
+    {
+      '@type': 'Organization',
+      '@id': orgId,
+      name: SITE.legalName,
+      alternateName: SITE.name,
+      url: siteUrl,
+      description: SITE.longDescription,
+      logo: { '@type': 'ImageObject', url: `${siteUrl}/assets/images/Zo-Media-primary-white-transparent.png` },
+      image: new URL(SITE.ogImage, siteUrl).href,
+      email: SITE.email,
+      telephone: SITE.phone,
+      address: { '@type': 'PostalAddress', ...SITE.address },
+      parentOrganization: { '@type': 'Organization', name: SITE.parent.name },
+      sameAs,
+      contactPoint: [{
+        '@type': 'ContactPoint',
+        contactType: 'customer support',
+        email: SITE.email,
+        telephone: SITE.phone,
+        areaServed: 'US',
+        availableLanguage: 'English',
+      }],
+    },
+    {
+      '@type': 'WebSite',
+      '@id': websiteId,
+      url: siteUrl,
+      name: SITE.name,
+      description: SITE.description,
+      publisher: { '@id': orgId },
+      inLanguage: 'en-US',
+    },
+    {
+      '@type': 'WebPage',
+      '@id': pageId,
+      url: canonicalUrl.href,
+      name: fullTitle,
+      description,
+      isPartOf: { '@id': websiteId },
+      about: { '@id': orgId },
+      primaryImageOfPage: { '@type': 'ImageObject', url: ogImageUrl },
+      inLanguage: 'en-US',
+      ...(breadcrumbLd ? { breadcrumb: { '@id': breadcrumbLd['@id'] } } : {}),
+    },
+    ...(breadcrumbLd ? [breadcrumbLd] : []),
+    ...jsonLd,
+  ],
+};
 ---
 
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>{title} | Zo Media Productions</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <title>{fullTitle}</title>
   <meta name="description" content={description} />
   <link rel="canonical" href={canonicalUrl.href} />
+  <meta name="robots" content={noindex ? 'noindex, follow' : 'index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1'} />
+  <meta name="theme-color" content={SITE.themeColor} />
+  <meta name="color-scheme" content="dark" />
+  {ANALYTICS.googleVerification && <meta name="google-site-verification" content={ANALYTICS.googleVerification} />}
+  {ANALYTICS.bingVerification && <meta name="msvalidate.01" content={ANALYTICS.bingVerification} />}
 
+  <meta property="og:site_name" content={SITE.name} />
+  <meta property="og:locale" content="en_US" />
+  <meta property="og:type" content={ogType} />
   <meta property="og:title" content={title} />
   <meta property="og:description" content={description} />
-  <meta property="og:image" content={ogImageUrl} />
   <meta property="og:url" content={canonicalUrl.href} />
-  <meta property="og:type" content="website" />
+  <meta property="og:image" content={ogImageUrl} />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta property="og:image:alt" content={ogImageAlt} />
   <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content={title} />
+  <meta name="twitter:description" content={description} />
+  <meta name="twitter:image" content={ogImageUrl} />
+  <meta name="twitter:image:alt" content={ogImageAlt} />
 
   {currentPath === '/' && (
     <>
-      <link rel="preload" href="/assets/video/hero-typewriter-poster.jpg" as="image" />
-      <link rel="preload" href="/assets/video/hero-typewriter.webm" as="video" type="video/webm" />
+      <link rel="preload" href="/assets/video/hero-typewriter-poster.jpg" as="image" fetchpriority="high" />
     </>
   )}
+  {preloadImage && <link rel="preload" href={preloadImage} as="image" fetchpriority="high" />}
   {currentPath === '/film-projects/' && (
-    <link rel="preload" href="/assets/images/film-projects-hero-poster.jpg" as="image" />
+    <link rel="preload" href="/assets/images/film-projects-hero-poster.jpg" as="image" fetchpriority="high" />
   )}
   {currentPath === '/books/' && (
-    <link rel="preload" href="/assets/images/bookshelves-hero-poster.jpg" as="image" />
+    <link rel="preload" href="/assets/images/bookshelves-hero-poster.jpg" as="image" fetchpriority="high" />
   )}
 
   <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
   <link rel="alternate icon" type="image/x-icon" href="/favicon.ico" />
-  <link rel="apple-touch-icon" href="/favicon.svg" />
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+  <link rel="manifest" href="/site.webmanifest" />
+  <link rel="sitemap" type="application/xml" href="/sitemap-index.xml" />
+  <link rel="alternate" type="text/plain" href="/llms.txt" title="LLM-readable site summary" />
 
   <!-- Self-hosted fonts (Satoshi + Instrument Serif + Space Mono)
        no Google Fonts cross-origin requests -->
@@ -71,26 +187,9 @@ const ogImageUrl = new URL(ogImage, canonicalUrl).href;
   <!-- Astro View Transitions — smooth page-to-page navigation -->
   <ClientRouter />
 
-  <script is:inline type="application/ld+json" set:html={JSON.stringify({
-    "@context": "https://schema.org",
-    "@type": "Organization",
-    "name": "Zo Media Productions, LLC",
-    "url": "https://zomediaproductions.com",
-    "description": "A media cooperative producing literature, film, and art by incarcerated creators.",
-    "parentOrganization": {
-      "@type": "Organization",
-      "name": "United Black Family Scholarship Foundation"
-    },
-    "address": {
-      "@type": "PostalAddress",
-      "streetAddress": "P.O. BOX 862",
-      "addressLocality": "Bristow",
-      "addressRegion": "OK",
-      "postalCode": "74010"
-    },
-    "telephone": "+1-918-924-5872",
-    "email": "info@zomediaproductions.com"
-  })} />
+  <Analytics />
+
+  <script is:inline type="application/ld+json" set:html={JSON.stringify(structuredData)} />
 </head>
 <body>
   <a href="#main" class="skip-link">Skip to content</a>
@@ -102,6 +201,9 @@ const ogImageUrl = new URL(ogImage, canonicalUrl).href;
   <script>
     import '../scripts/nav';
     import '../scripts/reveal';
+    import '../scripts/forms';
+    import '../scripts/scroll-fx';
+    import '../scripts/analytics-events';
   </script>
 </body>
 </html>

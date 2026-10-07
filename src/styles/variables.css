@@ -66,9 +66,12 @@
   --color-bone: #E8E2D9;
 
   /* ——— Colors: Signal (primary action — red) ——— */
-  --color-signal: #D64045;
+  /* Filled buttons: white text on this red = 4.75:1 (WCAG AA). Was #D64045 (4.49:1). */
+  --color-signal: #CF3E43;
   --color-signal-dim: #A33035;
   --color-signal-hot: #E85558;
+  /* Red as TEXT on dark surfaces (≥4.6:1 on soot/graphite). Use this, not --color-signal, for small text. */
+  --color-signal-text: #E85558;
 
   /* ——— Colors: Accent (editorial — gold/green) ——— */
   --color-wire: #C8A84E;

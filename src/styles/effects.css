@@ -740,3 +740,60 @@ body::after {
 .two-tone__muted {
   color: var(--color-husk);
 }
+
+/* ───────────────────────────────────────────────────────────
+ * SCROLL FX (see src/scripts/scroll-fx.ts)
+ * ─────────────────────────────────────────────────────────── */
+
+/* Reading-progress hairline. Native scroll-driven animation where supported;
+   scroll-fx.ts feeds --scroll-p elsewhere. Lives on <html> so it survives View Transitions. */
+@media (prefers-reduced-motion: no-preference) {
+  html::after {
+    content: '';
+    position: fixed;
+    inset: 0 0 auto 0;
+    height: 2px;
+    background: var(--color-signal);
+    transform-origin: 0 50%;
+    transform: scaleX(var(--scroll-p, 0));
+    z-index: 120;
+    pointer-events: none;
+  }
+  @supports (animation-timeline: scroll()) {
+    html::after {
+      transform: scaleX(0);
+      animation: scroll-progress linear both;
+      animation-timeline: scroll(root block);
+    }
+    @keyframes scroll-progress {
+      to { transform: scaleX(1); }
+    }
+  }
+
+  /* Variant: mask reveal for images/covers — rises from a cropped frame while the image settles. */
+  html.js .reveal--mask {
+    clip-path: inset(14% 0 0 0);
+    opacity: 0.001;
+    transition: clip-path 0.9s var(--ease-snap), opacity 0.5s var(--ease-snap);
+  }
+  html.js .reveal--mask img,
+  html.js .reveal--mask video {
+    transform: scale(1.12);
+    transition: transform 1.2s var(--ease-snap), filter var(--duration-normal) var(--ease-snap);
+  }
+  html.js .reveal--mask.is-visible {
+    clip-path: inset(0 0 0 0);
+    opacity: 1;
+  }
+  html.js .reveal--mask.is-visible img,
+  html.js .reveal--mask.is-visible video {
+    transform: scale(1);
+  }
+
+  /* Scrubbed word-by-word text: dim until the scroll position lights each word. */
+  html.js .is-scrubbing .scrub-word {
+    opacity: 0.22;
+    transition: opacity 0.35s var(--ease-snap);
+  }
+  html.js .is-scrubbing .scrub-word.is-lit { opacity: 1; }
+}

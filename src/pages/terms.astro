@@ -1,0 +1,56 @@
+---
+import LegalLayout from '../layouts/LegalLayout.astro';
+import { SITE } from '../config/site';
+---
+
+<LegalLayout
+  title="Terms of Use"
+  description="Terms for using the Zo Media Productions website, including content, donations, and third-party links."
+  updated="October 6, 2026"
+>
+  <p>
+    By using zomediaproductions.com (the "Site") you agree to these terms. The Site is operated by {SITE.legalName}, a
+    subsidiary of the {SITE.parent.name}.
+  </p>
+
+  <h2>Our content</h2>
+  <p>
+    The books, films, articles, images, and other works on this Site belong to Zo Media Productions or to the incarcerated
+    creators who made them, and are protected by copyright. You may read, share links to, and quote short excerpts with
+    credit. Please ask us before reproducing or republishing a work, or using it commercially.
+  </p>
+
+  <h2>Acceptable use</h2>
+  <p>
+    Please do not misuse the Site: no attempts to disrupt it, gain unauthorized access, send spam through our forms, or
+    use our content to harass or defame anyone.
+  </p>
+
+  <h2>Donations and purchases</h2>
+  <p>
+    Donations are processed by our donation platform on behalf of the {SITE.parent.shortName}, {SITE.parent.note}.
+    Whether a gift is tax-deductible depends on your circumstances; please consult a tax advisor. Book availability, pricing,
+    and purchase options are subject to change.
+  </p>
+
+  <h2>Third-party links</h2>
+  <p>
+    The Site links to services we don't control, such as social networks, retailers, and our donation platform. We aren't
+    responsible for their content or practices.
+  </p>
+
+  <h2>No warranty and limitation of liability</h2>
+  <p>
+    The Site and its content are provided "as is." We work to keep information accurate but make no guarantees, and to the
+    extent allowed by law we are not liable for damages arising from your use of the Site.
+  </p>
+
+  <h2>Changes</h2>
+  <p>We may update these terms. Continued use of the Site after a change means you accept the updated terms.</p>
+
+  <h2>Governing law</h2>
+  <p>These terms are governed by the laws of the State of Oklahoma, without regard to conflict-of-law rules.</p>
+
+  <h2>Contact</h2>
+  <p>Questions? Write to <a href={`mailto:${SITE.email}`}>{SITE.email}</a>.</p>
+</LegalLayout>

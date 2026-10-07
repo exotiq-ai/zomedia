@@ -1,3 +1,0 @@
-User-agent: *
-Allow: /
-Sitemap: https://zomediaproductions.com/sitemap-index.xml

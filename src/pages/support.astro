@@ -1,9 +1,24 @@
 ---
 import SubpageLayout from '../layouts/SubpageLayout.astro';
 import SectionHeader from '../components/ui/SectionHeader.astro';
+import GiveLively from '../components/forms/GiveLively.astro';
+import { GIVELIVELY } from '../config/givelively';
+import { SITE } from '../config/site';
+
+// Online giving only appears once Give Lively credentials are configured
+// (or as a layout placeholder under `astro dev`). See docs/GIVE-LIVELY.md.
+const giving = GIVELIVELY.enabled;
+const showGive = giving || import.meta.env.DEV;
+
+const donateLd = {
+  '@type': 'DonateAction',
+  name: 'Donate to Zo Media Productions',
+  recipient: { '@id': `${SITE.url}/#organization` },
+  target: `${SITE.url}/support/#give`,
+};
 ---
 
-<SubpageLayout title="Support" description="Explore ways to support creator-led literature, film, and art from incarcerated voices through Zo Media Productions." breadcrumbs={[{ label: "Support" }]}>
+<SubpageLayout preloadImage="/assets/images/support-cellblock.jpg" ogImage="/assets/og/support.jpg" jsonLd={giving ? [donateLd] : []} title="Support" description="Explore ways to support creator-led literature, film, and art from incarcerated voices through Zo Media Productions." breadcrumbs={[{ label: "Support" }]}>
   <section
     class="hero hero--editorial hero--editorial-left"
     style="--hero-image: url('/assets/images/support-cellblock.jpg'); --hero-image-position: center center;"
@@ -15,12 +30,24 @@ import SectionHeader from '../components/ui/SectionHeader.astro';
     </div>
   </section>
 
+  {showGive && (
+    <section id="give" class="section">
+      <div class="container container--narrow text-center reveal">
+        <SectionHeader eyebrow="Give Online" title="Make a Gift" align="center" />
+        <p class="support-intro">Give securely online. Gifts support the {SITE.parent.shortName}, {SITE.parent.note}, and its work with Zo Media.</p>
+        <div class="mt-2xl"><GiveLively /></div>
+      </div>
+    </section>
+  )}
+
   <!-- Support pathways -->
   <section class="section section--alt">
     <div class="container reveal">
       <SectionHeader eyebrow="Support the Work" title="Choose How You Can Help" align="center" />
-      <p class="support-intro">We are finalizing a secure online giving option. For now, contact us to discuss the kind of support that best fits your goals.</p>
-      <div class="grid grid--3 mt-2xl">
+      <p class="support-intro">{giving
+        ? 'Prefer to talk first? Reach out about a publication, a creator, or a partnership and we will match your support to your goals.'
+        : 'We are finalizing a secure online giving option. For now, contact us to discuss the kind of support that best fits your goals.'}</p>
+      <div class="grid grid--3 grid--stack-tablet mt-2xl">
         <div class="card support-tier">
           <div class="signal-line"></div>
           <h3 class="card__title">Fund a Publication</h3>
@@ -64,12 +91,12 @@ import SectionHeader from '../components/ui/SectionHeader.astro';
   <section class="section section--alt">
     <div class="container reveal">
       <SectionHeader eyebrow="Beyond Donations" title="Other Ways to Help" align="center" />
-      <div class="grid grid--3 mt-2xl">
+      <div class="grid grid--3 grid--stack-tablet mt-2xl">
         <div class="card card--quiet support-help">
           <div class="signal-line"></div>
           <h3 class="card__title">Volunteer</h3>
           <p class="card__text">Join the cooperative as an outside co-chair. Student volunteers and community advocates partner directly with incarcerated members to lead projects.</p>
-          <a href="/contact/" class="btn btn--outline mt-lg">Get Involved</a>
+          <a href="/contact/?intent=volunteer" class="btn btn--outline mt-lg">Get Involved</a>
         </div>
         <div class="card card--quiet support-help">
           <div class="signal-line"></div>

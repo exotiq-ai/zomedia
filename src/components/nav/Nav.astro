@@ -106,7 +106,8 @@ function isActive(href: string): boolean {
       transform var(--duration-normal) var(--ease-snap),
       border-bottom-color var(--duration-normal) var(--ease-snap);
     border-bottom: 1px solid transparent;
-    will-change: transform;
+    /* No will-change/transform at rest: any transform on .nav would become the
+       containing block for the position:fixed mobile menu and collapse it. */
   }
   .nav.is-scrolled {
     background: rgba(10, 10, 11, 0.9);
@@ -230,7 +231,7 @@ function isActive(href: string): boolean {
     background: var(--color-slate);
   }
   .nav__dropdown-link[aria-current="page"] {
-    color: var(--color-signal);
+    color: var(--color-signal-text);
   }
 
   /* Mobile toggle */
@@ -258,9 +259,10 @@ function isActive(href: string): boolean {
     transform: translateY(-7px) rotate(-45deg);
   }
 
-  /* When mobile menu is open, never hide the nav */
+  /* When mobile menu is open, never hide the nav. `none` (not translateY(0))
+     so the nav stops being a containing block for the fixed full-screen menu. */
   .nav:has(.nav__menu.is-open) {
-    transform: translateY(0) !important;
+    transform: none !important;
   }
 
   /* ───────────────────────────────────────────────────────────
@@ -290,14 +292,20 @@ function isActive(href: string): boolean {
       align-items: stretch;
       gap: 0;
       transform: translateY(-100%);
-      transition: transform 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+      /* Closed menu is removed from the tab order / a11y tree once it has slid away. */
+      visibility: hidden;
+      transition: transform 0.5s cubic-bezier(0.22, 1, 0.36, 1), visibility 0s linear 0.5s;
       z-index: 99;
       overflow-y: auto;
       overscroll-behavior: contain;
       padding: calc(var(--space-3xl) + var(--space-2xl)) var(--grid-margin) var(--space-2xl);
       counter-reset: nav-counter;
     }
-    .nav__menu.is-open { transform: translateY(0); }
+    .nav__menu.is-open {
+      transform: translateY(0);
+      visibility: visible;
+      transition-delay: 0s;
+    }
 
     .nav__menu::before {
       content: '';
@@ -361,14 +369,14 @@ function isActive(href: string): boolean {
     }
     .nav__link:active,
     .nav__link:hover {
-      color: var(--color-signal);
+      color: var(--color-signal-text);
       padding-left: var(--space-sm);
     }
     .nav__link[aria-current="page"] {
-      color: var(--color-signal);
+      color: var(--color-signal-text);
     }
     .nav__link[aria-current="page"]::before {
-      color: var(--color-signal);
+      color: var(--color-signal-text);
     }
     .nav__link[aria-current="page"]::after {
       display: none;

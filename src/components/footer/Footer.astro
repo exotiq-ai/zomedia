@@ -1,8 +1,16 @@
 ---
 import { Image } from 'astro:assets';
+import SubscribeForm from '../forms/SubscribeForm.astro';
+import { SITE, SOCIAL_LINKS } from '../../config/site';
+import { getSiteSettings } from '../../lib/sanity';
 import zoLogo from '../../assets/images/zo-media/zologo.png';
 
 const currentYear = new Date().getFullYear();
+
+// Social URLs are editable in the CMS; icons/labels not set there stay "coming soon".
+const settings = await getSiteSettings();
+const cmsLinks = new Map((settings?.socialLinks ?? []).map((l) => [l.label, l.url]));
+const socialLinks = SOCIAL_LINKS.map((l) => ({ ...l, href: cmsLinks.get(l.label) ?? l.href }));
 
 const footerLinks = [
   { label: 'About', href: '/about/' },
@@ -17,23 +25,16 @@ const footerLinks = [
   { label: 'Support', href: '/support/' },
 ];
 
-// Social links. Facebook + Instagram are live (UBFSF accounts);
-// X and YouTube stay pending until those accounts are confirmed.
-const socialLinks = [
-  { label: 'Facebook',  icon: 'fb', href: 'https://www.facebook.com/unitedblack.familyscholarshipfoundation' },
-  { label: 'Instagram', icon: 'ig', href: 'https://www.instagram.com/ubfsforg/' },
-  { label: 'X / Twitter', icon: 'x', href: null },
-  { label: 'YouTube',   icon: 'yt', href: null },
-];
 ---
 
 <footer class="footer">
   <div class="footer__inner">
     <div class="footer__brand">
       <a href="/" class="footer__logo">
-        <Image src={zoLogo} alt="Zo Media Productions" width={200} height={75} loading="lazy" format="webp" />
+        {/* Pass widths only (never width AND height): Astro would crop the logo to that box. The aspect ratio comes from the file. */}
+        <Image src={zoLogo} alt="Zo Media Productions" widths={[240, 360, 480]} sizes="(max-width: 768px) 200px, 240px" loading="lazy" format="webp" />
       </a>
-      <p class="footer__tagline">Amplifying incarcerated voices through literature, film, and art.</p>
+      <p class="footer__tagline">{SITE.tagline}</p>
       <p class="footer__org">A subsidiary of the United Black Family Scholarship Foundation, a 501(c)(3) organization.</p>
     </div>
 
@@ -47,13 +48,9 @@ const socialLinks = [
     </nav>
 
     <div class="footer__newsletter">
-      <span class="footer__nav-label">Request Updates</span>
-      <p class="footer__newsletter-text">Request updates from Zo Media and The Phuckin' Wire while our mailing-list service is being finalized.</p>
-      <form class="footer__form" data-netlify="true" name="footer-updates-interest" method="POST">
-        <input type="hidden" name="form-name" value="footer-updates-interest" />
-        <input type="email" name="email" placeholder="your@email.com" required aria-label="Email address" class="footer__input" />
-        <button type="submit" class="btn btn--primary btn--sm">Request</button>
-      </form>
+      <span class="footer__nav-label">Stay Updated</span>
+      <p class="footer__newsletter-text">News from Zo Media and The Phuckin' Wire: new books, films, and issues, straight to your inbox.</p>
+      <SubscribeForm source="footer" variant="compact" />
     </div>
 
     <div class="footer__social">
@@ -65,7 +62,7 @@ const socialLinks = [
               <img src={`/assets/icons/${link.icon}.svg`} alt="" width="20" height="20" />
             </a>
           ) : (
-            <span class="footer__social-link footer__social-link--pending" aria-label={`${link.label} (coming soon)`} title={`${link.label} (coming soon)`}>
+            <span class="footer__social-link footer__social-link--pending" role="img" aria-label={`${link.label} (coming soon)`} title={`${link.label} (coming soon)`}>
               <img src={`/assets/icons/${link.icon}.svg`} alt="" width="20" height="20" />
             </span>
           )
@@ -76,8 +73,12 @@ const socialLinks = [
 
   <div class="footer__bottom">
     <div class="footer__bottom-inner">
-      <p>&copy; {currentYear} Zo Media Productions, LLC. All rights reserved.</p>
-      <p class="footer__address">P.O. Box 862, Bristow, OK 74010 &middot; <a href="tel:+19189245872">1-918-924-5872</a></p>
+      <p>&copy; {currentYear} {SITE.legalName}. All rights reserved.</p>
+      <nav class="footer__legal" aria-label="Legal">
+        <a href="/privacy/">Privacy</a>
+        <a href="/terms/">Terms</a>
+      </nav>
+      <p class="footer__address">{SITE.address.streetAddress}, {SITE.address.addressLocality}, {SITE.address.addressRegion} {SITE.address.postalCode} &middot; <a href={`tel:${SITE.phone}`}>{SITE.phoneDisplay}</a></p>
     </div>
   </div>
 </footer>
@@ -98,9 +99,10 @@ const socialLinks = [
     gap: var(--space-2xl);
   }
 
+  .footer__logo { display: inline-block; }
   .footer__logo img {
-    height: 50px;
-    width: auto;
+    height: auto;
+    width: clamp(170px, 18vw, 230px);
     filter: brightness(0) invert(1);
     margin-bottom: var(--space-md);
   }
@@ -143,27 +145,6 @@ const socialLinks = [
     margin-bottom: var(--space-md);
   }
 
-  .footer__form {
-    display: flex;
-    gap: var(--space-sm);
-  }
-  .footer__input {
-    flex: 1;
-    background: var(--color-graphite);
-    border: 1px solid var(--color-slate);
-    border-radius: var(--radius-sm);
-    color: var(--color-bone);
-    padding: var(--space-sm) var(--space-md);
-    font-size: var(--text-small);
-    font-family: var(--font-body);
-    transition: border-color var(--duration-fast);
-  }
-  .footer__input:focus {
-    outline: none;
-    border-color: var(--color-signal);
-    box-shadow: 0 0 0 2px var(--color-signal);
-  }
-  .footer__input::placeholder { color: var(--color-ash); }
 
   .footer__social-links {
     display: flex;
@@ -206,18 +187,23 @@ const socialLinks = [
     margin-inline: auto;
     padding: var(--space-lg) var(--grid-margin);
     display: flex;
+    flex-wrap: wrap;
     justify-content: space-between;
     align-items: center;
+    gap: var(--space-sm) var(--space-xl);
     font-family: var(--font-mono);
     font-size: var(--text-micro);
     letter-spacing: var(--tracking-wide);
     text-transform: uppercase;
     color: var(--color-fog);
   }
+  .footer__legal { display: flex; gap: var(--space-lg); }
+  .footer__legal a,
   .footer__address a {
     color: var(--color-fog);
     transition: color var(--duration-fast);
   }
+  .footer__legal a:hover,
   .footer__address a:hover { color: var(--color-signal-hot); }
 
   @media (max-width: 1024px) {
@@ -235,5 +221,6 @@ const socialLinks = [
       gap: var(--space-sm);
       text-align: center;
     }
+    .footer__legal { justify-content: center; }
   }
 </style>

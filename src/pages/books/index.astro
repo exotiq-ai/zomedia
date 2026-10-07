@@ -1,28 +1,42 @@
 ---
 import { getCollection } from 'astro:content';
-import SubpageLayout from '../layouts/SubpageLayout.astro';
+import SubpageLayout from '../../layouts/SubpageLayout.astro';
 
 const bookEntries = await getCollection('books');
 const books = bookEntries
-  .map((entry) => entry.data)
+  .map((entry) => ({ slug: entry.id, ...entry.data }))
   .sort((a, b) => (a.order ?? 999) - (b.order ?? 999));
+
+const SITE_URL = 'https://zomediaproductions.com';
+const bookListLd = {
+  '@type': 'ItemList',
+  name: 'Zo Media Productions books',
+  itemListElement: books.map((b, i) => ({
+    '@type': 'ListItem',
+    position: i + 1,
+    url: `${SITE_URL}/books/${b.slug}/`,
+    name: b.title,
+  })),
+};
 ---
 
-<SubpageLayout title="Books" description="Literature by incarcerated voices: memoir, essays, poetry, and anthologies." breadcrumbs={[{ label: "Books" }]}>
+<SubpageLayout ogImage="/assets/og/books.jpg" jsonLd={[bookListLd]} title="Books" description="Literature by incarcerated voices: memoir, essays, poetry, and anthologies." breadcrumbs={[{ label: "Books" }]}>
 
   <section class="hero books-hero">
     <video
       class="books-hero__video"
+      data-parallax="0.08"
       autoplay
       muted
       loop
       playsinline
-      preload="metadata"
+      preload="none"
       poster="/assets/images/bookshelves-hero-poster.jpg"
+      data-src="/assets/video/bookshelves-hero.webm"
+      data-src-type="video/webm"
+      data-min-width="769"
       aria-hidden="true"
-    >
-      <source src="/assets/video/bookshelves-hero.webm" type="video/webm" />
-    </video>
+    ></video>
     <div class="books-hero__scrim" aria-hidden="true"></div>
     <div class="hero__inner books-hero__inner">
       <span class="hero__eyebrow eyebrow--bone">Literature from inside</span>
@@ -42,25 +56,26 @@ const books = bookEntries
       </div>
       <div id="book-filter-status" class="sr-only" aria-live="polite" aria-atomic="true"></div>
 
+      <h2 class="sr-only">All books</h2>
       <div class="grid grid--3 book-grid">
         {books.map((book) => (
           <article class="card card--feature book-card" data-category={book.category}>
-            <div class="book-card__cover img-editorial">
+            <a href={`/books/${book.slug}/`} class="book-card__cover img-editorial reveal--mask" tabindex="-1" aria-hidden="true">
               <img
                 src={book.coverImage}
-                alt={`${book.title} cover`}
+                alt=""
                 loading="lazy"
                 decoding="async"
                 width="400"
                 height="600"
               />
-            </div>
+            </a>
             <div class="book-card__body">
               <span class="eyebrow">
                 {book.category}
                 {book.isForthcoming && <> &middot; Forthcoming</>}
               </span>
-              <h3 class="card__title">{book.title}</h3>
+              <h3 class="card__title"><a href={`/books/${book.slug}/`} class="book-card__title-link">{book.title}</a></h3>
               <p class="book-card__author">{book.author}</p>
               <p class="card__text">{book.description}</p>
               <div class="book-card__prices">
@@ -69,12 +84,12 @@ const books = bookEntries
               </div>
               {book.purchaseUrl ? (
                 <a class="btn btn--primary btn--sm" href={book.purchaseUrl} rel="noopener">
-                  {book.isForthcoming ? 'Pre-Order' : 'Add to Cart'}
+                  {book.isForthcoming ? 'Pre-Order' : 'Buy Now'}
                 </a>
               ) : (
-                <span class="book-card__availability">
+                <a class="book-card__availability" href={`/books/${book.slug}/`}>
                   {book.isForthcoming ? 'Pre-order details coming soon' : 'Purchase details coming soon'}
-                </span>
+                </a>
               )}
             </div>
           </article>
@@ -87,6 +102,7 @@ const books = bookEntries
 
 <style>
   .books-hero {
+    overflow: hidden;
     min-height: clamp(19rem, calc(42svh - 48px), 24rem);
     isolation: isolate;
     background: var(--color-void) url('/assets/images/bookshelves-hero-poster.jpg') center / cover no-repeat;
@@ -195,6 +211,11 @@ const books = bookEntries
     margin-top: var(--space-sm);
     align-self: flex-start;
   }
+  .book-card__title-link {
+    color: inherit;
+  }
+  .book-card__title-link:hover { color: var(--color-signal-hot); }
+  .book-card__cover { display: block; }
   .book-card__availability {
     margin-top: var(--space-sm);
     font-family: var(--font-mono);
@@ -217,15 +238,20 @@ const books = bookEntries
       background: linear-gradient(0deg, rgba(10, 10, 11, 0.95) 0%, rgba(10, 10, 11, 0.7) 58%, rgba(10, 10, 11, 0.18) 100%);
     }
     .books-hero__inner { padding-bottom: var(--space-xl); }
-    .grid--3 { grid-template-columns: repeat(2, 1fr); }
   }
-  @media (max-width: 480px) {
-    .grid--3 { grid-template-columns: 1fr; }
+  /* Keep two book columns down to large phones; stack only on small phones. */
+  @media (min-width: 561px) and (max-width: 768px) {
+    .book-grid.grid--3 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   }
 </style>
 
 <script>
-  document.addEventListener('DOMContentLoaded', () => {
+  import '../../scripts/hero-video';
+
+  // `astro:page-load` fires on first load AND after every View Transitions
+  // navigation; DOMContentLoaded only fires once, which left the filters dead
+  // after navigating here from another page.
+  document.addEventListener('astro:page-load', () => {
     const pills = document.querySelectorAll<HTMLButtonElement>('.filter-pill');
     const cards = document.querySelectorAll<HTMLElement>('.book-card');
     const liveRegion = document.getElementById('book-filter-status');

@@ -88,24 +88,38 @@ a:hover { color: var(--color-signal); }
 .section--signal { background: var(--color-signal); }
 .section--signal * { color: var(--color-bone); }
 
-/* ——— Grid helpers ——— */
+/* ——— Grid helpers ———
+   Columns use minmax(0, 1fr), and children get min-width: 0, so long words,
+   nowrap prices or wide images can never push a grid wider than its container
+   (plain `1fr` means minmax(auto, 1fr) and lets min-content blow the track out). */
 .grid {
   display: grid;
   gap: var(--grid-gutter);
 }
-.grid--2 { grid-template-columns: repeat(2, 1fr); }
-.grid--3 { grid-template-columns: repeat(3, 1fr); }
-.grid--4 { grid-template-columns: repeat(4, 1fr); }
-.grid--asymmetric { grid-template-columns: 5fr 7fr; }
-.grid--asymmetric-reverse { grid-template-columns: 7fr 5fr; }
+.grid > * { min-width: 0; }
+.grid--2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+.grid--3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+.grid--4 { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+.grid--asymmetric { grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); }
+.grid--asymmetric-reverse { grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); }
 
+/* Breakpoint ladder: ≤1024 tablet · ≤768 large phone / small tablet · ≤480 phone */
 @media (max-width: 1024px) {
-  .grid--4 { grid-template-columns: repeat(2, 1fr); }
+  .grid--3,
+  .grid--4 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .grid--asymmetric,
-  .grid--asymmetric-reverse { grid-template-columns: 1fr; }
+  .grid--asymmetric-reverse { grid-template-columns: minmax(0, 1fr); }
+  /* Opt-in: an odd number of cards (e.g. 3) reads better as a single centered column on tablets. */
+  .grid--stack-tablet {
+    grid-template-columns: minmax(0, 1fr);
+    max-width: 40rem;
+    margin-inline: auto;
+  }
 }
 @media (max-width: 768px) {
-  .grid--2, .grid--3 { grid-template-columns: 1fr; }
+  .grid--2,
+  .grid--3,
+  .grid--4 { grid-template-columns: minmax(0, 1fr); }
   .section { padding-block: var(--space-3xl); }
 }
 
@@ -171,7 +185,7 @@ input, select, textarea {
 .text-bone   { color: var(--color-bone); }
 .text-chalk  { color: var(--color-chalk); }
 .text-fog    { color: var(--color-fog); }
-.text-signal { color: var(--color-signal); }
+.text-signal { color: var(--color-signal-text); }
 .text-wire   { color: var(--color-wire); }
 
 /* Spacing — margin-top scale (use sparingly; prefer component margins) */

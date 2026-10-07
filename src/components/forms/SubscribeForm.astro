@@ -1,0 +1,95 @@
+---
+/**
+ * Newsletter / updates signup. One component for every placement (footer,
+ * home promo, The Wire page) so markup, spam protection, consent copy and
+ * submit behaviour stay identical. All placements post to the single Netlify
+ * form `newsletter`; `source` records where the signup came from.
+ *
+ * Works without JavaScript (native POST → /thanks/) and is upgraded to an
+ * inline, accessible AJAX submit by src/scripts/forms.ts.
+ */
+interface Props {
+  /** Where this instance lives — stored with the submission. */
+  source: 'footer' | 'home' | 'wire';
+  /** `stacked` wraps the button under the field on small screens; `compact` is for the footer. */
+  variant?: 'default' | 'compact';
+  buttonLabel?: string;
+  /** Hide the consent line (e.g. when the surrounding copy already carries it). */
+  hideNote?: boolean;
+}
+
+const { source, variant = 'default', buttonLabel = 'Subscribe', hideNote = false } = Astro.props;
+const inputId = `subscribe-email-${source}`;
+---
+
+<form
+  class={`subscribe subscribe--${variant}`}
+  name="newsletter"
+  method="POST"
+  action="/thanks/?form=newsletter"
+  data-netlify="true"
+  netlify-honeypot="bot-field"
+  data-enhance
+  data-astro-reload
+  data-form-label="newsletter"
+>
+  <input type="hidden" name="form-name" value="newsletter" />
+  <input type="hidden" name="source" value={source} />
+  <p class="sr-only" aria-hidden="true">
+    <label>Leave this field empty <input name="bot-field" tabindex="-1" autocomplete="off" /></label>
+  </p>
+  <div class="subscribe__row">
+    <label class="sr-only" for={inputId}>Email address</label>
+    <input
+      id={inputId}
+      class="form-control subscribe__input"
+      type="email"
+      name="email"
+      placeholder="your@email.com"
+      autocomplete="email"
+      inputmode="email"
+      autocapitalize="off"
+      spellcheck="false"
+      required
+      aria-describedby={`${inputId}-status`}
+    />
+    <button type="submit" class={`btn btn--primary ${variant === 'compact' ? 'btn--sm' : ''}`}>{buttonLabel}</button>
+  </div>
+  {!hideNote && (
+    <p class="subscribe__note">By subscribing you agree to our <a href="/privacy/">Privacy Policy</a>. Unsubscribe any time.</p>
+  )}
+  <p class="subscribe__status" id={`${inputId}-status`} role="status" aria-live="polite" tabindex="-1"></p>
+</form>
+
+<style>
+  .subscribe { width: 100%; }
+  .subscribe__row {
+    display: flex;
+    gap: var(--space-sm);
+    align-items: stretch;
+  }
+  .subscribe__input { flex: 1; min-width: 0; }
+  .subscribe--compact .subscribe__input {
+    padding: var(--space-sm) var(--space-md);
+    font-size: var(--text-small);
+  }
+  .subscribe__note {
+    margin-top: var(--space-sm);
+    font-family: var(--font-mono);
+    font-size: var(--text-micro);
+    color: var(--color-fog);
+    line-height: 1.5;
+  }
+  .subscribe__note a { color: var(--color-chalk); text-decoration: underline; text-underline-offset: 2px; }
+  .subscribe__note a:hover { color: var(--color-bone); }
+
+  .subscribe__status { margin-top: 0; font-size: var(--text-small); }
+  .subscribe__status:not(:empty) { margin-top: var(--space-sm); }
+  .subscribe__status:focus { outline: none; }
+
+  .subscribe.is-sending .subscribe__row { opacity: 0.7; }
+
+  @media (max-width: 480px) {
+    .subscribe__row { flex-direction: column; }
+  }
+</style>
