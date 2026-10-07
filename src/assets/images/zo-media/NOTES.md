@@ -1,8 +1,8 @@
 # Image asset audit notes
 
 > ## 🚫 HOUSE RULE (2026-10-06, set by the project owner): NO AI images of Ivan Kilgore — anywhere.
-> The **only** approved photograph of Ivan is his **original** photo. Until it is supplied, every Ivan slot
-> (team card, documentary director bio) is text/monogram-led. The former AI portraits were removed from the
+> The **only** approved photograph of Ivan is his **original** photo. Real photos are now in `src/assets/images/ivan/` (see its README); the documentaries bio and
+> board card use crops of the approved color photo. The former AI portraits were removed from the
 > build and archived outside the repo (`_legacy/ai-ivan/`). The "temporary placeholder" exceptions described
 > below are **revoked**.
 

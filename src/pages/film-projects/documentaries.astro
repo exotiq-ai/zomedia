@@ -1,5 +1,6 @@
 ---
 import { Image } from 'astro:assets';
+import ivanPortrait from '../../assets/images/ivan/ivan-bio-portrait.jpg';
 import SubpageLayout from '../../layouts/SubpageLayout.astro';
 import FilmCTA from '../../components/content/FilmCTA.astro';
 ---
@@ -71,10 +72,16 @@ import FilmCTA from '../../components/content/FilmCTA.astro';
   <section class="section">
     <div class="container reveal">
       <div class="grid grid--asymmetric director-bio">
-        {/* House rule: no AI-generated images of Ivan. The only approved photo is his original;
-            until it is supplied this slot is a typographic monogram. Swap in <Image> when ready. */}
-        <div class="director-bio__portrait director-bio__portrait--monogram" role="img" aria-label="Ivan Kilgore">
-          <span aria-hidden="true">IK</span>
+        {/* House rule: real photographs of Ivan only (see src/assets/images/ivan/README.md). */}
+        <div class="director-bio__portrait">
+          <Image
+            src={ivanPortrait}
+            alt="Ivan Kilgore, author, activist, and founder of the United Black Family Scholarship Foundation"
+            widths={[320, 480, 560]}
+            sizes="(max-width: 768px) 80vw, 32vw"
+            loading="lazy"
+            format="webp"
+          />
         </div>
         <div class="director-bio__body">
           <span class="eyebrow">About the Director</span>
@@ -364,21 +371,6 @@ import FilmCTA from '../../components/content/FilmCTA.astro';
     overflow: hidden;
     border-radius: var(--radius-md);
     border: 1px solid var(--color-border-emphasis);
-  }
-  .director-bio__portrait--monogram {
-    display: grid;
-    place-items: center;
-    background:
-      radial-gradient(ellipse at 30% 80%, rgba(214, 64, 69, 0.14), transparent 60%),
-      var(--color-graphite);
-  }
-  .director-bio__portrait--monogram span {
-    font-family: var(--font-headline);
-    font-size: clamp(5rem, 14vw, 9rem);
-    line-height: 1;
-    letter-spacing: -0.04em;
-    color: var(--color-bone);
-    opacity: 0.85;
   }
   .director-bio__portrait :global(img) {
     width: 100%;
