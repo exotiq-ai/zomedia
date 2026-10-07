@@ -1,184 +1,194 @@
 ---
+import { getCollection } from 'astro:content';
 import SubpageLayout from '../layouts/SubpageLayout.astro';
+import SectionHeader from '../components/ui/SectionHeader.astro';
 
 const title = "Special Projects";
 const description = "Independent projects exploring the intersection of incarceration, art, and justice.";
 const breadcrumbs = [{ label: "Special Projects" }];
 
-const projects = [
-  {
-    title: "The Global Impact of Mass Incarceration",
-    tagline: "Examining how American incarceration policy echoes worldwide",
-    gradient: "linear-gradient(135deg, var(--color-graphite), var(--color-signal-dim))",
-    illustration: "global-impact.svg",
-    href: null,
-  },
-  {
-    title: "Voices On Death Row",
-    tagline: "First-person accounts from America's death rows",
-    gradient: "linear-gradient(135deg, var(--color-graphite), #1a3a4a)",
-    illustration: "voices-death-row.svg",
-    href: null,
-  },
-  {
-    title: "Tales From the Zo",
-    tagline: "Stories from inside Zo Media's creative community",
-    gradient: "linear-gradient(135deg, var(--color-graphite), var(--color-wire-dim))",
-    illustration: "tales-from-the-zo.svg",
-    href: null,
-  },
-  {
-    title: "Writing Beyond the Prison: Reimagining the Carceral Ecosystem",
-    tagline: "Challenging the boundaries of prison literature",
-    gradient: "linear-gradient(135deg, var(--color-graphite), #2a1a3a)",
-    illustration: "writing-beyond.svg",
-    href: null,
-  },
-];
+// Projects are managed in the CMS (Sanity → Special Projects). A project with status "Active" and a link
+// is live; the first live one is featured at the top, the rest appear in the row below.
+const projects = (await getCollection('projects'))
+  .map((e) => ({ id: e.id, ...e.data }))
+  .sort((a, b) => a.order - b.order);
+
+const isLive = (p: (typeof projects)[number]) => p.status === 'active' && Boolean(p.externalUrl);
+const featured = projects.find(isLive);
+const rest = projects.filter((p) => p !== featured);
+
+const hostOf = (url: string) => new URL(url).hostname.replace(/^www\./, '');
 ---
 
 <SubpageLayout ogImage="/assets/og/special-projects.jpg" title={title} description={description} breadcrumbs={breadcrumbs}>
   <section class="hero hero--editorial" style="--hero-image: url('/assets/images/zo-media/folsom-tower.jpeg'); --hero-image-position: center 30%; --hero-overlay: 0.85;">
     <div class="hero__inner">
-      <span class="hero__eyebrow">INITIATIVES</span>
+      <span class="hero__eyebrow">Initiatives</span>
       <h1 class="hero__headline">Special Projects</h1>
-      <p class="hero__subhead">Independent projects exploring the intersection of incarceration, art, and justice. Each is a standalone initiative in development.</p>
+      <p class="hero__subhead">Independent projects exploring the intersection of incarceration, art, and justice.</p>
     </div>
   </section>
 
-  <section class="section">
-    <div class="container">
-      <div class="grid grid--2 reveal--stagger reveal">
-        {projects.map((project) => (
-          project.href ? (
-            <a href={project.href} class="project-card halftone" style={`background: ${project.gradient};`}>
-              <img class="project-card__illustration" src={`/assets/illustrations/${project.illustration}`} alt="" width="140" height="140" loading="lazy" />
-              <h2 class="project-card__title">{project.title}</h2>
-              <p class="project-card__tagline">{project.tagline}</p>
-              <span class="btn btn--outline btn--sm project-card__cta">
-                Visit Project &rarr;
-              </span>
+  {featured && (
+    <section class="section" aria-labelledby="featured-title">
+      <div class="container reveal">
+        <article class="featured">
+          <div class="featured__logo">
+            {featured.heroImage ? (
+              <img src={featured.heroImage} alt={`${featured.title} logo`} width="1192" height="613" decoding="async" fetchpriority="high" />
+            ) : (
+              <span class="featured__logo-text" aria-hidden="true">{featured.title}</span>
+            )}
+          </div>
+          <div class="featured__body">
+            <span class="featured__badge"><span class="featured__badge-dot" aria-hidden="true"></span>Now live</span>
+            <h2 id="featured-title" class="featured__title">{featured.title}</h2>
+            <p class="featured__tagline">{featured.tagline}</p>
+            <p class="featured__text">{featured.description}</p>
+            <a href={featured.externalUrl} class="btn btn--primary btn--lg featured__cta" target="_blank" rel="noopener">
+              Visit {hostOf(featured.externalUrl!)} <span aria-hidden="true">&nearr;</span>
+              <span class="sr-only">(opens in a new tab)</span>
             </a>
-          ) : (
-            <article class="project-card project-card--coming-soon halftone" style={`background: ${project.gradient};`} aria-label={`${project.title} (coming soon)`}>
-              <img class="project-card__illustration" src={`/assets/illustrations/${project.illustration}`} alt="" width="140" height="140" loading="lazy" />
-              <h2 class="project-card__title">{project.title}</h2>
-              <p class="project-card__tagline">{project.tagline}</p>
-              <span class="project-card__badge">
-                <span class="project-card__badge-tick" aria-hidden="true"></span>
-                In Production
-              </span>
-            </article>
-          )
-        ))}
+          </div>
+        </article>
       </div>
-    </div>
-  </section>
+    </section>
+  )}
 
-  <section class="section">
-    <div class="container container--narrow text-center">
-      <p class="project-card__footnote">
-        These are independent projects in development. Public details and external links will be added as each project launches.
-      </p>
-    </div>
-  </section>
+  {rest.length > 0 && (
+    <section class="section section--alt" aria-labelledby="upcoming-title">
+      <div class="container reveal">
+        <SectionHeader eyebrow="Coming Next" title="In Production" align="center" />
+        <div class="grid grid--3 grid--stack-tablet mt-2xl" id="upcoming-title">
+          {rest.map((p) => {
+            const live = isLive(p);
+            const Tag = live ? 'a' : 'article';
+            return (
+              <Tag
+                class:list={['project', live && 'project--live']}
+                {...(live ? { href: p.externalUrl, target: '_blank', rel: 'noopener' } : {})}
+              >
+                <h3 class="project__title">{p.title}</h3>
+                <p class="project__tagline">{p.tagline}</p>
+                <span class="project__status">
+                  {live ? (<>Visit project <span aria-hidden="true">&nearr;</span></>) : (<><span class="project__tick" aria-hidden="true"></span>In production</>)}
+                </span>
+              </Tag>
+            );
+          })}
+        </div>
+      </div>
+    </section>
+  )}
 </SubpageLayout>
 
 <style>
-  .project-card {
-    min-height: 300px;
+  /* ── Featured project ─────────────────────────────────────── */
+  .featured {
+    display: grid;
+    grid-template-columns: minmax(0, 5fr) minmax(0, 6fr);
+    border: 1px solid var(--color-border-emphasis);
+    border-top: 2px solid var(--color-signal);
+    background: var(--color-graphite);
+    overflow: hidden;
+  }
+  .featured__logo {
+    display: grid;
+    place-items: center;
+    background: #050505; /* matches the logo artwork's own background (rgb 5,5,5) so no box shows */
+    padding: var(--space-2xl);
+    min-height: 20rem;
+  }
+  .featured__logo img { width: 100%; max-width: 30rem; height: auto; display: block; }
+  .featured__logo-text {
+    font-family: var(--font-headline);
+    font-size: var(--text-h2);
+    color: var(--color-bone);
+    text-align: center;
+  }
+  .featured__body {
     display: flex;
     flex-direction: column;
-    justify-content: flex-end;
-    padding: var(--space-xl);
-    border-radius: var(--radius-lg);
-    text-decoration: none;
-    position: relative;
-    overflow: hidden;
-    transition: transform var(--duration-base), box-shadow var(--duration-base);
+    align-items: flex-start;
+    justify-content: center;
+    gap: var(--space-md);
+    padding: var(--space-2xl);
   }
-  .project-card:hover {
-    transform: translateY(-4px);
-    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.4);
-  }
-  .project-card__illustration {
-    align-self: flex-start;
-    width: 96px;
-    height: 96px;
-    margin-bottom: auto;
-    color: var(--color-bone);
-    opacity: 0.78;
-    transition: opacity var(--duration-normal) var(--ease-snap), transform var(--duration-normal) var(--ease-snap);
-  }
-  .project-card:hover .project-card__illustration {
-    opacity: 1;
-    transform: translateY(-2px) scale(1.04);
-  }
-  .project-card__title {
-    font-family: var(--font-headline);
-    font-size: var(--text-2xl);
-    color: var(--color-bone);
-    margin-bottom: var(--space-sm);
-    line-height: 1.2;
-  }
-  .project-card__tagline {
-    font-family: var(--font-body);
-    font-size: var(--text-base);
-    color: var(--color-bone); /* was --color-fog — failed contrast on lighter gradients */
-    opacity: 0.85;
-    margin-bottom: var(--space-lg);
-  }
-  .project-card__cta {
-    align-self: flex-start;
-  }
-  /* Letterpress-style stamp — signal-red outline, mono, slight off-axis rotation.
-   * Sits like a wet-ink mark applied at the press. */
-  .project-card__badge {
-    align-self: flex-start;
+  .featured__badge {
     display: inline-flex;
     align-items: center;
     gap: var(--space-sm);
     font-family: var(--font-mono);
-    font-size: var(--text-xs);
-    text-transform: uppercase;
+    font-size: var(--text-micro);
     letter-spacing: var(--tracking-mega);
-    color: var(--color-signal-text);
-    background: rgba(10, 10, 11, 0.4);
-    padding: 0.4rem 0.7rem;
-    border: 1.5px solid var(--color-signal);
-    border-radius: 2px;
-    font-weight: 700;
-    transform: rotate(-2deg);
-    transform-origin: left center;
-    box-shadow:
-      0.5px 0.5px 0 rgba(214, 64, 69, 0.2),
-      1.5px 1.5px 0 rgba(214, 64, 69, 0.1);
-    transition: transform var(--duration-fast) var(--ease-snap);
+    text-transform: uppercase;
+    color: var(--color-success);
   }
-  .project-card:hover .project-card__badge {
-    transform: rotate(-1deg);
-  }
-  .project-card__badge-tick {
-    width: 5px;
-    height: 5px;
-    background: var(--color-signal);
+  .featured__badge-dot {
+    width: 7px;
+    height: 7px;
     border-radius: 50%;
-    flex-shrink: 0;
-    animation: card-badge-pulse 2.4s ease-in-out infinite;
+    background: var(--color-success);
+    animation: featured-pulse 2.4s ease-in-out infinite;
   }
-  @keyframes card-badge-pulse {
-    0%, 100% { opacity: 1; }
-    50%      { opacity: 0.35; }
+  @keyframes featured-pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.35; } }
+  .featured__title { font-size: var(--text-h1); line-height: 1.05; }
+  .featured__tagline {
+    font-family: var(--font-headline);
+    font-style: italic;
+    font-size: var(--text-body-lg);
+    color: var(--color-wire);
+  }
+  .featured__text { color: var(--color-chalk); line-height: var(--leading-loose); max-width: 52ch; }
+  .featured__cta { margin-top: var(--space-md); }
+
+  /* ── Upcoming projects: simple cards ──────────────────────── */
+  .project {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-sm);
+    padding: var(--space-xl);
+    background: var(--color-graphite);
+    border: 1px solid var(--color-border);
+    border-top: 2px solid var(--color-border-emphasis);
+    color: inherit;
+    text-decoration: none;
+    min-height: 12rem;
+  }
+  .project--live { border-top-color: var(--color-signal); transition: transform var(--duration-fast) var(--ease-snap), border-color var(--duration-fast); }
+  .project--live:hover { transform: translateY(-3px); border-color: var(--color-border-emphasis); }
+  .project__title { font-size: var(--text-h3); line-height: 1.15; }
+  .project__tagline { color: var(--color-fog); font-size: var(--text-small); line-height: 1.55; }
+  .project__status {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-sm);
+    margin-top: auto;
+    padding-top: var(--space-md);
+    font-family: var(--font-mono);
+    font-size: var(--text-micro);
+    letter-spacing: var(--tracking-wide);
+    text-transform: uppercase;
+    color: var(--color-signal-text);
+  }
+  .project__tick {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--color-signal);
+    animation: featured-pulse 2.4s ease-in-out infinite;
+  }
+
+  @media (max-width: 480px) {
+    .featured__cta { width: 100%; font-size: var(--text-micro); letter-spacing: 0.04em; padding-inline: var(--space-md); }
+  }
+  @media (max-width: 900px) {
+    .featured { grid-template-columns: minmax(0, 1fr); }
+    .featured__logo { min-height: 0; padding: var(--space-xl); }
+    .featured__body { padding: var(--space-xl); }
   }
   @media (prefers-reduced-motion: reduce) {
-    .project-card__badge-tick { animation: none; }
-  }
-  .project-card__footnote {
-    font-family: var(--font-mono);
-    font-size: var(--text-sm);
-    color: var(--color-fog);
-    letter-spacing: var(--tracking-wide);
-    max-width: 48ch;
-    margin-inline: auto;
+    .featured__badge-dot, .project__tick { animation: none; }
+    .project--live:hover { transform: none; }
   }
 </style>
