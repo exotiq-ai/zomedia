@@ -9,6 +9,7 @@
 import { createClient } from '@sanity/client';
 import { createImageUrlBuilder } from '@sanity/image-url';
 import type { Loader } from 'astro/loaders';
+import { validateDocuments } from './sanity-validation.mjs';
 
 const env = import.meta.env as Record<string, string | undefined>;
 
@@ -44,6 +45,7 @@ export function sanityLoader(opts: { name: string; query: string; map: (doc: any
     async load({ store, parseData, generateDigest, renderMarkdown, logger }) {
       if (!sanityClient) throw new Error('Sanity loader used without PUBLIC_SANITY_PROJECT_ID');
       const docs: any[] = await sanityClient.fetch(opts.query);
+      validateDocuments(docs, opts.name);
       logger.info(`Loaded ${docs.length} ${opts.name} document(s) from Sanity`);
       store.clear();
       for (const doc of docs) {
@@ -66,7 +68,8 @@ const PUBLISHED = '!(_id in path("drafts.**"))';
 export const queries = {
   books: `*[_type == "book" && ${PUBLISHED}] | order(order asc){
     _id, title, "slug": slug.current, author, category, description, longDescription,
-    cover, priceHardcover, priceEbook, purchaseUrl, isForthcoming, order
+    cover, priceHardcover, priceEbook, purchaseUrl, printPurchaseUrl, ebookPurchaseUrl,
+    commerceReviewed, ebookRightsCleared, isForthcoming, order
   }`,
   team: `*[_type == "teamMember" && ${PUBLISHED}] | order(order asc){
     _id, name, "slug": slug.current, role, category, bio, photo, order
@@ -75,7 +78,7 @@ export const queries = {
     _id, title, "slug": slug.current, tagline, description, heroImage, externalUrl, status, order
   }`,
   siteSettings: `*[_type == "siteSettings"][0]{
-    stats, socialLinks, announcement
+    stats, claimsApproved, socialLinks, announcement
   }`,
 };
 
@@ -88,9 +91,14 @@ export const mappers = {
       category: d.category,
       description: d.description,
       coverImage: sanityImage(d.cover, 900),
+      coverAlt: d.cover?.alt,
       priceHardcover: d.priceHardcover ?? '',
       priceEbook: d.priceEbook ?? '',
       purchaseUrl: d.purchaseUrl || undefined,
+      printPurchaseUrl: d.printPurchaseUrl || undefined,
+      ebookPurchaseUrl: d.ebookPurchaseUrl || undefined,
+      commerceReviewed: Boolean(d.commerceReviewed),
+      ebookRightsCleared: Boolean(d.ebookRightsCleared),
       isForthcoming: Boolean(d.isForthcoming),
       order: d.order ?? 999,
     },
@@ -124,6 +132,7 @@ export const mappers = {
 
 /** Site-wide editable settings (stats, social links). Returns null when Sanity is off or unset. */
 type SiteSettings = {
+  claimsApproved?: boolean;
   stats?: { booksPublished?: number; profitsToCommunity?: number; creators?: number; projects?: number };
   socialLinks?: Array<{ label: string; url: string }>;
 };
@@ -136,9 +145,6 @@ export function getSiteSettings(): Promise<SiteSettings | null> {
   settingsPromise ??= sanityClient
     .fetch(queries.siteSettings)
     .then((r: SiteSettings | null) => r ?? null)
-    .catch((err: unknown) => {
-      console.warn('[sanity] siteSettings fetch failed — using defaults', err);
-      return null;
-    });
+    .catch((err: unknown) => { throw new Error('Sanity site settings unavailable; refusing to publish stale claims', { cause: err }); });
   return settingsPromise;
 }

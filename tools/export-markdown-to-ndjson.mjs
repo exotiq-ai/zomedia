@@ -55,6 +55,10 @@ for (const f of listMd(path.join(ROOT, 'src/content/books'))) {
     priceHardcover: data.priceHardcover,
     priceEbook: data.priceEbook,
     purchaseUrl: data.purchaseUrl,
+    printPurchaseUrl: data.printPurchaseUrl,
+    ebookPurchaseUrl: data.ebookPurchaseUrl,
+    commerceReviewed: Boolean(data.commerceReviewed),
+    ebookRightsCleared: Boolean(data.ebookRightsCleared),
     isForthcoming: Boolean(data.isForthcoming),
     order: data.order,
   });
@@ -96,6 +100,7 @@ for (const f of listMd(path.join(ROOT, 'src/content/projects'))) {
 docs.push({
   _id: 'siteSettings',
   _type: 'siteSettings',
+  claimsApproved: false,
   stats: { booksPublished: 12, profitsToCommunity: 50, creators: 100, projects: 4 },
   socialLinks: [
     { _key: 'fb', label: 'Facebook', url: 'https://www.facebook.com/unitedblack.familyscholarshipfoundation' },

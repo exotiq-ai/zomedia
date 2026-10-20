@@ -1,5 +1,10 @@
 # Editing the Zo Media website (for editors)
 
+## Before launch
+Books have separate print and eBook purchase links. Keep **Catalog and purchase links approved** off until the publisher verifies the title, author, edition, price and availability. Keep **Direct eBook distribution rights cleared** off until rights/exclusivity are confirmed. These controls hide unapproved prices and purchase buttons; they do not alter the existing WordPress store.
+
+Site Settings → **Homepage impact claims approved** requires every figure to be complete and organizationally approved. Until then the impact-number section stays hidden. Publish triggers a static rebuild only after the administrator verifies the webhook; a Studio publish is not itself proof that the website updated.
+
 You edit the site in **Sanity Studio**. Nothing you do there can break the design.
 
 **Open it:** the link your administrator gives you (looks like `https://zomedia.sanity.studio`). Sign in with the Google/email account you were invited with.

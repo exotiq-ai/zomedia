@@ -53,6 +53,7 @@ const bookListLd = {
         <button class="filter-pill" data-filter="essays" aria-pressed="false">Essays</button>
         <button class="filter-pill" data-filter="poetry" aria-pressed="false">Poetry</button>
         <button class="filter-pill" data-filter="anthology" aria-pressed="false">Anthology</button>
+        <button class="filter-pill" data-filter="fiction" aria-pressed="false">Fiction</button>
       </div>
       <div id="book-filter-status" class="sr-only" aria-live="polite" aria-atomic="true"></div>
 
@@ -79,18 +80,10 @@ const bookListLd = {
               <p class="book-card__author">{book.author}</p>
               <p class="card__text">{book.description}</p>
               <div class="book-card__prices">
-                {book.priceHardcover && <span class="book-card__price">Print: {book.priceHardcover}</span>}
-                {book.priceEbook && <span class="book-card__price">eBook: {book.priceEbook}</span>}
+                {book.commerceReviewed && book.priceHardcover && <span class="book-card__price">Print: {book.priceHardcover}</span>}
+                {book.commerceReviewed && book.ebookRightsCleared && book.priceEbook && <span class="book-card__price">eBook: {book.priceEbook}</span>}
               </div>
-              {book.purchaseUrl ? (
-                <a class="btn btn--primary btn--sm" href={book.purchaseUrl} rel="noopener">
-                  {book.isForthcoming ? 'Pre-Order' : 'Buy Now'}
-                </a>
-              ) : (
-                <a class="book-card__availability" href={`/books/${book.slug}/`}>
-                  {book.isForthcoming ? 'Pre-order details coming soon' : 'Purchase details coming soon'}
-                </a>
-              )}
+              <a class="book-card__availability" href={`/books/${book.slug}/`}>View book details</a>
             </div>
           </article>
         ))}
@@ -217,6 +210,9 @@ const bookListLd = {
   .book-card__title-link:hover { color: var(--color-signal-hot); }
   .book-card__cover { display: block; }
   .book-card__availability {
+    display: inline-flex;
+    align-items: center;
+    min-height: 44px;
     margin-top: var(--space-sm);
     font-family: var(--font-mono);
     font-size: var(--text-tiny);

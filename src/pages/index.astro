@@ -5,6 +5,7 @@ import SectionHeader from '../components/ui/SectionHeader.astro';
 import SubscribeForm from '../components/forms/SubscribeForm.astro';
 import { getCollection } from 'astro:content';
 import { getSiteSettings } from '../lib/sanity';
+import { approvedImpactStats } from '../lib/book-commerce.mjs';
 import { getWirePosts, formatIssueDate } from '../lib/substack';
 import literatureReading from '../assets/images/zo-media/literature-reading.jpg';
 import folsomTower from '../assets/images/zo-media/folsom-tower.jpeg';
@@ -18,14 +19,9 @@ const shelfBooks = (await getCollection('books'))
   .map((e) => ({ slug: e.id, ...e.data }))
   .sort((a, b) => a.order - b.order);
 
-// Editable in the CMS (Site settings → Homepage numbers); these are the fallbacks.
+// Approved CMS values only: never substitute unreviewed impact claims.
 const settings = await getSiteSettings();
-const stats = {
-  booksPublished: settings?.stats?.booksPublished ?? 12,
-  profitsToCommunity: settings?.stats?.profitsToCommunity ?? 50,
-  creators: settings?.stats?.creators ?? 100,
-  projects: settings?.stats?.projects ?? 4,
-};
+const stats = approvedImpactStats(settings);
 
 // WHAT WE MAKE — six fronts of the cooperative, in newspaper TOC order.
 // Five photo tiles share the duotone treatment (void→bone luminance map);
@@ -36,7 +32,7 @@ const tiles = [
   {
     n: '01',
     label: 'Literature',
-    kicker: 'Twelve titles in print: memoir, theory, and fiction from inside.',
+    kicker: 'Memoir, essays, poetry, and anthologies from inside.',
     href: '/books/',
     photo: {
       src: literatureReading,
@@ -225,29 +221,29 @@ const tiles = [
   </div>
 
   <!-- Stats / Impact Counter -->
-  <section class="section">
+  {stats && <section class="section">
     <div class="container reveal">
       <SectionHeader eyebrow="Impact" title="By The Numbers" align="center" />
       <div class="stats mt-2xl">
         <div class="stat">
-          <span class="stat__number" data-counter data-target={stats.booksPublished}>0</span>
+          <span class="stat__number" data-counter data-target={stats.booksPublished}>{stats.booksPublished}</span>
           <span class="stat__label">Books Published</span>
         </div>
         <div class="stat">
-          <span class="stat__number" data-counter data-target={stats.profitsToCommunity} data-suffix="%">0%</span>
+          <span class="stat__number" data-counter data-target={stats.profitsToCommunity} data-suffix="%">{stats.profitsToCommunity}%</span>
           <span class="stat__label">Profits to Community</span>
         </div>
         <div class="stat">
-          <span class="stat__number" data-counter data-target={stats.creators} data-suffix="+">0+</span>
+          <span class="stat__number" data-counter data-target={stats.creators} data-suffix="+">{stats.creators}+</span>
           <span class="stat__label">Incarcerated Creators</span>
         </div>
         <div class="stat">
-          <span class="stat__number" data-counter data-target={stats.projects}>0</span>
+          <span class="stat__number" data-counter data-target={stats.projects}>{stats.projects}</span>
           <span class="stat__label">Special Projects</span>
         </div>
       </div>
     </div>
-  </section>
+  </section>}
 
   <!-- FROM THE PRESS — horizontal bookshelf (scroll-snap; arrow buttons are progressive enhancement) -->
   <section class="section bookshelf" aria-labelledby="bookshelf-title">

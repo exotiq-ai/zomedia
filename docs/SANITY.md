@@ -1,5 +1,14 @@
 # Sanity CMS — editing the site
 
+> October 19, 2026: the dated setup notes below are historical. Current verification and remaining administrator tasks are in `docs/LAUNCH-READINESS.md`. The CMS code is on main; public data reads are verified. Admin permissions, CORS, editor acceptance and publish-webhook delivery are not verified in this session. Do not re-import production with `--replace` to update the schema: that can overwrite editor changes.
+
+## Launch approval controls
+- Books now have separate Print purchase destination / eBook purchase destination fields. Catalog-and-links approval is required to enable buying; direct ebook rights require separate clearance. Existing documents default to unapproved until an editor reviews them.
+- Site Settings has a Homepage impact claims approved toggle. Until enabled, the homepage impact counters are hidden; do not enable without organizational approval of all figures.
+- Deploy the Studio schema after authorization (`cd studio && npm run deploy`). Field additions require no destructive document import. The frontend remains backward compatible with existing records.
+- Published-only reads are enforced. Invalid/duplicate slugs, empty collections and missing book-cover alt text now fail the build. Settings API errors also fail the build. The last successful Netlify deploy must remain published on failure.
+- Verify the build-hook branch contains the gate before enabling any webhook or scheduled refresh. Never log or commit the hook URL.
+
 ## Current status (2026-10-07)
 | Item | State |
 | --- | --- |

@@ -76,8 +76,10 @@ for (const [vn, w, h] of VIEWPORTS) {
         tiny: [...document.querySelectorAll('a,button,input,select,textarea,summary')].filter((e) => {
           if (e.closest('.sr-only, .skip-link') || e.type === 'hidden') return false;
           const r = e.getBoundingClientRect();
-          const inline = getComputedStyle(e).display === 'inline';
-          return !inline && r.width > 0 && r.height > 0 && (r.height < 44 || r.width < 44);
+          const style = getComputedStyle(e);
+          const inline = style.display === 'inline';
+          // Hidden dropdowns aren't targets; tolerate subpixel animation rounding.
+          return !inline && style.visibility !== 'hidden' && r.width > 0 && r.height > 0 && (r.height < 43.5 || r.width < 43.5);
         }).length,
       };
     });

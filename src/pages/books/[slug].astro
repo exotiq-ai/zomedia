@@ -4,6 +4,7 @@ import path from 'node:path';
 import { getCollection, render } from 'astro:content';
 import SubpageLayout from '../../layouts/SubpageLayout.astro';
 import { SITE } from '../../config/site';
+import { purchaseOptions } from '../../lib/book-commerce.mjs';
 
 export async function getStaticPaths() {
   const entries = await getCollection('books');
@@ -12,6 +13,7 @@ export async function getStaticPaths() {
 
 const { entry } = Astro.props;
 const book = entry.data;
+const options = purchaseOptions(book);
 const { Content } = await render(entry);
 
 const all = (await getCollection('books'))
@@ -41,18 +43,15 @@ const bookLd = {
   publisher: { '@id': `${SITE.url}/#organization` },
   ...(hasAuthor ? { author: { '@type': 'Person', name: book.author } } : {}),
   // Offers are only published once a real purchase link exists.
-  ...(book.purchaseUrl
+  ...(options.length
     ? {
-        offers: [
-          book.priceHardcover && {
+        offers: options.filter((option) => option.price).map((option) => ({
             '@type': 'Offer',
-            url: book.purchaseUrl,
-            price: price(book.priceHardcover),
+            url: option.url,
+            price: price(option.price),
             priceCurrency: 'USD',
             itemCondition: 'https://schema.org/NewCondition',
-            availability: book.isForthcoming ? 'https://schema.org/PreOrder' : 'https://schema.org/InStock',
-          },
-        ].filter(Boolean),
+          })),
       }
     : {}),
 };
@@ -78,7 +77,7 @@ const showBody = body && body !== book.description.trim();
         <div class="book-detail__cover reveal">
           <img
             src={book.coverImage}
-            alt={`Cover of ${book.title}${hasAuthor ? `, by ${book.author}` : ''}`}
+            alt={book.coverAlt || `Cover of ${book.title}${hasAuthor ? `, by ${book.author}` : ''}`}
             width="600"
             height="900"
             decoding="async"
@@ -102,29 +101,28 @@ const showBody = body && body !== book.description.trim();
           )}
 
           <dl class="book-detail__facts">
-            {book.priceHardcover && (
+            {book.commerceReviewed && book.priceHardcover && (
               <div><dt>Print</dt><dd>{book.priceHardcover}</dd></div>
             )}
-            {book.priceEbook && (
+            {book.commerceReviewed && book.ebookRightsCleared && book.priceEbook && (
               <div><dt>eBook</dt><dd>{book.priceEbook}</dd></div>
             )}
             <div><dt>Publisher</dt><dd>{SITE.name}</dd></div>
           </dl>
 
           <div class="book-detail__actions">
-            {book.purchaseUrl ? (
-              <a href={book.purchaseUrl} class="btn btn--primary btn--lg" rel="noopener">
-                {book.isForthcoming ? 'Pre-Order This Book' : 'Buy This Book'}
-              </a>
-            ) : (
+            {options.map((option) => (
+              <a href={option.url} class="btn btn--primary btn--lg" rel="noopener">{option.label}</a>
+            ))}
+            {!options.length && (
               <a href={`/contact/?intent=book&book=${encodeURIComponent(book.title)}`} class="btn btn--primary btn--lg">
                 {book.isForthcoming ? 'Ask About Pre-Orders' : 'Ask About Ordering'}
               </a>
             )}
             <a href="/support/" class="btn btn--outline btn--lg">Support the Press</a>
           </div>
-          {!book.purchaseUrl && (
-            <p class="book-detail__note">Direct purchase links are coming soon. Send us a note and we'll make sure you get a copy.</p>
+          {!options.length && (
+            <p class="book-detail__note">Purchase details are being confirmed. Contact us for current availability and pricing.</p>
           )}
         </div>
       </div>
@@ -153,7 +151,9 @@ const showBody = body && body !== book.description.trim();
 
 <style>
   .book-detail__back {
-    display: inline-block;
+    display: inline-flex;
+    align-items: center;
+    min-height: 44px;
     margin-bottom: var(--space-xl);
     font-family: var(--font-mono);
     font-size: var(--text-tiny);

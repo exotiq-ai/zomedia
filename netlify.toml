@@ -11,6 +11,10 @@
   directory = "netlify/functions"
   node_bundler = "esbuild"
 
+[[edge_functions]]
+  function = "preview-gate"
+  path = "/*"
+
 [[headers]]
   for = "/*"
   [headers.values]

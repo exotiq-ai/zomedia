@@ -1,0 +1,53 @@
+---
+// Independent of BaseLayout: no content feeds, analytics, or private assets.
+---
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="robots" content="noindex, nofollow" />
+    <meta name="theme-color" content="#0a0a0b" />
+    <title>A New Chapter | Zo Media Productions</title>
+    <meta name="description" content="A new chapter is coming. Literature, film, and art by incarcerated creators. Zo Media Productions." />
+    <link rel="stylesheet" href="/preview-assets/preview.css" />
+    <link rel="preload" href="/preview-assets/typewriter.jpg" as="image" fetchpriority="high" />
+    <script is:inline src="/preview-assets/preview.js" defer></script>
+  </head>
+  <body>
+    <a class="skip" href="#main">Skip to content</a>
+    <div class="page">
+      <header>
+        <a href="https://zomediaproductions.com/" aria-label="Visit the current Zo Media website">
+          <img src="/preview-assets/logo.png" width="180" height="100" alt="Zo Media Productions" />
+        </a>
+        <span class="edition">Literature / Film / Art</span>
+      </header>
+      <main id="main">
+        <p class="eyebrow"><span class="rule"></span> A new chapter is coming</p>
+        <h1>Zo Media<br />Productions<span class="period">.</span></h1>
+        <p class="mission">The stories that matter most<br class="desktop-break" /> are told from inside.</p>
+        <p class="description">A cooperative publishing literature, film, and art by incarcerated creators. Our next chapter is taking shape.</p>
+        <div class="actions">
+          <a class="primary" href="https://zomediaproductions.com/">Visit our current site <span aria-hidden="true">↗</span></a>
+          <a class="text-link" href="https://zomediaproductions.substack.com/">Read The Wire <span aria-hidden="true">↗</span></a>
+        </div>
+      </main>
+      <footer>
+        <p>A subsidiary of the United Black Family<br />Scholarship Foundation.</p>
+        <details id="access">
+          <summary>Preview access <span aria-hidden="true">↗</span></summary>
+          <form action="/preview/login" method="post">
+            <label for="password">Preview password</label>
+            <div class="password-row">
+              <input id="password" type="password" name="password" autocomplete="current-password" required maxlength="256" aria-describedby="access-status" />
+              <button type="submit">Enter <span aria-hidden="true">→</span></button>
+            </div>
+            <input type="hidden" name="returnTo" value="/" />
+            <p id="access-status" role="status" aria-live="polite"></p>
+          </form>
+        </details>
+      </footer>
+    </div>
+  </body>
+</html>
