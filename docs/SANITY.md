@@ -2,6 +2,14 @@
 
 > October 19, 2026: the dated setup notes below are historical. Current verification and remaining administrator tasks are in `docs/LAUNCH-READINESS.md`. The CMS code is on main; public data reads are verified. Admin permissions, CORS, editor acceptance and publish-webhook delivery are not verified in this session. Do not re-import production with `--replace` to update the schema: that can overwrite editor changes.
 
+## Publishing verification — November 19, 2026
+
+- The existing Netlify build hook “Sanity + Wire refresh” still targeted `main`. Updated it to `feat/launch-readiness` before testing so CMS rebuilds use the protected release source. Return it to `main` only after the reviewed release is merged and verified there. The secret hook URL is not recorded here.
+- A controlled direct hook invocation produced branch deploy `6aff2818b6ffa314924ca5e0` from commit `c95598acacf787258d0456ebb3deb13fc3adedee`; the deploy is ready. This establishes the Netlify half of the pipeline, not a Sanity-triggered publication.
+- Live verification of the hook-built preview passed login/logout, anonymous deep-link/assets/feed protection, tampered-cookie rejection, noindex and cache isolation. The production deploy ID and lock were read back unchanged after the test.
+- The Sanity CLI cannot list projects with its current authentication. A browser OAuth sign-in is pending owner completion. Studio schema deployment, member/CORS checks, webhook configuration/delivery and a temporary-record publish/delete cycle remain pending. No production editorial records were changed.
+- The published Netlify deploy remains locked at `6ad6cb43cb312f6ef8314d02`. Do not test by editing a real book or by importing production with `--replace`. Use a staging dataset or a clearly labeled temporary noneditorial record, exclude it from site collections, and verify cleanup and the resulting rebuild.
+
 ## Launch approval controls
 - Books now have separate Print purchase destination / eBook purchase destination fields. Catalog-and-links approval is required to enable buying; direct ebook rights require separate clearance. Existing documents default to unapproved until an editor reviews them.
 - Site Settings has a Homepage impact claims approved toggle. Until enabled, the homepage impact counters are hidden; do not enable without organizational approval of all figures.
