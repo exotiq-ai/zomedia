@@ -1,5 +1,19 @@
 # Forms backend
 
+## Live verification — November 19, 2026
+
+- Follow-up tests on the protected PR preview: contact submission `6aff27f88e62de83f52e7fe2` and newsletter submission `6aff27f8fbf0cf98e2a357e5` both returned HTTP 200 and were read back from Netlify. Contact subject: `ZoMedia form verification 2026-11-19T16:46:47.963Z`. The newsletter retains `source=wire`; no Substack subscription was completed.
+- Native HTML form endpoint `/thanks/?form=contact` returned HTTP 200 with thank-you HTML and stored submission `6aff2847ffc4e33bb8e001ee`. A later Chrome test verified empty required-field rejection, inline contact success and form reset (submission `6aff2ddcb2584357b644b5dc`), and footer newsletter success with the email-prefilled Substack confirmation link (submission `6aff2de22c15bc7f20a376bd`). The confirmation link was not followed; no Substack subscription was completed. Screenshots are in ignored `output/launch/2026-11-19/`.
+- The built-in email notification remains configured for `gregory@ubfsf.org`. The owner confirmed receiving the fresh “ZoMedia form verification” notification on November 19. Live capture and inbox delivery are verified without a personal Resend account. Evidence is in ignored `output/launch/2026-11-19/forms-followup.json`.
+- Authenticated to the existing protected Netlify preview and submitted clearly labeled launch tests through its real form POST endpoint. Both requests returned HTTP 200.
+- Verified the contact submission directly in its Netlify form: `6aff0ba465cd8e8fcdd0a922`.
+- Verified the newsletter submission directly in its Netlify form: `6aff0ba4427a0e534885e1bd`.
+- Used the published organizational contact address as test data. No Substack confirmation was submitted and no subscription was completed.
+- At the initial check, Netlify's configured environment contained the Sanity project/dataset and preview credentials; no Resend or newsletter-provider credentials were configured. The initial outgoing-hook list contained deployment hooks only; the notification added below now supplies email delivery.
+- Initial result: live form capture was verified before recipient setup. The follow-up above now verifies recipient configuration and owner-confirmed inbox delivery.
+- Follow-up: the owner selected `gregory@ubfsf.org`. Created and read back an enabled Netlify email notification for all form submissions (hook `6aff0eba6ccb0c6117c61953`). Submitted a contact test with subject `ZoMedia notification delivery test — 2026-11-19T14:59:08.784Z` and verified stored submission `6aff0ebd173196c3836d269e`. The later test above supplied owner-confirmed inbox receipt.
+- Recommended launch setup: Netlify Forms storage plus Netlify's built-in email notifications. This does not require the owner's personal Resend account. A Sanity submissions inbox would require a separate integration and private storage; email notifications would still need a delivery service. Never store private inquiries in the existing public content dataset.
+
 Two forms exist on the site, both handled by **Netlify Forms** (works on any Netlify deploy, no server to run):
 
 | Form name | Where | Fields |

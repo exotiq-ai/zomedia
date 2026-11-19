@@ -3,6 +3,9 @@ node_modules/
 dist/
 .claude/
 debug/
+output/
+.netlify/
+.playwright-cli/
 .astro/
 _legacy/
 

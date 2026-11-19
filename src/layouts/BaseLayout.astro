@@ -48,7 +48,7 @@ const {
 } = Astro.props;
 
 const currentPath = Astro.url.pathname;
-const canonicalUrl = new URL(currentPath, Astro.site ?? Astro.url);
+const canonicalUrl = new URL(currentPath === '/404/' ? '/404.html' : currentPath, Astro.site ?? Astro.url);
 const ogImageUrl = new URL(ogImage, canonicalUrl).href;
 const fullTitle = `${title} | ${SITE.name}`;
 const siteUrl = SITE.url;

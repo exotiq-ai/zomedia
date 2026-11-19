@@ -1,5 +1,7 @@
 # Zo Media Website — Launch Status & Human To-Do
 
+> Superseded operational status: see `docs/LAUNCH-READINESS.md` (October 19, 2026) and `docs/BOOK-COMMERCE.md`. The branch/uncommitted claims and account-setup statuses below describe the October 6 snapshot, not the current checkout. Retained for historical verification evidence only.
+
 _Updated 2026-10-06 · branch `feat/launch-prep` (nothing committed or pushed yet) · Astro 6 static site → Netlify_
 
 This replaces the May `IMPROVEMENTS.md` / QA punch list. First section = what's done and how it was verified; second = **what only you can do**.

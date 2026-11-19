@@ -2,6 +2,7 @@ import type { APIRoute } from 'astro';
 import { getCollection } from 'astro:content';
 import { SITE, SUBSTACK } from '../config/site';
 import { getWirePosts } from '../lib/substack';
+import { purchaseOptions } from '../lib/book-commerce.mjs';
 
 /** /llms-full.txt — the same facts as /llms.txt with full book and people details inline. */
 export const GET: APIRoute = async () => {
@@ -39,7 +40,7 @@ export const GET: APIRoute = async () => {
       `- URL: ${u(`/books/${b.id}/`)}`,
       `- Author: ${b.data.author}`,
       `- Category: ${b.data.category}${b.data.isForthcoming ? ' (forthcoming)' : ''}`,
-      `- Print: ${b.data.priceHardcover}; eBook: ${b.data.priceEbook}`,
+      ...purchaseOptions(b.data).map((option) => `- ${option.label}: ${option.price || 'See retailer for pricing'}. ${option.url}`),
       `- ${clean(b.data.description)}`,
     ]),
     '',

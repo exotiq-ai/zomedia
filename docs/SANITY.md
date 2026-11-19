@@ -1,5 +1,25 @@
 # Sanity CMS — editing the site
 
+> October 19, 2026: the dated setup notes below are historical. Current verification and remaining administrator tasks are in `docs/LAUNCH-READINESS.md`. The CMS code is on main; public data reads are verified. Admin permissions, CORS, editor acceptance and publish-webhook delivery are not verified in this session. Do not re-import production with `--replace` to update the schema: that can overwrite editor changes.
+
+## Publishing verification — November 19, 2026
+
+- The existing Netlify build hook “Sanity + Wire refresh” still targeted `main`. Updated it to `feat/launch-readiness` before testing so CMS rebuilds use the protected release source. Return it to `main` only after the reviewed release is merged and verified there. The secret hook URL is not recorded here.
+- A controlled direct hook invocation produced branch deploy `6aff2818b6ffa314924ca5e0` from commit `c95598acacf787258d0456ebb3deb13fc3adedee`; the deploy is ready. This establishes the Netlify half of the pipeline, not a Sanity-triggered publication.
+- Live verification of the hook-built preview passed login/logout, anonymous deep-link/assets/feed protection, tampered-cookie rejection, noindex and cache isolation. The production deploy ID and lock were read back unchanged after the test.
+- Owner completed email-based CLI sign-in. Studio typecheck passed; the updated Studio and its schema deployed successfully to `https://zomedia.sanity.studio/`. Added that exact credentialed CORS origin while retaining localhost. Chrome loaded the deployed editor and the new impact-approval control; no approval flags were changed. The existing Studio auto-update setting is retained (local Sanity 6.18.0, hosted runtime 6.24.0).
+- Verified the existing document webhook: production dataset, create/update/delete, drafts excluded, payload limited to document ID/type. Temporarily allowed one exact `launchVerification` test ID alongside the original editorial-type filter. Created a draft and published it through the Sanity Actions API; webhook attempt `atm-3MKnZyYDJg8qcFiDyK4EtJKXqo8` returned HTTP 200 and deploy `6aff2d5941b840692ecf301b` succeeded. Deleting the record returned HTTP 200 on attempt `atm-3MKndYobSDtAM39cgdcpfF5VGZa` and deploy `6aff2d767f003eacee1069be` succeeded.
+- Cleanup verified: test draft/published record absent, original webhook rule restored, every original document ID/revision unchanged, published Netlify deploy still locked and unchanged. Evidence is in ignored `output/launch/2026-11-19/sanity-publish-verification.json`. This proves API publish/delete → webhook → rebuild; it does not establish an invited editor's first login. Project membership currently includes one human account and one robot; Halima's editor acceptance remains unverified.
+- Failure/recovery check: published a separate clearly labeled synthetic `book` record with deliberately incomplete required data. Branch deploy `6aff2e6d4d1e83919d7553ae` failed during the build (exit code 2); the published deploy stayed locked and unchanged. Removing the test record triggered successful recovery deploy `6aff2e8625564a8f7048aeb4` on the same commit `abc1666324309edaeb6936e48d8d0dea467d2ab6`. Original document IDs/revisions match the baseline after cleanup. No real title was edited. Evidence: ignored `output/launch/2026-11-19/sanity-failed-build-recovery.json`.
+- The published Netlify deploy remains locked at `6ad6cb43cb312f6ef8314d02`. Do not test by editing a real book or by importing production with `--replace`. Use a staging dataset or a clearly labeled temporary noneditorial record, exclude it from site collections, and verify cleanup and the resulting rebuild.
+
+## Launch approval controls
+- Books now have separate Print purchase destination / eBook purchase destination fields. Catalog-and-links approval is required to enable buying; direct ebook rights require separate clearance. Existing documents default to unapproved until an editor reviews them.
+- Site Settings has a Homepage impact claims approved toggle. Until enabled, the homepage impact counters are hidden; do not enable without organizational approval of all figures.
+- Deploy the Studio schema after authorization (`cd studio && npm run deploy`). Field additions require no destructive document import. The frontend remains backward compatible with existing records.
+- Published-only reads are enforced. Invalid/duplicate slugs, empty collections and missing book-cover alt text now fail the build. Settings API errors also fail the build. The last successful Netlify deploy must remain published on failure.
+- Verify the build-hook branch contains the gate before enabling any webhook or scheduled refresh. Never log or commit the hook URL.
+
 ## Current status (2026-10-07)
 | Item | State |
 | --- | --- |

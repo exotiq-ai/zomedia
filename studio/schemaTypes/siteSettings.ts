@@ -5,6 +5,7 @@ export const siteSettings = defineType({
   title: 'Site settings',
   type: 'document',
   fields: [
+    defineField({ name: 'claimsApproved', title: 'Homepage impact claims approved', type: 'boolean', initialValue: false, description: 'Enable only after the organization has signed off on every figure below. Until then the impact-number section is hidden.' }),
     defineField({
       name: 'stats',
       title: 'Homepage numbers ("By the numbers")',

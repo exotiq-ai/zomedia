@@ -2,7 +2,7 @@ import { defineConfig } from 'astro/config';
 import sitemap from '@astrojs/sitemap';
 
 // Pages that must never appear in the sitemap (thank-you pages, the 404).
-const EXCLUDED = ['/thanks/', '/404'];
+const EXCLUDED = ['/thanks/', '/404', '/coming-soon/'];
 
 export default defineConfig({
   site: 'https://zomediaproductions.com',
