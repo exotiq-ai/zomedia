@@ -4,12 +4,13 @@
 
 The owner approved retaining WordPress/WooCommerce on HostGator at `shop.zomediaproductions.com` and preparing the main domain for Astro/Netlify. See `docs/BOOK-COMMERCE.md` and `docs/superpowers/plans/2026-11-19-shop-subdomain-launch.md` for the approved architecture and execution sequence. HostGator retirement is no longer part of the launch plan.
 
-- Fresh verification including shop routing: `npm test` passed 31 tests; `npm run validate` built 26 pages with zero type-check errors/warnings and one existing hint. All 1,290 internal references resolve. Public catalog evidence refreshed from the shop: 14 WooCommerce products, seven Sanity books.
+- Fresh verification including shop routing and preview logout: `npm test` passed 32 tests; `npm run validate` built 26 pages with zero type-check errors/warnings and one existing hint. All 1,290 internal references resolve. Public catalog evidence refreshed from the shop: 14 WooCommerce products, seven Sanity books.
 - Fresh resource checks: all 1,290 internal references resolve; Sanity Studio typecheck passes. A local CSV lists all 14 proposed shop product destinations, each awaiting verification and publisher approval.
 - Shop migration completed: `https://shop.zomediaproductions.com` points to the existing WordPress installation with valid TLS. All 14 product IDs and commerce/user counts are unchanged. Main web DNS remains `50.87.149.90`; Google MX and other existing main-domain DNS records are unchanged. The old WordPress homepage now redirects to the shop pending editorial cutover.
 - Netlify site `zomedia` remains locked at the protected preview deploy listed below, with no custom domain attached. GitHub `main` remains at `fa13d6078fce453df74b0a01383b5ed2cf73c235`; the reviewed launch-readiness branch is now pushed and available as draft PR https://github.com/exotiq-ai/zomedia/pull/5. No merge or unlock has occurred.
 - Contact/newsletter capture, native HTML contact endpoint, browser validation/inline success/reset and newsletter handoff passed. The owner confirmed receiving the notification at `gregory@ubfsf.org`. No personal Resend account is required; Substack confirmation was not completed. See `docs/FORMS.md`.
 - Sanity email sign-in, updated Studio/schema deployment and credentialed Studio CORS are verified. A temporary noneditorial draft was published through the Actions API, rebuilt successfully via the existing webhook, then deleted and rebuilt again. Original content revisions and webhook filter were preserved. Netlify's hook targets protected `feat/launch-readiness` until the release is merged; the published deploy stays locked. See `docs/SANITY.md`. Payments are deferred at the owner's request.
+- The deliberate incomplete-record build failed without changing the published deploy; deletion recovered successfully on the same commit. A browser test also exposed and fixed an Astro-intercepted preview logout POST: native transport and explicit URL encoding now clear the session. Chrome verified clean logout and blocked subsequent contact access; the regression test and focused review pass.
 - Owner completed HostGator login/PIN setup. Private database/files backups, integrity checks, serialization-aware URL migration and shop-scoped HTTPS enforcement are complete. See `docs/BOOK-COMMERCE.md` for evidence and remaining merchant requirements.
 - WooPayments shows “Test account”; PayPal shows “Action needed.” Prior live payment operation could not be established. Organization-owned activation, callbacks, payment/receipt/refund/download verification remain pending; no financial settings were changed.
 
@@ -69,7 +70,7 @@ Existing historical Netlify deploy URLs contain their original artifacts and are
 ## Release Checklist
 - [ ] Organization approves catalog records, impact figures, biographies, permissions and legal copy.
 - [ ] Authorized Sanity administrator deploys the new Studio schema and verifies editor permissions/CORS.
-- [ ] Publish → webhook → correct-branch deploy proven, including deletion and failed-build recovery.
+- [x] Publish → webhook → protected correct-branch deploy proven, including deletion and failed-build recovery. Retarget the hook to `main` only after the approved release is merged there.
 - [ ] WooCommerce ebook delivery, failed payment, refund and receipt tested with approved test credentials.
 - [ ] Print retailer destination verified per edition; proof order required before enabling direct POD.
 - [ ] Donation and contact delivery tests completed.
