@@ -71,3 +71,21 @@ test('edge preserves bodyless conditional responses', async () => {
   assert.equal(response.status, 304);
   assert.equal(await response.text(), '');
 });
+
+test('rendered sign-out form bypasses client routing and preserves the login endpoint encoding', async () => {
+  const { createGate } = await import('../edge-functions/preview-gate.js');
+  const { createLogin } = await import('../functions/preview-login.mjs');
+  const token = await auth.createSession('test-secret', 'zomedia.netlify.app');
+  const page = await createGate(() => 'test-secret')(new Request('https://zomedia.netlify.app/contact/', {
+    headers: { cookie: `${auth.COOKIE_NAME}=${token}` },
+  }), { next: () => new Response('<html><body>Contact</body></html>', { headers: { 'content-type': 'text/html' } }) });
+  const form = (await page.text()).match(/<form\b[^>]*action="\/preview\/login"[^>]*>/)?.[0];
+  assert.ok(form);
+  assert.match(form, /\bdata-astro-reload(?:\s|>)/, 'Astro must leave session-ending POSTs to the browser');
+  assert.match(form, /enctype="application\/x-www-form-urlencoded"/);
+  const logout = await createLogin(() => 'unused')(new Request('https://zomedia.netlify.app/preview/login', {
+    method: 'POST', headers: { origin: 'https://zomedia.netlify.app', 'content-type': 'application/x-www-form-urlencoded' }, body: 'action=logout',
+  }));
+  assert.equal(logout.headers.get('location'), '/coming-soon/');
+  assert.match(logout.headers.get('set-cookie'), /Max-Age=0/);
+});

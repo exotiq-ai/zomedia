@@ -27,7 +27,7 @@ export function createGate(readSecret = () => envValue('PREVIEW_SESSION_SECRET')
         if (request.method !== 'HEAD' && ![204, 205, 304].includes(response.status) && response.headers.get('content-type')?.includes('text/html')) {
           let html = (await response.text()).replace(/<meta name="robots" content="[^"]*"\s*\/?>/g, '<meta name="robots" content="noindex, nofollow">');
           if (!url.pathname.startsWith('/coming-soon/')) {
-            html = html.replace('</body>', '<form action="/preview/login" method="post" style="padding:16px;text-align:center;background:#141416;color:#e8e2d9"><input type="hidden" name="action" value="logout"><button type="submit" style="min-height:44px;padding:8px 20px;color:inherit;border:1px solid #777;background:transparent;cursor:pointer">End preview session</button></form></body>');
+            html = html.replace('</body>', '<form action="/preview/login" method="post" enctype="application/x-www-form-urlencoded" data-astro-reload style="padding:16px;text-align:center;background:#141416;color:#e8e2d9"><input type="hidden" name="action" value="logout"><button type="submit" style="min-height:44px;padding:8px 20px;color:inherit;border:1px solid #777;background:transparent;cursor:pointer">End preview session</button></form></body>');
           }
           response = new Response(html, { status: response.status, headers: response.headers });
           response.headers.delete('content-length');
