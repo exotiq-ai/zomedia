@@ -2,6 +2,29 @@
 
 Decision: retain existing WooCommerce checkout as a bridge; Astro/Sanity manage editorial pages. Expected book revenue is below $500/month. Existing distribution is KDP/Ingram; no automated direct-POD integration has been proven.
 
+## Approved Hosting Split — November 19, 2026
+
+The owner approved keeping the existing WordPress/WooCommerce installation for book payments and moving the editorial website to the main domain:
+
+- `https://zomediaproductions.com`: Astro on Netlify; `www` redirects to the canonical main domain.
+- `https://shop.zomediaproductions.com`: existing WordPress/WooCommerce on HostGator, retaining products, orders, accounts and protected downloads.
+- Reviewed purchase links on the new website will point to the corresponding WooCommerce products on the shop hostname. Do not point visitors at the new hostname until it works.
+- HostGator remains required for the shop after the editorial launch. Its hosting cannot be retired under this architecture.
+
+Read-only checks on November 19 found no DNS record for the shop hostname. Netlify site `zomedia` has no custom domain attached and its published preview remains locked. No DNS, WordPress URL, checkout or customer data was changed.
+
+Execution order:
+
+1. Obtain HostGator/DNS and WordPress administrator access; identify payment gateways and their domain-specific requirements.
+2. Back up WordPress files/database and verify recovery. Capture the existing DNS zone, including mail records.
+3. Configure the shop virtual host/subdomain, DNS and valid TLS. Move the existing WordPress site's URL and stored internal references using a serialization-aware migration; preserve order/download records.
+4. Verify product pages, cart, checkout, account login, existing download links, receipts and gateway callbacks. Use gateway test mode for transactions; any real financial action requires the owner.
+5. Reconcile and approve each title's sales destination, then update Sanity purchase URLs to the tested shop URLs.
+6. Prepare and test legacy commerce redirects on Netlify, including product/cart/checkout/account paths, payment callbacks and query-string download URLs. Browser redirects alone do not establish that gateway POST callbacks work.
+7. Attach the main domain to the approved Netlify release and switch only the required web DNS records after shop verification. Preserve mail records and a rollback route.
+
+The prior WordPress-retirement runbooks are historical proposals; their HostGator cancellation steps do not apply while WooCommerce remains hosted there.
+
 ## Options Evaluated
 | Option | Cost structure | Decision |
 |---|---|---|

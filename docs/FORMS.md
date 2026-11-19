@@ -1,5 +1,16 @@
 # Forms backend
 
+## Live verification — November 19, 2026
+
+- Authenticated to the existing protected Netlify preview and submitted clearly labeled launch tests through its real form POST endpoint. Both requests returned HTTP 200.
+- Verified the contact submission directly in its Netlify form: `6aff0ba465cd8e8fcdd0a922`.
+- Verified the newsletter submission directly in its Netlify form: `6aff0ba4427a0e534885e1bd`.
+- Used the published organizational contact address as test data. No Substack confirmation was submitted and no subscription was completed.
+- Netlify's configured environment contains the Sanity project/dataset and preview credentials; no Resend or newsletter-provider credentials are configured. Its outgoing-hook list contains deployment hooks only, with no form email notification.
+- Result: live form capture is verified. Inbox delivery remains unverified until the owner selects a recipient, a Netlify email notification is configured, and receipt of a new controlled test is confirmed.
+- Follow-up: the owner selected `gregory@ubfsf.org`. Created and read back an enabled Netlify email notification for all form submissions (hook `6aff0eba6ccb0c6117c61953`). Submitted a new contact test with subject `ZoMedia notification delivery test — 2026-11-19T14:59:08.784Z` and verified stored submission `6aff0ebd173196c3836d269e`. Recipient configuration and capture are verified; inbox receipt still awaits confirmation. The connected Gmail account is a different inbox, so it cannot establish receipt at the selected address.
+- Recommended launch setup: Netlify Forms storage plus Netlify's built-in email notifications. This does not require the owner's personal Resend account. A Sanity submissions inbox would require a separate integration and private storage; email notifications would still need a delivery service. Never store private inquiries in the existing public content dataset.
+
 Two forms exist on the site, both handled by **Netlify Forms** (works on any Netlify deploy, no server to run):
 
 | Form name | Where | Fields |

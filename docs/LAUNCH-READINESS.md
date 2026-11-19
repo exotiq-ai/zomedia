@@ -1,5 +1,16 @@
 # Launch Readiness — October 19, 2026
 
+## Current Execution Checkpoint — November 19, 2026
+
+The owner approved retaining WordPress/WooCommerce on HostGator at `shop.zomediaproductions.com` and preparing the main domain for Astro/Netlify. See `docs/BOOK-COMMERCE.md` and `docs/superpowers/plans/2026-11-19-shop-subdomain-launch.md` for the approved architecture and execution sequence. HostGator retirement is no longer part of the launch plan.
+
+- Fresh verification: `npm test` passed 23 tests; `npm run validate` built 26 pages with zero type-check errors/warnings and one existing hint. Public catalog evidence refreshed: 14 WooCommerce products, seven Sanity books.
+- Fresh resource checks: all 1,290 internal references resolve; Sanity Studio typecheck passes. A local CSV lists all 14 proposed shop product destinations, each awaiting verification and publisher approval.
+- Public DNS captured locally before changes. The main web address remains `50.87.149.90`; Google MX records must be preserved. The shop subdomain has no DNS record yet.
+- Netlify site `zomedia` remains locked at the protected preview deploy listed below, with no custom domain attached. GitHub `main` remains at `fa13d6078fce453df74b0a01383b5ed2cf73c235`; the launch-readiness commit is still local at this checkpoint.
+- Contact and newsletter capture passed live tests. An enabled Netlify email notification now targets the owner-approved `gregory@ubfsf.org` inbox; inbox receipt still needs confirmation. See `docs/FORMS.md` for test IDs.
+- Access checkpoint: opening ZoMedia management required a fresh HostGator login, followed by mandatory support-PIN creation. The owner must complete credential creation; no hosting or DNS changes were made before this handoff.
+
 ## Implemented
 - Preview-only server-side password gate, host-bound signed eight-hour session, logout, same-origin login, platform rate limiting (five attempts/minute/IP/domain), non-cacheable responses and noindex. The actual password and signing key are Netlify environment variables, not public bundles.
 - All alternate hosts are protected; `zomediaproductions.com` and `www.zomediaproductions.com` are exempt. WordPress/DNS has not been changed.
@@ -47,7 +58,7 @@ For every title, obtain the approved ISBN/edition, author/editor, genre, descrip
 - The final artifact was checked for unapproved rendered prices and impact numbers; none appeared. No preview password/signing-key assignments were found in shipped assets.
 
 ## Netlify Preview Publication Hold
-The protected build is published at https://zomedia.netlify.app/ and pinned using Netlify's deploy lock. WordPress remains at the real domain. Current preview deploy: `6ad6c9fe62b8450dcd0ca898`; pre-change published preview: `6ac6745c2e6b0b0008c5d22f`.
+The protected build is published at https://zomedia.netlify.app/ and pinned using Netlify's deploy lock. WordPress remains at the real domain. Current preview deploy: `6ad6cb43cb312f6ef8314d02`; pre-change published preview: `6ac6745c2e6b0b0008c5d22f`. The coming-soon page no longer links to the old site; Read The Wire and Preview Access remain available.
 
 The lock intentionally prevents automatic main-branch builds from replacing this preview while the feature branch awaits review. After merging the gate changes, verify the new main artifact is protected, then unlock/re-publish that build. Do not simply unlock before the source branch contains the gate. The scheduled rebuild remains unconfigured until that step is complete.
 
