@@ -4,7 +4,7 @@ import path from 'node:path';
 import { getCollection, render } from 'astro:content';
 import SubpageLayout from '../../layouts/SubpageLayout.astro';
 import { SITE } from '../../config/site';
-import { purchaseOptions } from '../../lib/book-commerce.mjs';
+import { purchaseOptions, shopProductUrl } from '../../lib/book-commerce.mjs';
 
 export async function getStaticPaths() {
   const entries = await getCollection('books');
@@ -14,6 +14,7 @@ export async function getStaticPaths() {
 const { entry } = Astro.props;
 const book = entry.data;
 const options = purchaseOptions(book);
+const shopUrl = shopProductUrl(book);
 const { Content } = await render(entry);
 
 const all = (await getCollection('books'))
@@ -88,7 +89,7 @@ const showBody = body && body !== book.description.trim();
         <div class="book-detail__info reveal">
           <span class="eyebrow">
             {book.category}
-            {book.isForthcoming && <> &middot; Forthcoming</>}
+            {book.isForthcoming && !shopUrl && <> &middot; Forthcoming</>}
           </span>
           <h1 class="book-detail__title">{book.title}</h1>
           <p class="book-detail__author">{hasAuthor ? `By ${book.author}` : book.author}</p>
@@ -114,14 +115,17 @@ const showBody = body && body !== book.description.trim();
             {options.map((option) => (
               <a href={option.url} class="btn btn--primary btn--lg" rel="noopener">{option.label}</a>
             ))}
-            {!options.length && (
+            {!options.length && shopUrl && (
+              <a href={shopUrl} class="btn btn--primary btn--lg">Buy this book</a>
+            )}
+            {!options.length && !shopUrl && (
               <a href={`/contact/?intent=book&book=${encodeURIComponent(book.title)}`} class="btn btn--primary btn--lg">
                 {book.isForthcoming ? 'Ask About Pre-Orders' : 'Ask About Ordering'}
               </a>
             )}
             <a href="/support/" class="btn btn--outline btn--lg">Support the Press</a>
           </div>
-          {!options.length && (
+          {!options.length && !shopUrl && (
             <p class="book-detail__note">Purchase details are being confirmed. Contact us for current availability and pricing.</p>
           )}
         </div>
@@ -136,7 +140,7 @@ const showBody = body && body !== book.description.trim();
         <h2 class="mt-sm">More from the press</h2>
         <div class="grid grid--3 mt-xl">
           {related.map((b) => (
-            <a href={`/books/${b.slug}/`} class="card book-related">
+            <a href={shopProductUrl(b) || `/books/${b.slug}/`} class="card book-related">
               <img src={b.coverImage} alt="" width="200" height="300" loading="lazy" decoding="async" />
               <span class="eyebrow">{b.category}</span>
               <span class="card__title">{b.title}</span>

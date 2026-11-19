@@ -1,6 +1,7 @@
 ---
 import { getCollection } from 'astro:content';
 import SubpageLayout from '../../layouts/SubpageLayout.astro';
+import { shopProductUrl } from '../../lib/book-commerce.mjs';
 
 const bookEntries = await getCollection('books');
 const books = bookEntries
@@ -61,7 +62,7 @@ const bookListLd = {
       <div class="grid grid--3 book-grid">
         {books.map((book) => (
           <article class="card card--feature book-card" data-category={book.category}>
-            <a href={`/books/${book.slug}/`} class="book-card__cover img-editorial reveal--mask" tabindex="-1" aria-hidden="true">
+            <a href={shopProductUrl(book) || `/books/${book.slug}/`} class="book-card__cover img-editorial reveal--mask" tabindex="-1" aria-hidden="true">
               <img
                 src={book.coverImage}
                 alt=""
@@ -74,16 +75,16 @@ const bookListLd = {
             <div class="book-card__body">
               <span class="eyebrow">
                 {book.category}
-                {book.isForthcoming && <> &middot; Forthcoming</>}
+                {book.isForthcoming && !shopProductUrl(book) && <> &middot; Forthcoming</>}
               </span>
-              <h3 class="card__title"><a href={`/books/${book.slug}/`} class="book-card__title-link">{book.title}</a></h3>
+              <h3 class="card__title"><a href={shopProductUrl(book) || `/books/${book.slug}/`} class="book-card__title-link">{book.title}</a></h3>
               <p class="book-card__author">{book.author}</p>
               <p class="card__text">{book.description}</p>
               <div class="book-card__prices">
                 {book.commerceReviewed && book.priceHardcover && <span class="book-card__price">Print: {book.priceHardcover}</span>}
                 {book.commerceReviewed && book.ebookRightsCleared && book.priceEbook && <span class="book-card__price">eBook: {book.priceEbook}</span>}
               </div>
-              <a class="book-card__availability" href={`/books/${book.slug}/`}>View book details</a>
+              <a class="book-card__availability" href={shopProductUrl(book) || `/books/${book.slug}/`}>{shopProductUrl(book) ? 'Buy this book' : 'View book details'}</a>
             </div>
           </article>
         ))}

@@ -1,3 +1,15 @@
+/** Existing store navigation does not approve display prices or ebook rights.
+ * @param {Record<string, any>} book
+ * @returns {string | undefined}
+ */
+export function shopProductUrl(book) {
+  try {
+    const url = new URL(book.printPurchaseUrl);
+    if (url.origin === 'https://shop.zomediaproductions.com' && !url.username && !url.password && /^\/product\/[^/]+\/?$/.test(url.pathname)) return url.href;
+  } catch {}
+  return undefined;
+}
+
 /** @param {Record<string, any>} book */
 export function purchaseOptions(book) {
   if (!book.commerceReviewed || book.isForthcoming) return [];

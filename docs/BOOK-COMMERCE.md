@@ -4,6 +4,10 @@ Decision: retain existing WooCommerce checkout as a bridge; Astro/Sanity manage 
 
 ## Approved Hosting Split — November 19, 2026
 
+Latest owner clarification: publish the current Netlify website at the main domain now, and send customer book clicks directly to the corresponding existing WooCommerce product. Ivan's ongoing copy review and later payment activation do not hold this routing/cutover request. This instruction does not approve catalog prices, impact figures or ebook rights.
+
+All seven `printPurchaseUrl` values now point to verified existing shop products. Home shelf, books-grid covers/titles/purchase links and related-book cards open those product pages directly; internal detail-page URLs remain available with a matching purchase action. A strict shop-origin/product-path helper permits this navigation without enabling catalog or ebook approval flags, display prices or structured offers. Original editorial fields and review flags were preserved.
+
 The owner approved keeping the existing WordPress/WooCommerce installation for book payments and moving the editorial website to the main domain:
 
 - `https://zomediaproductions.com`: Astro on Netlify; `www` redirects to the canonical main domain.

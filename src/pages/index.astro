@@ -5,7 +5,7 @@ import SectionHeader from '../components/ui/SectionHeader.astro';
 import SubscribeForm from '../components/forms/SubscribeForm.astro';
 import { getCollection } from 'astro:content';
 import { getSiteSettings } from '../lib/sanity';
-import { approvedImpactStats } from '../lib/book-commerce.mjs';
+import { approvedImpactStats, shopProductUrl } from '../lib/book-commerce.mjs';
 import { getWirePosts, formatIssueDate } from '../lib/substack';
 import literatureReading from '../assets/images/zo-media/literature-reading.jpg';
 import folsomTower from '../assets/images/zo-media/folsom-tower.jpeg';
@@ -261,11 +261,11 @@ const tiles = [
     </div>
     <div class="bookshelf__track" data-shelf tabindex="0" role="region" aria-label="Books by Zo Media Productions. Scroll horizontally.">
       {shelfBooks.map((b) => (
-        <a href={`/books/${b.slug}/`} class="bookshelf__item">
+        <a href={shopProductUrl(b) || `/books/${b.slug}/`} class="bookshelf__item">
           <span class="bookshelf__cover img-editorial reveal--mask">
             <img src={b.coverImage} alt="" width="300" height="450" loading="lazy" decoding="async" />
           </span>
-          <span class="eyebrow">{b.category}{b.isForthcoming ? ' · forthcoming' : ''}</span>
+          <span class="eyebrow">{b.category}{b.isForthcoming && !shopProductUrl(b) ? ' · forthcoming' : ''}</span>
           <span class="bookshelf__title">{b.title}</span>
           <span class="bookshelf__author">{b.author}</span>
         </a>
