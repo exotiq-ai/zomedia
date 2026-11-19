@@ -11,7 +11,7 @@ export function envValue(key) {
   return globalThis.Netlify?.env?.get(key) ?? (typeof process !== 'undefined' ? process.env[key] : undefined);
 }
 
-// Every alternate host is gated; only the intended public domain is exempt.
+// Alternate hosts are gated; a launch hold also gates the intended public domain.
 export function isPreviewHost(hostname, launchHold = envValue('PUBLIC_LAUNCH_HOLD')) {
   return launchHold === 'true' || !['zomediaproductions.com', 'www.zomediaproductions.com'].includes(hostname.toLowerCase());
 }

@@ -1,6 +1,6 @@
 <?php
 // Temporary main-host bridge for clients retaining pre-cutover DNS records.
-// The WooCommerce hostname never enters this handler. No credentials are copied.
+// The WooCommerce hostname never enters this handler. WordPress credentials are not forwarded.
 function zomedia_transition_plan(array $server): array {
     $host = strtolower($server['HTTP_HOST'] ?? '');
     if (!in_array($host, ['zomediaproductions.com', 'www.zomediaproductions.com'], true)) {
