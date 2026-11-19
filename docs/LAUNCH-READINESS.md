@@ -2,6 +2,12 @@
 
 ## Current Execution Checkpoint — November 19, 2026
 
+Latest cutover instruction: the owner explicitly requested the current Netlify site on the main domain now and direct book clicks into the existing WooCommerce products, while Ivan reviews copy and payment activation waits. PR #5 is merged; main production deploy `6aff30b29cd168207fbb20bf` is published and unlocked, and Sanity's build hook targets `main`. Seven verified print destinations are connected without setting catalog, ebook-rights or impact approval flags. Apex/www DNS now point to Netlify; shop and mail record values are preserved. Custom-domain TLS is issued and strict HTTPS checks pass. Main home/books return 200 with all seven shop destinations, www redirects to the canonical main domain, HTTP redirects to HTTPS, and legacy commerce paths redirect to the shop. Primary-domain contact submission `6aff34c8442e2b671b6d5eac` was captured successfully. Authoritative and public DNS are updated; this computer's resolver/browser still caches the old HostGator address, so some clients may see WordPress until the previous four-hour TTL expires. See ignored `output/launch/2026-11-19/primary-domain-verification.json` and the completed main-domain cutover plan.
+
+Current verification: 34 tests pass, 26-page build/type checks pass, and all 1,234 internal references resolve. Sanity Studio/schema deployment, publish/delete webhook delivery and failed-build recovery are verified. Contact/newsletter capture and browser success states passed; the owner confirmed inbox receipt at `gregory@ubfsf.org`. Payment activation and Ivan's editorial review remain follow-ups. HostGator remains required for WooCommerce.
+
+## Historical preparation checkpoints — superseded by the cutover above
+
 The owner approved retaining WordPress/WooCommerce on HostGator at `shop.zomediaproductions.com` and preparing the main domain for Astro/Netlify. See `docs/BOOK-COMMERCE.md` and `docs/superpowers/plans/2026-11-19-shop-subdomain-launch.md` for the approved architecture and execution sequence. HostGator retirement is no longer part of the launch plan.
 
 - Fresh verification including shop routing and preview logout: `npm test` passed 32 tests; `npm run validate` built 26 pages with zero type-check errors/warnings and one existing hint. All 1,290 internal references resolve. Public catalog evidence refreshed from the shop: 14 WooCommerce products, seven Sanity books.
@@ -78,7 +84,7 @@ Existing historical Netlify deploy URLs contain their original artifacts and are
 - [ ] Updated responsive, accessibility, performance and link results recorded; real-device Safari/Android check.
 - [ ] Feature branch reviewed and merged before allowing unattended main-branch rebuilds.
 
-## Main-Domain Cutover — Pending Release Gates
-The owner authorized the hosting split and launch preparation. Keep the shop operating while the Astro preview is protected. Before main-domain DNS changes: finish content/CMS approvals and merchant tests, verify recovery in an isolated environment, approve the release artifact and assign rollback ownership. Shop TLS, backups, URL migration and legacy route implementation are complete; live payment callbacks/email/downloads remain unproven. Preserve mail DNS. Retain HostGator while WooCommerce operates there, including the rollback window.
+## Main-Domain Cutover — Completed November 19
+The owner's later instruction explicitly authorized the current website and direct WooCommerce links while copy review and payment activation continue separately. The release is merged/published, main/www DNS and TLS are configured, mail record values are preserved, and live origin/form/routing checks pass. Previous preview-lock and pre-cutover requirements above are historical. Live payment callbacks/receipts/downloads remain unproven. Retain HostGator while WooCommerce operates there, including the rollback window.
 
 Sanity is a public content dataset; the preview gate does not make its published content confidential. Do not upload private ebook masters or credentials to Sanity or `public/`.
