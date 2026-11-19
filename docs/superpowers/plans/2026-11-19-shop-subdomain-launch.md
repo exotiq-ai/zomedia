@@ -57,7 +57,7 @@
 
 - [x] Run `npm test` (23 passing) and `npm run validate` (26 pages, zero type-check errors or warnings, one existing hint).
 - [x] Run internal link/resource checks and Studio typecheck; all 1,290 references resolve and Studio typecheck passes.
-- [ ] Commit only the reviewed launch changes on the existing feature branch and open a draft PR against `main`.
+- [x] Commit only the reviewed launch changes on the existing feature branch and open a draft PR against `main`: https://github.com/exotiq-ai/zomedia/pull/5.
 - [ ] Resolve remaining content approvals and prove the CMS publish/rebuild flow before promoting the release.
 
 ### Task 5: Coordinated cutover
@@ -74,3 +74,4 @@
 - November 19: HostGator required a fresh login when opening ZoMedia's management page. The login then required support-PIN creation at `/my-account/account-center/secure-your-account`. Owner handoff requested; no PIN was entered by the agent.
 - No HostGator configuration, WordPress URL or DNS record has been changed at this checkpoint.
 - Prepared an ignored CSV of all 14 current product URLs and their proposed shop-host destinations at `output/launch/2026-11-19/commerce-url-map.csv`. Every destination is explicitly pending shop verification and publisher approval; no Sanity records were changed.
+- Independent read-only code review found no launch-blocking defect in preview protection, CMS validation or commerce approval handling. Draft PR #5 contains the reviewed release and migration preparation; no merge or Netlify unlock has occurred. Netlify queued deploy preview #5 automatically after PR creation.

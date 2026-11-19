@@ -7,7 +7,7 @@ The owner approved retaining WordPress/WooCommerce on HostGator at `shop.zomedia
 - Fresh verification: `npm test` passed 23 tests; `npm run validate` built 26 pages with zero type-check errors/warnings and one existing hint. Public catalog evidence refreshed: 14 WooCommerce products, seven Sanity books.
 - Fresh resource checks: all 1,290 internal references resolve; Sanity Studio typecheck passes. A local CSV lists all 14 proposed shop product destinations, each awaiting verification and publisher approval.
 - Public DNS captured locally before changes. The main web address remains `50.87.149.90`; Google MX records must be preserved. The shop subdomain has no DNS record yet.
-- Netlify site `zomedia` remains locked at the protected preview deploy listed below, with no custom domain attached. GitHub `main` remains at `fa13d6078fce453df74b0a01383b5ed2cf73c235`; the launch-readiness commit is still local at this checkpoint.
+- Netlify site `zomedia` remains locked at the protected preview deploy listed below, with no custom domain attached. GitHub `main` remains at `fa13d6078fce453df74b0a01383b5ed2cf73c235`; the reviewed launch-readiness branch is now pushed and available as draft PR https://github.com/exotiq-ai/zomedia/pull/5. No merge or unlock has occurred.
 - Contact and newsletter capture passed live tests. An enabled Netlify email notification now targets the owner-approved `gregory@ubfsf.org` inbox; inbox receipt still needs confirmation. See `docs/FORMS.md` for test IDs.
 - Access checkpoint: opening ZoMedia management required a fresh HostGator login, followed by mandatory support-PIN creation. The owner must complete credential creation; no hosting or DNS changes were made before this handoff.
 
