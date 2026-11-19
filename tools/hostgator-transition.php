@@ -17,13 +17,23 @@ function zomedia_transition_plan(array $server): array {
     if ((int)($server['CONTENT_LENGTH'] ?? 0) > 1048576) {
         return ['status' => 413];
     }
+    if ($host === 'www.zomediaproductions.com') {
+        return ['status' => $method === 'POST' ? 307 : 301, 'location' => 'https://zomediaproductions.com' . $uri];
+    }
     return ['status' => 200, 'url' => 'https://zomediaproductions.com' . $uri, 'method' => $method];
 }
 
+function zomedia_transition_cookie(string $cookies): string {
+    if (preg_match('/(?:^|;\s*)__Host-zo-preview=(\d+\.[A-Za-z0-9_-]{43})(?:;|$)/', $cookies, $match)) {
+        return '__Host-zo-preview=' . $match[1];
+    }
+    return '';
+}
 if (defined('ZOMEDIA_TRANSITION_TEST')) { return; }
 $plan = zomedia_transition_plan($_SERVER);
 if ($plan['status'] !== 200) {
     http_response_code($plan['status']);
+    if (isset($plan['location'])) { header('Location: ' . $plan['location']); }
     header('Cache-Control: no-store');
     exit;
 }
@@ -55,6 +65,11 @@ $options = [
         return strlen($line);
     },
 ];
+$previewCookie = zomedia_transition_cookie($_SERVER['HTTP_COOKIE'] ?? '');
+if ($previewCookie !== '') { $options[CURLOPT_HTTPHEADER][] = 'Cookie: ' . $previewCookie; }
+if (($_SERVER['HTTP_ORIGIN'] ?? '') === 'https://zomediaproductions.com') {
+    $options[CURLOPT_HTTPHEADER][] = 'Origin: https://zomediaproductions.com';
+}
 if ($plan['method'] === 'HEAD') { $options[CURLOPT_NOBODY] = true; }
 if ($plan['method'] === 'POST') {
     $options[CURLOPT_POSTFIELDS] = $body;
@@ -71,8 +86,11 @@ if ($response === false || $status < 100) {
     exit;
 }
 http_response_code($status);
-foreach (['content-type', 'location', 'etag', 'last-modified', 'vary', 'content-disposition', 'content-range', 'accept-ranges', 'x-content-type-options', 'x-frame-options', 'referrer-policy', 'permissions-policy', 'strict-transport-security'] as $name) {
+foreach (['content-type', 'location', 'etag', 'last-modified', 'vary', 'content-disposition', 'content-range', 'accept-ranges', 'x-content-type-options', 'x-frame-options', 'referrer-policy', 'permissions-policy', 'strict-transport-security', 'x-robots-tag'] as $name) {
     foreach ($responseHeaders[$name] ?? [] as $value) { header($name . ': ' . $value, false); }
+}
+foreach ($responseHeaders['set-cookie'] ?? [] as $cookie) {
+    if (str_starts_with($cookie, '__Host-zo-preview=')) { header('Set-Cookie: ' . $cookie, false); }
 }
 // Avoid retaining a temporary response after resolver caches expire.
 header('Cache-Control: no-store');

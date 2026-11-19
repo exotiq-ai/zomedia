@@ -9,6 +9,32 @@ test('preview hosts include deploy aliases, never the WordPress domain', () => {
   assert.equal(auth.isPreviewHost('zomediaproductions.com'), false);
   assert.equal(auth.isPreviewHost('www.zomediaproductions.com'), false);
 });
+test('public launch hold gates main hosts while preserving existing preview hosts', () => {
+  assert.equal(auth.isPreviewHost('zomediaproductions.com', 'true'), true);
+  assert.equal(auth.isPreviewHost('www.zomediaproductions.com', 'true'), true);
+  assert.equal(auth.isPreviewHost('zomediaproductions.com', 'false'), false);
+  assert.equal(auth.isPreviewHost('zomedia.netlify.app', 'false'), true);
+});
+test('public hold reuses secure login and blocks anonymous main-domain content', async () => {
+  const previous = process.env.PUBLIC_LAUNCH_HOLD;
+  process.env.PUBLIC_LAUNCH_HOLD = 'true';
+  try {
+    const { createGate } = await import('../edge-functions/preview-gate.js');
+    const { createLogin } = await import('../functions/preview-login.mjs');
+    const host = 'https://zomediaproductions.com';
+    const blocked = await createGate(() => 'test-secret')(new Request(host + '/books/'), { next: () => { throw Error('leak'); } });
+    assert.equal(blocked.status, 303);
+    const login = createLogin(key => ({ PUBLIC_LAUNCH_HOLD: 'true', PREVIEW_PASSWORD: 'test-password', PREVIEW_SESSION_SECRET: 'test-secret' })[key]);
+    const response = await login(new Request(host + '/preview/login', { method: 'POST', headers: { origin: host }, body: new URLSearchParams({ password: 'test-password' }) }));
+    assert.equal(response.status, 303);
+    assert.match(response.headers.get('set-cookie'), /HttpOnly; Secure; SameSite=Lax/);
+    const allowed = await createGate(() => 'test-secret')(new Request(host + '/books/', { headers: { cookie: response.headers.get('set-cookie').split(';')[0] } }), { next: async () => new Response('review content') });
+    assert.equal(allowed.status, 200);
+  } finally {
+    if (previous === undefined) delete process.env.PUBLIC_LAUNCH_HOLD;
+    else process.env.PUBLIC_LAUNCH_HOLD = previous;
+  }
+});
 test('session signatures enforce expiry, host binding and secret rotation', async () => {
   const token = await auth.createSession('secret-long-enough-for-testing', 'preview.test', 100);
   assert.equal(await auth.verifySession(token, 'secret-long-enough-for-testing', 'preview.test', 101), true);

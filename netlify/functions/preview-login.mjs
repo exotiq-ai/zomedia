@@ -4,7 +4,7 @@ export function createLogin(readEnv = envValue) {
   return async (request) => {
     const url = new URL(request.url);
     const respond = (status, headers = {}, body = null) => new Response(body, { status, headers: { ...previewHeaders, ...headers } });
-    if (!isPreviewHost(url.hostname)) return respond(404);
+    if (!isPreviewHost(url.hostname, readEnv('PUBLIC_LAUNCH_HOLD'))) return respond(404);
     if (request.method !== 'POST') return respond(405, { Allow: 'POST' });
     if (request.headers.get('origin') !== url.origin) return respond(403);
     if (Number(request.headers.get('content-length')) > 4096) return respond(413);

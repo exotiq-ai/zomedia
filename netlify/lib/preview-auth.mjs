@@ -12,8 +12,8 @@ export function envValue(key) {
 }
 
 // Every alternate host is gated; only the intended public domain is exempt.
-export function isPreviewHost(hostname) {
-  return !['zomediaproductions.com', 'www.zomediaproductions.com'].includes(hostname.toLowerCase());
+export function isPreviewHost(hostname, launchHold = envValue('PUBLIC_LAUNCH_HOLD')) {
+  return launchHold === 'true' || !['zomediaproductions.com', 'www.zomediaproductions.com'].includes(hostname.toLowerCase());
 }
 
 export function safeReturnTo(value) {
