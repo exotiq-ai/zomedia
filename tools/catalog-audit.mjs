@@ -2,7 +2,7 @@ import fs from 'node:fs';
 import path from 'node:path';
 
 // Read-only public evidence. This never imports or overwrites editorial records.
-const site = 'https://zomediaproductions.com';
+const site = 'https://shop.zomediaproductions.com';
 const project = process.env.PUBLIC_SANITY_PROJECT_ID || 'shuf0j25';
 const dataset = process.env.PUBLIC_SANITY_DATASET || 'production';
 const query = '*[_type == "book" && !(_id in path("drafts.**"))]{title,"slug":slug.current,author,category,description,priceHardcover,priceEbook,isForthcoming,purchaseUrl,printPurchaseUrl,ebookPurchaseUrl,commerceReviewed,ebookRightsCleared}';

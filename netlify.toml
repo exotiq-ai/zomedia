@@ -12,6 +12,10 @@
   node_bundler = "esbuild"
 
 [[edge_functions]]
+  function = "commerce-redirects"
+  path = "/*"
+
+[[edge_functions]]
   function = "preview-gate"
   path = "/*"
 

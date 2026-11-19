@@ -11,7 +11,13 @@ The owner approved keeping the existing WordPress/WooCommerce installation for b
 - Reviewed purchase links on the new website will point to the corresponding WooCommerce products on the shop hostname. Do not point visitors at the new hostname until it works.
 - HostGator remains required for the shop after the editorial launch. Its hosting cannot be retired under this architecture.
 
-Read-only checks on November 19 found no DNS record for the shop hostname. Netlify site `zomedia` has no custom domain attached and its published preview remains locked. No DNS, WordPress URL, checkout or customer data was changed.
+On November 19 the shop hostname was created on HostGator using the existing WordPress document root. DNS points to `50.87.149.90`; valid AutoSSL TLS was verified. WordPress home/site URLs and 214 serialized-safe stored URL references now use the shop hostname. All 14 product IDs remain unchanged. Main-domain web/mail DNS records were preserved; the old WordPress homepage currently redirects to the shop while the editorial release awaits approval. Netlify has no custom domain attached and its published preview remains locked.
+
+Private database/file backups are retained outside web roots at `/home1/ubfsf/zo-migration-backups/20261119T161429Z`. Archive integrity, critical-file presence and SHA-256 checks passed; a full restore was not performed. Before/after commerce counts match: zero legacy/HPOS orders, zero download permissions and six users.
+
+The existing payment configuration is **not verified for live sales**: WooPayments displays “Test account” and PayPal displays “Action needed.” No gateway settings or financial accounts were changed. The owner lacks the organization's payment details at this checkpoint. Organization-owned activation, new-host callback registration and payment/receipt/download tests remain required.
+
+Verified public routes are `/store/`, `/cart-2/`, `/checkout-2/` (empty cart redirects to the shop cart), `/my-account/` and product pages. A shop-only HTTP 307 rule preserves paths/query strings while enforcing HTTPS. The proposed Netlify release adds equivalent legacy commerce compatibility on the main/www hosts; previews remain password protected. These redirects do not proxy or prove payment webhooks.
 
 Execution order:
 
@@ -49,5 +55,5 @@ For each title collect: ISBN/edition, trim size, page count, binding, interior c
 
 Verify whether existing KDP/Ingram retail links meet the immediate need. Their existence does not establish a WooCommerce dropship API. For fully automated direct POD, price a native Lulu/WooCommerce integration and require a proof order, failed-payment test, duplicate-webhook test, shipping notification, refund procedure and funding method for printing costs before activation. No custom fulfillment integration in this release.
 
-## Migration Gates
-Before moving a single order flow: export products/orders/download entitlements, document taxes/payment gateways and renewal costs, verify ebook rights and delivery security, test old customer downloads, retain a rollback copy and obtain accounting/legal approval of seller identity and receipt wording. Keep the current store URL until its replacement hostname is tested.
+## Remaining Sales Gates
+Before enabling sales on the new website: verify organization-owned payment activation, taxes, seller/receipt details, callback delivery, ebook rights and protected delivery. Retain the private rollback copy. No historical order/download records were found; new test entitlements still need end-to-end verification. All seven Sanity books currently lack approved commerce flags and purchase URLs; the website continues to withhold purchase buttons until publisher review.
