@@ -58,7 +58,7 @@ const hostOf = (url: string) => new URL(url).hostname.replace(/^www\./, '');
   {rest.length > 0 && (
     <section class="section section--alt" aria-labelledby="upcoming-title">
       <div class="container reveal">
-        <SectionHeader eyebrow="Coming Next" title="In Production" align="center" />
+        <SectionHeader eyebrow="Explore" title="More Projects" align="center" />
         <div class="grid grid--3 grid--stack-tablet mt-2xl" id="upcoming-title">
           {rest.map((p) => {
             const live = isLive(p);
@@ -71,7 +71,7 @@ const hostOf = (url: string) => new URL(url).hostname.replace(/^www\./, '');
                 <h3 class="project__title">{p.title}</h3>
                 <p class="project__tagline">{p.tagline}</p>
                 <span class="project__status">
-                  {live ? (<>Visit project <span aria-hidden="true">&nearr;</span></>) : (<><span class="project__tick" aria-hidden="true"></span>In production</>)}
+                  {live ? (<>Now live &middot; Visit project <span aria-hidden="true">&nearr;</span></>) : (<><span class="project__tick" aria-hidden="true"></span>In production</>)}
                 </span>
               </Tag>
             );

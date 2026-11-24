@@ -1,5 +1,13 @@
 # Forms backend
 
+## Private contact documents — November 24, 2026
+
+The optional contact document field accepts one PDF, DOCX, PPTX, TXT or FDX file up to 4 MB. The browser uploads it to the write-only `contact-upload` function, which validates origin, format, size and honeypot; Netlify rate-limits it to five requests per IP per minute. Files are stored in Netlify Blobs, not in public Sanity assets or Netlify Forms attachments. There is deliberately no public file download/list route. Only the filename and reference are included in the ordinary form notification to `gregory@ubfsf.org`.
+
+Team retrieval: sign in to Netlify, open the ZoMedia project → Blobs → `contact-documents` (or `contact-documents-preview` for preview-context tests), locate the exact key from the notification, and download the object. Access depends on the team's Netlify permissions; the website preview password does not grant file access. Do not forward downloaded submissions beyond the intended reviewers. The file control stays disabled without JavaScript so native contact submissions cannot accidentally upload files to Netlify Forms. Without JavaScript, send the inquiry and arrange a private upload with the team.
+
+If the message submission fails after a file upload, retrying the same document reuses its reference. An abandoned upload can remain in the private store; periodically review and remove unneeded files through Netlify. No automatic retention deadline is claimed. This is document storage, not malware scanning or an editorial-rights agreement.
+
 ## Live verification — November 19, 2026
 
 - Follow-up tests on the protected PR preview: contact submission `6aff27f88e62de83f52e7fe2` and newsletter submission `6aff27f8fbf0cf98e2a357e5` both returned HTTP 200 and were read back from Netlify. Contact subject: `ZoMedia form verification 2026-11-19T16:46:47.963Z`. The newsletter retains `source=wire`; no Substack subscription was completed.

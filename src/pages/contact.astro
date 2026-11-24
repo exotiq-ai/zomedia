@@ -1,6 +1,7 @@
 ---
 import SubpageLayout from '../layouts/SubpageLayout.astro';
 import SectionHeader from '../components/ui/SectionHeader.astro';
+import { DOCUMENT_ACCEPT } from '../lib/contact-upload.mjs';
 ---
 
 <SubpageLayout ogImage="/assets/og/contact.jpg" title="Contact Us" description="Contact Zo Media Productions about partnerships, press, projects, and opportunities to support incarcerated creators." breadcrumbs={[{ label: "Contact Us" }]}>
@@ -27,6 +28,8 @@ import SectionHeader from '../components/ui/SectionHeader.astro';
           -->
           <form data-netlify="true" netlify-honeypot="bot-field" name="contact" method="POST" action="/thanks/?form=contact" class="contact-form mt-xl" data-enhance data-astro-reload data-form-label="contact">
             <input type="hidden" name="form-name" value="contact" />
+            <input type="hidden" name="attachment-reference" value="" />
+            <input type="hidden" name="attachment-filename" value="" />
             <p class="sr-only" aria-hidden="true"><label>Leave this field empty <input name="bot-field" tabindex="-1" autocomplete="off" /></label></p>
             <div class="form-group">
               <label for="name" class="form-label">Name</label>
@@ -60,6 +63,12 @@ import SectionHeader from '../components/ui/SectionHeader.astro';
             <div class="form-group">
               <label for="message" class="form-label">Message</label>
               <textarea id="message" name="message" required class="form-control" rows="6" placeholder="What's on your mind?"></textarea>
+            </div>
+            <div class="form-group">
+              <label for="document" class="form-label">Upload a document <span class="form-label__optional">(optional)</span></label>
+              <input type="file" id="document" name="document" accept={DOCUMENT_ACCEPT} class="form-control" aria-describedby="document-help" data-private-upload disabled />
+              <p id="document-help" class="form-consent mt-sm">Upload your pitch deck, manuscript or film script. PDF, DOCX, PPTX, TXT or FDX; up to 4 MB. Files are shared privately with our team.</p>
+              <noscript><p class="form-consent mt-sm">Enable JavaScript to attach a document, or send your message and we’ll arrange a private upload.</p></noscript>
             </div>
             <button type="submit" class="btn btn--primary btn--lg mt-md">Send Message</button>
             <p class="form-consent mt-md">By sending this message you agree to our <a href="/privacy/">Privacy Policy</a>.</p>

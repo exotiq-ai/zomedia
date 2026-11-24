@@ -8,7 +8,17 @@
  * View Transitions, which replace the <body> on every navigation.
  */
 
-export {};
+import { documentError } from '../lib/contact-upload.mjs';
+
+const uploadedDocuments = new WeakMap<HTMLFormElement, { file: File; reference: string }>();
+function enablePrivateUploads() {
+  document.querySelectorAll<HTMLInputElement>('[data-private-upload]').forEach((input) => {
+    input.disabled = false;
+    input.onchange = () => input.setCustomValidity('');
+  });
+}
+document.addEventListener('astro:page-load', enablePrivateUploads);
+enablePrivateUploads();
 
 const FALLBACK_EMAIL = 'info@zomediaproductions.com';
 
@@ -65,6 +75,30 @@ function setBusy(form: HTMLFormElement, busy: boolean) {
 }
 
 async function send(form: HTMLFormElement) {
+  const file = form.querySelector<HTMLInputElement>('[data-private-upload]')?.files?.[0];
+  if (file) {
+    const error = documentError(file);
+    if (error) throw new Error(error);
+    let uploaded = uploadedDocuments.get(form);
+    if (uploaded?.file !== file) {
+      const upload = new FormData();
+      upload.set('document', file);
+      upload.set('bot-field', '');
+      const response = await fetch('/.netlify/functions/contact-upload', { method: 'POST', body: upload });
+      const result = await response.json();
+      if (!response.ok || !result.reference) throw new Error(result.error || 'The document could not be uploaded.');
+      uploaded = { file, reference: result.reference };
+      uploadedDocuments.set(form, uploaded);
+    }
+    (form.elements.namedItem('attachment-reference') as HTMLInputElement).value = uploaded!.reference;
+    (form.elements.namedItem('attachment-filename') as HTMLInputElement).value = file.name;
+  } else {
+    uploadedDocuments.delete(form);
+    for (const name of ['attachment-reference', 'attachment-filename']) {
+      const input = form.elements.namedItem(name) as HTMLInputElement | null;
+      if (input) input.value = '';
+    }
+  }
   const body = new URLSearchParams();
   new FormData(form).forEach((value, key) => {
     if (typeof value === 'string') body.append(key, value);
@@ -82,7 +116,7 @@ async function send(form: HTMLFormElement) {
     headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
     body: body.toString(),
   });
-  if (!res.ok) throw new Error(`Form submit failed: ${res.status}`);
+  if (!res.ok || new URL(res.url).pathname.startsWith('/coming-soon')) throw new Error(`Form submit failed: ${res.status}`);
 }
 
 document.addEventListener('submit', async (event) => {
@@ -91,6 +125,9 @@ document.addEventListener('submit', async (event) => {
   event.preventDefault();
 
   if (form.classList.contains('is-sending')) return;
+  const documentInput = form.querySelector<HTMLInputElement>('[data-private-upload]');
+  const selectedDocument = documentInput?.files?.[0];
+  documentInput?.setCustomValidity(selectedDocument ? documentError(selectedDocument) : '');
   if (!form.checkValidity()) {
     form.reportValidity();
     setStatus(form, 'error', MESSAGES.invalid);
@@ -110,6 +147,7 @@ document.addEventListener('submit', async (event) => {
   const email = form.querySelector<HTMLInputElement>('input[name="email"]')?.value.trim() ?? '';
   try {
     await send(form);
+    uploadedDocuments.delete(form);
     form.reset();
     if (label === 'newsletter' && form.dataset.handoff) {
       // Captured on our side; now send the reader to Substack (email prefilled) to confirm.

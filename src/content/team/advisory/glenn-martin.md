@@ -1,11 +1,11 @@
 ---
 name: "Glenn E. Martin"
-role: "Chairman"
-category: "board"
+role: "Advisory Board Member"
+category: "advisory"
 photo: "/assets/images/team/glenn-martin.jpg"
 order: 1
 bio: |
-  Glenn E. Martin currently sits as the organization's Chairman of the Board of Directors. He is also the President and Founder of GEMtrainers.com, a social justice consultancy firm that partners with nonprofits across the United States to assist with fundraising, organizational development, and marketing.
+  Glenn E. Martin serves on the Advisory Board. He is also the President and Founder of GEMtrainers.com, a social justice consultancy firm that partners with nonprofits across the United States to assist with fundraising, organizational development, and marketing.
 
   Glenn is a longstanding American criminal justice reform advocate and is the founder and former president of JustLeadershipUSA (JLUSA).
 

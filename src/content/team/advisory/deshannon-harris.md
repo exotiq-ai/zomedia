@@ -1,7 +1,7 @@
 ---
 name: "DeShannon Harris"
-role: "Board Member"
-category: "board"
+role: "Advisory Board Member"
+category: "advisory"
 photo: "/assets/images/team/deshannon-harris.jpg"
 order: 3
 bio: |

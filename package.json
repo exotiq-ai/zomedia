@@ -2,7 +2,7 @@
   "name": "zomediaproductions-web",
   "version": "2.0.0",
   "type": "module",
-  "description": "Zo Media Productions \u2014 a media cooperative publishing literature, film, and art by incarcerated creators.",
+  "description": "Zo Media Productions — a media cooperative publishing literature, film, and art by incarcerated creators.",
   "scripts": {
     "dev": "astro dev",
     "build": "node tools/check-routes.mjs && astro build && node tools/check-routes.mjs dist",
@@ -21,6 +21,7 @@
     "@astrojs/sitemap": "^3.7.2",
     "@fontsource/instrument-serif": "^5.2.8",
     "@fontsource/space-mono": "^5.2.9",
+    "@netlify/blobs": "^10.7.13",
     "@sanity/client": "^8.9.0",
     "@sanity/image-url": "^2.1.1",
     "astro": "^6.3.1",

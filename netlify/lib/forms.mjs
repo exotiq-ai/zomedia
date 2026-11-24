@@ -36,6 +36,8 @@ export function buildContactEmail(data, env) {
     ['Organization', data.organization],
     ['Inquiry type', label],
     ['Subject', data.subject],
+    ['Private document', data['attachment-filename']],
+    ['Netlify Blobs reference (team sign-in required)', data['attachment-reference']],
   ].filter(([, v]) => v);
   const text = `${rows.map(([k, v]) => `${k}: ${v}`).join('\n')}\n\n${data.message ?? ''}\n`;
   const html =
