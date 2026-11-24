@@ -1,6 +1,11 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { createUploadHandler } from '../lib/contact-upload.mjs';
+import { createUploadHandler, uploadStoreName } from '../lib/contact-upload.mjs';
+
+test('uses the runtime deploy context to isolate production documents from previews', () => {
+  assert.equal(uploadStoreName('production'), 'contact-documents');
+  for (const context of ['deploy-preview', 'branch-deploy', undefined]) assert.equal(uploadStoreName(context), 'contact-documents-preview');
+});
 
 const origin = 'https://zomediaproductions.com';
 function setup() {

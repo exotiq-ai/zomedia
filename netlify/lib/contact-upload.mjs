@@ -2,6 +2,7 @@ import { randomUUID } from 'node:crypto';
 import { documentError } from '../../src/lib/contact-upload.mjs';
 
 const reply = (status, data) => Response.json(data, { status, headers: { 'Cache-Control': 'private, no-store', 'X-Content-Type-Options': 'nosniff' } });
+export const uploadStoreName = (deployContext) => deployContext === 'production' ? 'contact-documents' : 'contact-documents-preview';
 
 // Deliberately write-only. Downloads require the authenticated Netlify dashboard.
 export function createUploadHandler(getStore, storeName = 'contact-documents') {
