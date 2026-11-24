@@ -1,8 +1,8 @@
 ---
 title: "Kill the Bastard"
-author: "Author to be announced"
-category: "memoir"
-description: "A visceral memoir of survival and resistance within the walls of America's most punitive institutions."
+author: "Michael McKuin"
+category: "fiction"
+description: "A genetically engineered soldier questions his mission after meeting a woman he was ordered to hunt. Together, they become targets in a divided world."
 coverImage: "/assets/images/zo-media/kill_the_bastard.jpg"
 priceHardcover: "$14.95"
 priceEbook: "$4.99"
@@ -10,4 +10,4 @@ isForthcoming: true
 order: 5
 ---
 
-A visceral memoir of survival and resistance within the walls of America's most punitive institutions.
+A genetically engineered soldier questions his mission after meeting a woman he was ordered to hunt. Together, they become targets in a divided world.

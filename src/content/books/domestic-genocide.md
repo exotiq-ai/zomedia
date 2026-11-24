@@ -1,8 +1,8 @@
 ---
-title: "Domestic Genocide"
+title: "Domestic Genocide: The Institutionalization of Society"
 author: "Ivan Kilgore"
-category: "memoir"
-description: "The explosive memoir that launched a movement. Ivan Kilgore exposes the institutional machinery of mass incarceration from the inside."
+category: "essays"
+description: "Blending autobiography, poetry and social criticism, Ivan Kilgore examines how racism, poverty and incarceration shape American life."
 coverImage: "/assets/images/zo-media/domestic_genocide.jpg"
 priceHardcover: "$14.95"
 priceEbook: "$4.99"
@@ -10,4 +10,4 @@ isForthcoming: false
 order: 1
 ---
 
-The explosive memoir that launched a movement. Ivan Kilgore exposes the institutional machinery of mass incarceration from the inside.
+Blending autobiography, poetry and social criticism, Ivan Kilgore examines how racism, poverty and incarceration shape American life.

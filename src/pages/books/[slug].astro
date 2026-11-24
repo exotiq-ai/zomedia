@@ -30,6 +30,7 @@ const cardPath = `/assets/og/book-${entry.id}.jpg`;
 const hasCard = fs.existsSync(path.join(process.cwd(), 'public', cardPath));
 const socialImage = hasCard ? cardPath : book.coverImage;
 const hasAuthor = !/to be announced/i.test(book.author);
+const hasNamedAuthor = hasAuthor && book.author !== 'Incarcerated writers';
 const price = (v: string) => Number(v.replace(/[^0-9.]/g, ''));
 
 const bookLd = {
@@ -42,7 +43,7 @@ const bookLd = {
   genre: book.category,
   inLanguage: 'en',
   publisher: { '@id': `${SITE.url}/#organization` },
-  ...(hasAuthor ? { author: { '@type': 'Person', name: book.author } } : {}),
+  ...(hasNamedAuthor ? { author: { '@type': 'Person', name: book.author } } : {}),
   // Offers are only published once a real purchase link exists.
   ...(options.length
     ? {

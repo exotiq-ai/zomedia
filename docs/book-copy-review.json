@@ -1,0 +1,67 @@
+[
+  {
+    "slug": "domestic-genocide",
+    "title": "Domestic Genocide: The Institutionalization of Society",
+    "author": "Ivan Kilgore",
+    "category": "essays",
+    "description": "Blending autobiography, poetry and social criticism, Ivan Kilgore examines how racism, poverty and incarceration shape American life.",
+    "productIds": [9080, 9721],
+    "sources": ["https://ivankilgore.com/index.php/2020/03/04/ivan-kilgore/", "https://shop.zomediaproductions.com/product/domestic-genocide/"]
+  },
+  {
+    "slug": "king-early-years",
+    "title": "King: The Early Years",
+    "author": "Ivan Kilgore",
+    "category": "fiction",
+    "description": "After his father's murder, King enters a world of drugs, betrayal and violence, driven by revenge. An urban crime novel by Ivan Kilgore.",
+    "productIds": [9082, 9731],
+    "sources": ["https://ivankilgore.com/index.php/2020/03/04/ivan-kilgore/", "https://shop.zomediaproductions.com/product/king-the-early-years/"]
+  },
+  {
+    "slug": "mayhem-murder-magnificence",
+    "title": "Mayhem, Murder & Magnificence: A Memoir",
+    "author": "Ivan Kilgore",
+    "category": "memoir",
+    "description": "Ivan Kilgore traces his journey from rural Oklahoma to a California prison, where he builds a community organization and finds purpose through service.",
+    "productIds": [9083, 12109],
+    "sources": ["https://ivankilgore.com/index.php/2020/03/04/ivan-kilgore/", "https://shop.zomediaproductions.com/product/mayhem-murder-and-magnificence/"]
+  },
+  {
+    "slug": "my-comrades-thoughts",
+    "title": "My Comrades’ Thoughts on Black Lives Matter",
+    "author": "Incarcerated writers",
+    "category": "anthology",
+    "description": "Incarcerated writers explore Black Lives Matter, racial injustice and resistance through essays, poetry and art.",
+    "productIds": [9119, 9740],
+    "sources": ["https://shop.zomediaproductions.com/product/black-lives-matter-essays-and-poems/", "https://linktr.ee/writingbeyondwalls"]
+  },
+  {
+    "slug": "kill-the-bastard",
+    "title": "Kill the Bastard",
+    "author": "Michael McKuin",
+    "category": "fiction",
+    "description": "A genetically engineered soldier questions his mission after meeting a woman he was ordered to hunt. Together, they become targets in a divided world.",
+    "productIds": [12233, 12230],
+    "sources": ["https://books.google.com/books/about/Kill_the_Bastard.html?id=mLMo0AEACAAJ", "https://shop.zomediaproductions.com/product/kill-the-bastard-2/"]
+  },
+  {
+    "slug": "social-justice-autobiographies",
+    "title": "Social Justice Autobiographies: Inequality, Injustice & America’s Incarcerated",
+    "author": "Incarcerated writers",
+    "category": "anthology",
+    "description": "Twenty-four personal essays by incarcerated writers reveal lives shaped by inequality and injustice.",
+    "foreword": "Megan McDrew",
+    "productIds": [12237, 12234],
+    "sources": ["https://ubfsf.org/rehabilitation-over-profit-by-megan-mcdrew/", "https://shop.zomediaproductions.com/product/social-justice-autobiographies-inequality-injustice-americas-incarcerated/"]
+  },
+  {
+    "slug": "no-rhyme-or-reason",
+    "title": "No Rhyme or Reason",
+    "author": "Incarcerated writers",
+    "category": "anthology",
+    "description": "Poetry, essays and short stories by incarcerated writers explore life inside prison and beyond its walls.",
+    "foreword": "Robert T. Chase",
+    "productIds": [12294, 12238],
+    "sources": ["https://shop.zomediaproductions.com/product/no-rhyme-or-reason/", "https://www.transformativejusticecenter.org/whatnow"]
+  }
+]
