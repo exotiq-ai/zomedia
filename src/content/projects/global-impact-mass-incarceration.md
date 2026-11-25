@@ -1,8 +1,8 @@
 ---
-title: "Cages: The Global Impact of Incarceration"
+title: "CAGES: The Global Impact of Incarceration"
 slug: "global-impact-mass-incarceration"
-tagline: "Examining how American incarceration policy echoes worldwide"
-description: "A multimedia project exploring how U.S. mass incarceration policy reverberates through international justice systems."
+tagline: "Connecting incarcerated voices in France and the United States through writing and translation."
+description: "CAGES is developing a bilingual archive of writing, testimony and media by incarcerated people in France and the United States. Through translation and creative exchange, it brings their stories across languages and borders."
 status: "placeholder"
 order: 1
 ---

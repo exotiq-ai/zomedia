@@ -70,8 +70,9 @@ const hostOf = (url: string) => new URL(url).hostname.replace(/^www\./, '');
               >
                 <h3 class="project__title">{p.title}</h3>
                 <p class="project__tagline">{p.tagline}</p>
+                {p.slug === 'global-impact-mass-incarceration' && <p class="project__description">{p.description}</p>}
                 <span class="project__status">
-                  {live ? (<>Now live &middot; Visit project <span aria-hidden="true">&nearr;</span></>) : (<><span class="project__tick" aria-hidden="true"></span>In production</>)}
+                  {live ? (<>Now live &middot; Visit project <span aria-hidden="true">&nearr;</span></>) : (<><span class="project__tick" aria-hidden="true"></span>{p.slug === 'global-impact-mass-incarceration' ? 'In development' : 'In production'}</>)}
                 </span>
               </Tag>
             );
@@ -159,6 +160,7 @@ const hostOf = (url: string) => new URL(url).hostname.replace(/^www\./, '');
   .project--live:hover { transform: translateY(-3px); border-color: var(--color-border-emphasis); }
   .project__title { font-size: var(--text-h3); line-height: 1.15; }
   .project__tagline { color: var(--color-fog); font-size: var(--text-small); line-height: 1.55; }
+  .project__description { color: var(--color-fog); font-size: var(--text-small); line-height: 1.65; }
   .project__status {
     display: inline-flex;
     align-items: center;

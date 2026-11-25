@@ -114,36 +114,33 @@ import FilmCTA from '../../components/content/FilmCTA.astro';
     </div>
   </section>
 
-  <!-- Status / In Production -->
-  <section class="proof">
+  <!-- Writing Beyond Prison is a documentary, separate from the live archive. -->
+  <section class="proof" id="writing-beyond-prison" aria-labelledby="writing-beyond-prison-title">
     <div class="proof__numeral" aria-hidden="true">01</div>
     <div class="proof__inner">
       <span class="proof__stamp">
         <span class="proof__stamp-tick" aria-hidden="true"></span>
         In Production
       </span>
-      <h2 class="proof__title">More on the way.</h2>
+      <h2 class="proof__title proof__title--documentary" id="writing-beyond-prison-title">Writing Beyond Prison: Reimagining the Carceral Ecosystem</h2>
       <div class="proof__rule" aria-hidden="true"></div>
       <p class="proof__lede">
-        Documentaries in development. Tape's rolling, just not finished yet.
+        From a prison cell, Ivan Kilgore turns writing into connection, resistance and change.
       </p>
       <p class="proof__body">
-        Zo Media is producing additional documentary films and short works capturing untold stories from behind the wall: first-person, unflinching, on the record.
+        Follow Ivan Kilgore’s journey as an incarcerated writer, father and founder of UBFSF. Through his words and the people around him, the film explores how writing sustains relationships and builds a movement beyond prison walls.
       </p>
-      <dl class="proof__meta">
-        <div class="proof__meta-row">
-          <dt>Status</dt>
-          <dd>Pre-production / capture</dd>
+      <figure class="video-frame documentary-teaser">
+        <div class="video-frame__chrome">
+          <span class="video-frame__label">Writing Beyond Prison &middot; Teaser</span>
+          <span class="video-frame__meta">3:39</span>
         </div>
-        <div class="proof__meta-row">
-          <dt>Format</dt>
-          <dd>Long-form &middot; Short-form</dd>
-        </div>
-        <div class="proof__meta-row">
-          <dt>Release</dt>
-          <dd>To come.</dd>
-        </div>
-      </dl>
+        <video class="documentary-teaser__player" controls playsinline preload="metadata" poster="/assets/videos/writing-beyond-prison-poster.jpg" aria-label="Writing Beyond Prison documentary teaser">
+          <source src="/assets/videos/writing-beyond-prison-teaser.mp4" type="video/mp4" />
+          <p><a href="/assets/videos/writing-beyond-prison-teaser.mp4">Watch the Writing Beyond Prison teaser</a>.</p>
+        </video>
+        <figcaption class="video-frame__caption">Writing Beyond Prison: Reimagining the Carceral Ecosystem &middot; Documentary teaser</figcaption>
+      </figure>
       <div class="proof__ctas">
         <a href="/film-projects/" class="btn btn--outline">&larr; All Film Projects</a>
         <a href="/the-wire/" class="btn btn--primary">Follow on The Wire</a>
@@ -156,6 +153,9 @@ import FilmCTA from '../../components/content/FilmCTA.astro';
 </SubpageLayout>
 
 <style>
+  .proof__title.proof__title--documentary { font-size: clamp(2rem, 4.5vw, 3.5rem); }
+  .documentary-teaser { margin-top: var(--space-xl); text-align: left; }
+  .documentary-teaser__player { display: block; width: 100%; aspect-ratio: 16 / 9; background: #000; }
   /* ───────────────────────────────────────────────────────────
    * FILM FEATURE — the editorial header above the featured video
    * ─────────────────────────────────────────────────────────── */
