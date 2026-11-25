@@ -8,14 +8,15 @@ const description = "Independent projects exploring the intersection of incarcer
 const breadcrumbs = [{ label: "Special Projects" }];
 
 // Projects are managed in the CMS (Sanity → Special Projects). A project with status "Active" and a link
-// is live; the first live one is featured at the top, the rest appear in the row below.
+// is live; the first is featured, other live projects get compact cards beneath it.
 const projects = (await getCollection('projects'))
   .map((e) => ({ id: e.id, ...e.data }))
   .sort((a, b) => a.order - b.order);
 
 const isLive = (p: (typeof projects)[number]) => p.status === 'active' && Boolean(p.externalUrl);
 const featured = projects.find(isLive);
-const rest = projects.filter((p) => p !== featured);
+const otherLive = projects.filter((p) => p !== featured && isLive(p));
+const rest = projects.filter((p) => !isLive(p));
 
 const hostOf = (url: string) => new URL(url).hostname.replace(/^www\./, '');
 ---
@@ -30,7 +31,7 @@ const hostOf = (url: string) => new URL(url).hostname.replace(/^www\./, '');
   </section>
 
   {featured && (
-    <section class="section" aria-labelledby="featured-title">
+    <section class="section" aria-label="Live projects">
       <div class="container reveal">
         <article class="featured">
           <div class="featured__logo">
@@ -51,6 +52,24 @@ const hostOf = (url: string) => new URL(url).hostname.replace(/^www\./, '');
             </a>
           </div>
         </article>
+        {otherLive.length > 0 && (
+          <div class="live-projects mt-xl">
+            {otherLive.map((p) => (
+              <article class="live-project" aria-labelledby={`live-${p.slug}`}>
+                <div class="live-project__body">
+                  <span class="featured__badge"><span class="featured__badge-dot" aria-hidden="true"></span>Now live</span>
+                  <h2 id={`live-${p.slug}`} class="live-project__title">{p.title}</h2>
+                  <p class="project__tagline">{p.tagline}</p>
+                  <p class="featured__text">{p.description}</p>
+                </div>
+                <a href={p.externalUrl} class="btn btn--outline live-project__cta" target="_blank" rel="noopener">
+                  Visit project <span aria-hidden="true">&nearr;</span>
+                  <span class="sr-only">{p.title} (opens in a new tab)</span>
+                </a>
+              </article>
+            ))}
+          </div>
+        )}
       </div>
     </section>
   )}
@@ -59,7 +78,7 @@ const hostOf = (url: string) => new URL(url).hostname.replace(/^www\./, '');
     <section class="section section--alt" aria-labelledby="upcoming-title">
       <div class="container reveal">
         <SectionHeader eyebrow="Explore" title="More Projects" align="center" />
-        <div class="grid grid--3 grid--stack-tablet mt-2xl" id="upcoming-title">
+        <div class:list={['grid', rest.length === 2 ? 'grid--2' : 'grid--3', 'grid--stack-tablet', 'mt-2xl']} id="upcoming-title">
           {rest.map((p) => {
             const live = isLive(p);
             const Tag = live ? 'a' : 'article';
@@ -142,6 +161,24 @@ const hostOf = (url: string) => new URL(url).hostname.replace(/^www\./, '');
   }
   .featured__text { color: var(--color-chalk); line-height: var(--leading-loose); max-width: 52ch; }
   .featured__cta { margin-top: var(--space-md); }
+
+  .live-projects { display: grid; gap: var(--space-lg); }
+  .live-project {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-xl);
+    padding: var(--space-xl);
+    background: var(--color-graphite);
+    border: 1px solid var(--color-border);
+    border-top: 2px solid var(--color-signal);
+  }
+  .live-project__body { display: grid; gap: var(--space-sm); }
+  .live-project__title { font-size: var(--text-h3); line-height: 1.15; }
+  .live-project__cta { flex-shrink: 0; }
+  @media (max-width: 900px) {
+    .live-project { flex-direction: column; align-items: flex-start; }
+  }
 
   /* ── Upcoming projects: simple cards ──────────────────────── */
   .project {
